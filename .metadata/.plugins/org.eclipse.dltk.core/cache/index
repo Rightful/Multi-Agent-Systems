@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="ASCII"?>
-<cache:CacheIndex xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:cache="http://eclipse.org/dltk/cache_model" lastIndex="2" environment="org.eclipse.dltk.core.environment.localEnvironment">
-  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbot.act2g" timestamp="1461940789346" lastAccessTime="1461940789752"/>
-  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot" timestamp="1461940789354" lastAccessTime="1461940789753">
+<cache:CacheIndex xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:cache="http://eclipse.org/dltk/cache_model" lastIndex="24" environment="org.eclipse.dltk.core.environment.localEnvironment">
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbot.act2g" timestamp="1461940789346" lastAccessTime="1461940791600">
+    <attributes name="indexed" location="2838196607/477401327/23.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot" timestamp="1461940789354" lastAccessTime="1461940791600">
     <attributes name=".dltk.core.archive.cache.lastaccess" location="2838196607/4193517375/1.idx"/>
   </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbotEvent.mod2g" timestamp="1461940789341" lastAccessTime="1461940791599">
+    <attributes name="indexed" location="2838196607/477401327/19.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbotHpNavigation.mod2g" timestamp="1461940789345" lastAccessTime="1461940791600">
+    <attributes name="indexed" location="2838196607/477401327/21.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbotInit.mod2g" timestamp="1461940789338" lastAccessTime="1461940791383">
+    <attributes name="indexed" location="2838196607/477401327/11.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbotScavenge.mod2g" timestamp="1461940789340" lastAccessTime="1461940791014">
+    <attributes name="indexed" location="2838196607/477401327/3.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbotSelectWeapon.mod2g" timestamp="1461940789343" lastAccessTime="1461940791075">
+    <attributes name="indexed" location="2838196607/477401327/7.idx"/>
+  </entries>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/.goalprefs" timestamp="1461940789341" lastAccessTime="1461940790996"/>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/.metadata" timestamp="1461940789336" lastAccessTime="1461940790997"/>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/.project" timestamp="1461940789344" lastAccessTime="1461940790997"/>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/ut-environment.jar" timestamp="1461940789353" lastAccessTime="1461940790997"/>
+  <entries path="C:/Users/Sebastiaan/Eclipse/workspace/MAS-Group-28/UTbot/UTbot.pl" timestamp="1461940789354" lastAccessTime="1461940790997"/>
 </cache:CacheIndex>
