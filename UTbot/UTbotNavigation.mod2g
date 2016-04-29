@@ -1,0 +1,15 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+
+order = linearrandom.
+exit = always.
+
+module UTbotNavigation {
+	% Select one of the navpoints adjacent to the one the bot is currently at, then look in that direction.
+	if bel(navPoint(UnrealID,Position,NeighsUnrealID), navPoint(OtherUnrealID,OtherPos,OtherNeighsUnrealID), 
+		member(OtherUnrealID,NeighsUnrealID), not(look(OtherUnrealID))), not(goal(goTo(_))) then
+		adopt(goTo(OtherUnrealID)) + insert(look(OtherUnrealID)) + look(OtherUnrealID).
+		
+	% Go to the selected navpoint.
+	if goal(goTo(UnrealID)),bel(look(UnrealID)) then drop(goTo(UnrealID)) + delete(look(UnrealID)) + navigate(UnrealID).
+}

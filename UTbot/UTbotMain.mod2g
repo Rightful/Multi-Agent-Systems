@@ -1,0 +1,32 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+use UTbotNavigation as module.
+use UTbotScavenge as module.
+use UTbotSearchAndDestroy as module.
+use UTbotSurvival as module.
+
+order = linear.
+
+module UTbotMain {
+	% If the bot needs to set its weapon preferences, do so.
+	if goal(setWeapPref) then drop(setWeapPref) + prefer([weapon(shock_rifle,primary),weapon(sniper_rifle,primary),
+		weapon(flak_cannon,primary),weapon(stinger_minigun,primary),weapon(rocket_launcher,primary),weapon(link_gun,secondary),weapon(enforcer,primary)]).
+	
+	% If the bot wants to prioritize surival, enter survival strategy module.
+	if bel(survive) then UTbotSurvival.
+	
+	% If the bot wants to kill or shoot an enemy, enter search and destroy strategy module.
+	if goal(kill(UnrealID,Position);shoot(UnrealID)) then UTbotSearchAndDestroy.
+	
+	% If the bot wants to get hp and sees some hp, pick it up.
+	if goal(getHp), bel(item(UnrealID,health,ItemType,Position)) then drop(getHp) + navigate(UnrealID).
+	
+	% If the bot wants to get hp but doesnt see any, continue moving.
+	if goal(getHp), not(bel(item(UnrealID,health,ItemType,Position))) then drop(getHp) + UTbotNavigation.
+	
+	% If the bot wants to get weapons or ammo, enter scavenge strategy module
+	if goal(getItem(UnrealID)) then UTbotScavenge.
+	
+	% If the bot wants to keep moving, enter navigation module.
+	if goal(keepMoving;goTo(UnrealID)) then drop(keepMoving) + UTbotNavigation.
+}

@@ -1,0 +1,14 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+use UTbotHpNavigation as module.
+
+order = linear.
+exit = always.
+
+module UTbotSurvival {
+	% Pick up all health packs in sight, then re-evaluate.
+	if bel(survive,item(UnrealID,health,ItemType,Position)) then navigate(UnrealID).
+	
+	% If more health is needed or no health packs are in sight, find a health pack and go there.
+	if bel(survive,pickup(UnrealID,health,ItemType)) then adopt(getItem(UnrealID)) + UTbotHpNavigation.
+}

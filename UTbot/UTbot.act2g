@@ -1,0 +1,21 @@
+use UTbot as knowledge.
+
+% Make a best effort attempt to go to the Destination.
+define navigate(Destination) with
+	pre{ not(navigation(navigating,_)) }
+	post{ true }
+	
+% Set a list of weapons as preference in order of priority.
+define prefer(WeaponList) with
+	pre{ true }
+	post{ true }
+	
+% Shoot the specified target.
+define shoot(UnrealID) with
+	pre{ true }
+	post{ true }
+	
+% Look at the specified target.
+define look(Location) with
+	pre{ true }
+	post{ true }

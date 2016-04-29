@@ -1,0 +1,10 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+
+order = random.
+exit = always.
+
+module UTbotHpNavigation {
+	% Randomly select a health pack on the map to go to.
+	if goal(getItem(UnrealID)) then navigate(UnrealID).
+}

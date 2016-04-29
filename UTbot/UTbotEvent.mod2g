@@ -1,0 +1,131 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+
+order=linearall.
+
+module UTbotEvent {
+	
+	% Always drop the getHp goal to prevent the bot getting stuck after dying.
+	if goal(getHp) then drop(getHp).
+	forall goal(getItem(UnrealID)) do drop(getItem(UnrealID)).
+	forall goal(shoot(UnrealID)) do drop(shoot(UnrealID)).
+	forall goal(look(Location)) do drop(look(Location)).
+	forall goal(goTo(Location)) do drop(goTo(Location)).
+	forall goal(kill(UnrealID,Location)) do drop(kill(UnrealID,Location)).
+	
+	if bel(look(UnrealID)) then adopt(goTo(UnrealID)).
+	
+	% Update the orientation of the bot
+	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
+		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
+		
+	% Update the bot's status
+	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
+		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
+		
+	% Update the bot's score
+	forall bel(score(OldK,OldD,OldS)), percept(score(K,D,S)) do
+		delete(score(OldK,OldD,OldS)) + insert(score(K,D,S)).
+		
+	% Update the bot's current weapon
+	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
+		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
+		
+	% Update the bot's inventory
+	if percept(not(weapon(WeapType,Ammo,AltAmmo))) then delete(weapon(WeapType,Ammo,AltAmmo)).
+	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
+		
+	% Update the bot's current powerup
+	forall bel(powerup(OldType,OldDur)), percept(powerup(Type,Dur)) do
+		delete(powerup(OldType,OldDur)) + insert(powerup(Type,Dur)).
+		
+	% Update the bot's current armor
+	forall bel(armor(OldHelm,OldVest,OldPads,OldBelt)), percept(armor(Helm,Vest,Pads,Belt)) do
+		delete(armor(OldHelm,OldVest,OldPads,OldBelt)) + insert(armor(Helm,Vest,Pads,Belt)).
+		
+	% Store all kills made in the match
+	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
+	
+	% Update the navigation state of the bot ('send on change' percept).
+	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
+		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+
+	% Handle the path percept from the path action, note that I chose to keep a database of paths between navpoints to enable efficient routing
+	%forall bel(path(OldStartID,OldEndID,OldLen,OldLoc)), percept(path(StartID,EndID,Len,Loc)) do
+	%	delete(path(OldStartID,OldEndID,OldLen,OldLoc)) + insert(path(StartID,EndID,Len,Loc)).
+	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
+		
+	% Update the logic iteration, currently not used
+	forall bel(logic(OldIt)), percept(logic(It)) do delete(logic(OldIt)) + insert(logic(It)).
+	
+	% Update the information on the current game.
+	forall bel(game(OldGType,OldMap,OldGScore,OldTLimit)), percept(game(GType,Map,GScore,TLimit)) do
+		delete(game(OldGType,OldMap,OldGScore,OldTLimit)) + insert(game(GType,Map,GScore,TLimit)).
+		
+	% Update the scores of both teams.
+	forall bel(teamScore(OldTeam,OldOpp)), percept(teamScore(Team,Opp)) do
+		delete(teamScore(OldTeam,OldOpp)) + insert(teamScore(Team,Opp)).
+		
+	% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then delete(flagState(Team,FlagState)).
+	
+	% Update the items the bot sees and drop any getItem goals associated with them.
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
+	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
+	
+	% Update the other bots the bot sees.
+	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	forall percept(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do insert(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	
+	% Update the pickups the bot sees.
+	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
+	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
+	
+	% Update the slowVolumes the bot sees.
+	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
+	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
+	
+	%//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	% After updating percepts, adopt goals to decide strategy.
+
+	% If a hostile bot is sighted, attempt to kill it.
+	if not(goal(goTo(_))), bel(bot(UnrealID,Name,Team,location(X,Y,Z),Weapon,FireMode)) then adopt(kill(UnrealID, location(X,Y,Z))).
+	
+	% If the bot sees a weapon it likes to use or ammo for a weapon and is not busy otherwise or already getting the item, pick it up.
+	forall bel(item(UnrealID,Label,shock_rifle,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,stinger_minigun,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,sniper_rifle,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,flak_cannon,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,rocket_launcher,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,enforcer,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	forall bel(item(UnrealID,Label,link_gun,Location),not(pickedUp(UnrealID))), 
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+		
+	% If the bot sees armor and is not doing anything else or already getting the armor, pick it up.
+	forall bel(item(UnrealID,armor,ItemType,Location),not(pickedUp(UnrealID))),
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+	
+	% If the bot sees a powerup and is not doing anything else or already getting the powerup, pick it up.
+	forall bel(item(UnrealID,other,ItemType,Location),not(pickedUp(UnrealID))),
+		not(goal(kill(BotID,location(X,Y,Z));shoot(OtherID);getItem(UnrealID);goTo(_))) do adopt(getItem(UnrealID)).
+		
+	% If the bot needs hp and is not killing something, shooting something or getting an item, go get hp.
+	if not(goal(kill(UnrealID,location(X,Y,Z));shoot(OtherID);getItem(ItemID);goTo(_))), bel(hpNeeded) then adopt(getHp).	
+	
+	% By default, keep moving around the map.
+	if not(goal(getHp;getItem(UnrealID);kill(OtherID,location(X,Y,Z));shoot(AnID);goTo(SomeID))) then adopt(keepMoving).
+}

@@ -1,0 +1,10 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+
+order = linear.
+exit = always.
+
+module UTbotScavenge {
+	% Go to a weapon or ammo pickup to get ammo for a preferred weapon or to get a new weapon.
+	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + insert(pickedUp(UnrealID)) + navigate(UnrealID).
+}

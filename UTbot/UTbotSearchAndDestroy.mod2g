@@ -1,0 +1,18 @@
+use UTbot as knowledge.
+use UTbot as actionspec.
+use UTbotSelectWeapon as module.
+
+order = linearall.
+exit = nogoals.
+
+module UTbotSearchAndDestroy {
+	% If the bot wants to kill another bot that is in sight, first select the appropriate weapon for doing so.
+	if self.goal(kill(UnrealID, location(X,Y,Z))), bel(bot(UnrealID,_,_,location(X,Y,Z),_,_)) then adopt(look(UnrealID)) + UTbotSelectWeapon.
+	% Once a weapon has been selected, keep looking at the bot.
+	if self.goal(look(UnrealID)), bel(bot(UnrealID,_,_,_,_,_)) then drop(look(UnrealID)) + adopt(shoot(UnrealID)) +
+		look(UnrealID).
+	% If a weapon has been selected, shoot the other bot.
+	if self.goal(shoot(UnrealID)) then self.drop(shoot(UnrealID)) + adopt(resetLook) + shoot(UnrealID).
+	
+	if goal(resetLook) then drop(resetLook) + shoot([]).
+}
