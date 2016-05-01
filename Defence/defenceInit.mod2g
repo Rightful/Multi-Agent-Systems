@@ -1,0 +1,14 @@
+use UTbot as knowledge.
+module defenceInit {
+	% Store information about the bot.
+	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
+	
+	% Store all navpoints on the map.
+	forall percept(navPoint(UnrealID,Position,NeighsUnrealID)) do insert(navPoint(UnrealID,Position,NeighsUnrealID)).
+	
+	% Store all pickups on the map.
+	forall percept(pickup(UnrealID,Label,ItemType)) do insert(pickup(UnrealID,Label,ItemType)).
+	
+	% Store all flag bases on the map.
+	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).
+}

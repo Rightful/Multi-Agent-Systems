@@ -1,0 +1,48 @@
+use "ut-environment.jar" as environment with
+	visualizer = "rmi://127.0.0.1:1099",
+	botServer = "ut://127.0.0.1:3000",
+	controlServer = "ut://127.0.0.1:3001",
+	logLevel = "WARNING", 
+	bots = [
+			[
+			 	["name", "Bot 1"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"]
+			],
+			[
+			 	["name", "Bot 2"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"]
+			],
+			[
+			 	["name", "Bot 3"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"]
+			],
+			[
+			 	["name", "Bot 4"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"]
+			]
+			
+	].
+
+define defencebot1 as agent{
+	use Defence.defencemain as main.
+	use Defence.defenceInit as init.
+	use Defence.defenceEvents as event.
+}
+define defencebot2 as agent{
+	use Defence.defencemain as main.
+	use Defence.defenceInit as init.
+	use Defence.defenceEvents as event.
+}
+	
+launchpolicy{
+		when type=bot launch defencebot1.
+		when type=bot launch defencebot2.
+}
