@@ -9,40 +9,53 @@ use "ut-environment.jar" as environment with
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"]
-			],
-			[
-			 	["name", "Bot 2"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"]
-			],
-			[
-			 	["name", "Bot 3"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"]
-			],
-			[
-			 	["name", "Bot 4"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"]
 			]
+			%,
+			%[
+			% 	["name", "Bot 2"],
+			%	["skill", 5],
+			%	["skin", "BotA"],
+			%	["logLevel", "WARNING"]
+			%],
+			%[
+			% 	["name", "Bot 3"],
+			%	["skill", 5],
+			%%	["skin", "BotA"],
+			%	["logLevel", "WARNING"]
+			%],
+			%[
+			 %	["name", "Bot 4"],
+			%	["skill", 5],
+			%	["skin", "BotA"],
+			%	["logLevel", "WARNING"]
+			%]
 			
 	].
 
 define defencebot1 as agent{
-	use Defence.defencemain as main.
-	use Defence.defenceInit as init.
-	use Defence.defenceEvents as event.
+	use defenceMain as main.
+	use defenceInit as init.
+	use defenceEvents as event.
 }
-define defencebot2 as agent{
-	use Defence.defencemain as main.
-	use Defence.defenceInit as init.
-	use Defence.defenceEvents as event.
-}
+%define defencebot2 as agent{
+%	use defenceMain as main.
+%	use defenceInit as init.
+%	use defenceEvents as event.
+%}
+%define attackbot2 as agent{
+%	use attackMain as main.
+%	use attackInit as init.
+%	use attackEvents as event.
+%}
+%define attackbot1 as agent{
+%	use attackMain as main.
+%	use attackInit as init.
+%	use attackEvents as event.
+%}
 	
 launchpolicy{
 		when type=bot launch defencebot1.
-		when type=bot launch defencebot2.
+%		when type=bot launch defencebot2.
+%		when type=bot launch attackbot2.
+%		when type=bot launch attackbot1.
 }

@@ -1,4 +1,4 @@
 use UTbot as knowledge.
-module defencemain {
+module attackMain {
 	if true then drop(true).
 }

@@ -1,0 +1,4 @@
+use UTbot as knowledge.
+module defenceMain {
+	if true then drop(true).
+}

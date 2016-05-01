@@ -1,0 +1,37 @@
+use UTbot as knowledge.
+module attackEvents {
+	% Update the orientation of the bot
+	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
+		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
+		
+	% Update the bot's status
+	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
+		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
+		
+	% Update the bot's score
+	forall bel(score(OldK,OldD,OldS)), percept(score(K,D,S)) do
+		delete(score(OldK,OldD,OldS)) + insert(score(K,D,S)).
+		
+	% Update the bot's current weapon
+	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
+		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
+		
+	% Update the bot's inventory
+	if percept(not(weapon(WeapType,Ammo,AltAmmo))) then delete(weapon(WeapType,Ammo,AltAmmo)).
+	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
+		
+	% Update the bot's current powerup
+	forall bel(powerup(OldType,OldDur)), percept(powerup(Type,Dur)) do
+		delete(powerup(OldType,OldDur)) + insert(powerup(Type,Dur)).
+		
+	% Update the bot's current armor
+	forall bel(armor(OldHelm,OldVest,OldPads,OldBelt)), percept(armor(Helm,Vest,Pads,Belt)) do
+		delete(armor(OldHelm,OldVest,OldPads,OldBelt)) + insert(armor(Helm,Vest,Pads,Belt)).
+		
+	% Store all kills made in the match
+	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
+	
+	% Update the navigation state of the bot ('send on change' percept).
+	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
+		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+}
