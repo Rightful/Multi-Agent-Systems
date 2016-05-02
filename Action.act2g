@@ -1,0 +1,4 @@
+use UTbot as knowledge.
+define navigate(ID) with
+	pre{ true }
+	post{ true }

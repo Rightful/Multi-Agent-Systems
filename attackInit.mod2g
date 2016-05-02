@@ -1,6 +1,6 @@
 use UTbot as knowledge.
 module attackInit {
-	
+	if true then adopt(captureFlag).
 	% Store information about the bot.
 	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
 	

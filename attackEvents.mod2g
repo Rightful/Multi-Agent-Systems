@@ -17,7 +17,7 @@ module attackEvents {
 		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
 		
 	% Update the bot's inventory
-	if percept(not(weapon(WeapType,Ammo,AltAmmo))) then delete(weapon(WeapType,Ammo,AltAmmo)).
+	if percept(not(weapon(WeapType,Ammo,AltAmmo))), bel(weapon(WeapType,Ammo,AltAmmo)) then delete(weapon(WeapType,Ammo,AltAmmo)).
 	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
 		
 	% Update the bot's current powerup
@@ -34,4 +34,13 @@ module attackEvents {
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+		
+		% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	
+	%Update Flag stuff.
+	forall bel(flag(Team , OldHolderID , OldPosition)) , percept(flag(Team , HolderID , Position))do 
+	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+	
 }

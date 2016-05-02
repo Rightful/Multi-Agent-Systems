@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+use CaptureTheFlag as module.
 module attackMain {
-	if true then drop(true).
+	if true then CaptureTheFlag.
 }
