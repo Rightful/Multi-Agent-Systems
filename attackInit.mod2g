@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+
 module attackInit {
 	
 	% Store information about the bot.

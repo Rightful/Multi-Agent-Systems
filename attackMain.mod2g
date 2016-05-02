@@ -1,4 +1,6 @@
 use UTbot as knowledge.
+use UTbot as actionspec.
+
 module attackMain {
-	if true then drop(true).
+	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + navigate(UnrealID).
 }
