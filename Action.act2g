@@ -1,4 +1,7 @@
 use UTbot as knowledge.
-define navigate(ID) with
-	pre{ true }
+
+% Make a best effort attempt to go to the Destination.
+define navigate(Destination) with
+	pre{ not(navigation(navigating,_)) }
 	post{ true }
+	
