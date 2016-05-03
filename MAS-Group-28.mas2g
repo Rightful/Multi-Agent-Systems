@@ -54,9 +54,14 @@ define attackbot as agent{
 	use attackEvents as event.
 }
 
-	
 launchpolicy{
+<<<<<<< HEAD
 		when type=bot launch attackbot with max = 2.
 		when type=bot launch defencebot with max = 2.
 		
+=======
+
+		when type=bot launch defencebot with max = 2.
+		when type=bot launch attackbot with max = 2.
+>>>>>>> master
 }
