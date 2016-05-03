@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+
 module defenceInit {
 	% Store information about the bot.
 	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).

@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+
 module defenceEvents {
 	% Update the orientation of the bot
 	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
@@ -34,4 +35,7 @@ module defenceEvents {
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+		
+	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
+	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(getItem(UnrealID)).
 }

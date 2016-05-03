@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+
 module attackInit {
 	if true then adopt(captureFlag).
 	forall percept(flag(Team , OldHolderID , OldPosition)) do insert(flag(Team , OldHolderID , OldPosition)).

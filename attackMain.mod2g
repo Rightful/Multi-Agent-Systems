@@ -1,5 +1,6 @@
 use UTbot as knowledge.
 use CaptureTheFlag as module.
 module attackMain {
+	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + navigate(UnrealID).
 	if true then CaptureTheFlag.
 }
