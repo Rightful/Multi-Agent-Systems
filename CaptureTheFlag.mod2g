@@ -4,4 +4,5 @@ module CaptureTheFlag {
 		if a-goal (captureFlag) , bel(base('red', ID) ,flagState('red', 'home'))then navigate(ID).
 		if a-goal (captureFlag) , bel(flag('red',[], Position)) then navigate(Position). 
 		if a-goal (captureFlag) , bel(base('blue', Home), flag('red',ID,_), self(ID,_,_))then navigate(Home).
+
 }
