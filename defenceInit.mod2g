@@ -1,43 +1,5 @@
 use UTbot as knowledge.
-
+use abstractInit as module.
 module defenceInit {
-	forall percept(flag(Team , OldHolderID , OldPosition)) do insert(flag(Team , OldHolderID , OldPosition)).
-	% Store information about the bot.
-	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
-	
-	% Store all navpoints on the map.
-	forall percept(navPoint(UnrealID,Position,NeighsUnrealID)) do insert(navPoint(UnrealID,Position,NeighsUnrealID)).
-	
-	% Store all pickups on the map.
-	forall percept(pickup(UnrealID,Label,ItemType)) do insert(pickup(UnrealID,Label,ItemType)).
-	
-	% Store all flag bases on the map.
-	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).
-	
-	%Initialize beliefs that are update by on change percepts:
-	
-	% Initially, we are nowhere.
-	if true then insert(orientation(location(none,none,none),rotation(none,none,none),velocity(none,none,none))).
-	% Initially, we have neither hp nor armor.
-	if true then insert(status(none,none)).
-	% Initially, our score is 0 across the board.
-	if true then insert(score(none,none,none)).
-	% Initially, we have no weapon equipped.
-	if true then insert(currentWeapon(none,none)).
-	% Initially, our inventory is empty.
-	if true then insert(weapon(none,none,none)).
-	% Initially, we have no powerup.
-	if true then insert(powerup(none,none)).
-	% Initially, we have no armor.
-	if true then insert(armor(none,none,none,none)).
-	% Initially, we are going nowhere.
-	if true then insert(navigation(none, none)).
-	% Initially, we have no path to anywhere.
-	if true then insert(path(none,none,none,none)).
-	% Initially, there is no game being played.
-	if true then insert(game(none,none,none,none)).
-	% Initially, both teams have no points.
-	if true then insert(teamScore(none,none)).
-	% Initially, we have no previous location
-	if true then insert(prevLocation(none,none,none)).
-}
+	if true then abstractInit.
+	}
