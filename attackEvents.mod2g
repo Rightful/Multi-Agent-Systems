@@ -40,7 +40,9 @@ module attackEvents {
 	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
 	
 	%Update Flag stuff.
-	forall bel(flag(Team , OldHolderID , OldPosition)) , percept(flag(Team , HolderID , Position))do 
+	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
 	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+	
+	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 	
 }

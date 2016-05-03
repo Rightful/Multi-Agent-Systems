@@ -11,36 +11,37 @@ use "ut-environment.jar" as environment with
 				["logLevel", "WARNING"],
 				["team", "blue"]
 			]
-			,
-			[
-			 	["name", "Bot 2"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
-				["team", "blue"]
-			],
-			[
-			 	["name", "Bot 3"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
-				["team", "blue"]
-			],
-			[
-			 	["name", "Bot 4"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
-				["team", "blue"]
-			]
-		],
-	nativebots = [
-					[
-						["name", "Native1"],
-						["skill", 5],
-						["team", "red"]
-					]
-				].
+		%	,
+		%	[
+		%	 	["name", "Bot 2"],
+		%		["skill", 5],
+		%		["skin", "BotA"],
+		%		["logLevel", "WARNING"],
+		%		["team", "blue"]
+		%	],
+		%	[
+	%		 	["name", "Bot 3"],
+	%			["skill", 5],
+		%		["skin", "BotA"],
+		%		["logLevel", "WARNING"],
+		%		["team", "blue"]
+		%	],
+		%	[
+		%	 	["name", "Bot 4"],
+		%		["skill", 5],
+		%		["skin", "BotA"],
+		%		["logLevel", "WARNING"],
+		%		["team", "blue"]
+	%		]
+		].
+		%,
+%	nativebots = [
+	%				[
+	%					["name", "Native1"],
+	%					["skill", 5],
+	%					["team", "red"]
+	%				]
+	%			].
 
 define defencebot as agent{
 	use defenceMain as main.
@@ -57,9 +58,9 @@ define attackbot as agent{
 	
 launchpolicy{
 		%when type=bot launch defencebot.
-		when type=bot launch attackbot.
-		when type=bot launch attackbot.
-		when type=bot launch attackbot.
+		%when type=bot launch attackbot.
+		%when type=bot launch attackbot.
+	%	when type=bot launch attackbot.
 		%when type=bot launch defencebot.
 		when type=bot launch attackbot.
 }
