@@ -2,6 +2,7 @@
 	armor/4,	
 	base/2,  
 	bot/6,
+	captureFlag/0,
 	currentWeapon/2, 
 	deployable/1,
 	flag/3,
