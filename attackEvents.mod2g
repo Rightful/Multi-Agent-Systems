@@ -83,6 +83,10 @@ module attackEvents {
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 	
+		
+	% if you see an opponent bot then adopt to kill that bot.
+	 forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
+		
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(getItem(UnrealID)).
 

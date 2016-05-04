@@ -3,6 +3,9 @@ use CaptureTheFlag as module.
 module attackMain {
 	if true then CaptureTheFlag.
 	
+	% if no action then navigate around enemy base
+	if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
+	
 	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + navigate(UnrealID).
 	
 }
