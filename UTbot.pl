@@ -1,5 +1,6 @@
 :-dynamic 
-	armor/4,	
+	armor/4,
+	at/1,	
 	base/2,  
 	bot/6,
 	captureFlag/0,
@@ -26,6 +27,11 @@
 	slowVolume/1,
 	status/2, 
 	weapon/3.
+	
+	
+	
+	
+	radius(1500).
 	
 	
 	 

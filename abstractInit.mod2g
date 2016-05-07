@@ -1,5 +1,7 @@
 use UTbot as knowledge.
+order = linearall.
 module abstractInit {
+	
 	
 	% Store all flag bases on the map.
 	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).

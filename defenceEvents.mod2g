@@ -1,4 +1,5 @@
 use UTbot as knowledge.
+order = linearall.
 
 module defenceEvents {
 	% Update the orientation of the bot
@@ -84,5 +85,8 @@ module defenceEvents {
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 		
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
-	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(getItem(UnrealID)).
+	%if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(getItem(UnrealID)).
+	
+	% The bot will adopt being at all places that are in radius of the flagbase.
+	forall bel(at(UnrealID)) do adopt(getItem(UnrealID)).
 }
