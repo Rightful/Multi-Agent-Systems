@@ -2,7 +2,10 @@ use UTbot as knowledge.
 use Action as actionspec.
 
 module defenceMain {
-		
+	
+	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
+	
 	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
-
+	
+	
 }

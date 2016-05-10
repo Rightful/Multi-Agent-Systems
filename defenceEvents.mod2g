@@ -102,9 +102,15 @@ module defenceEvents {
 	
 	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 		
+	
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position), inRadius(UnrealID), weapon(enforcer,_,_)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(goLocation(UnrealID)).
 	
 	% The bot will adopt being at all places that are in radius of the flagbase.
-	forall bel(inRadius(UnrealID)) do adopt(goLocation(UnrealID)).
+	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
+
+	forall a-goal(goLocation(UnrealID)),bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
+	
+	
+	
 }
