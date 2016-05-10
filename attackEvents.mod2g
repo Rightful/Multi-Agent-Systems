@@ -93,5 +93,8 @@ module attackEvents {
 	
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
+	
+	% forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
+	
 
 }

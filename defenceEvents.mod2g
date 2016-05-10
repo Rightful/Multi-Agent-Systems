@@ -109,8 +109,16 @@ module defenceEvents {
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
 
-	forall a-goal(goLocation(UnrealID)),bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
 	
+	if bel(self(_,_,TeamColor), flag(TeamColor, _, Position), flagState(TeamColor, 'held')) 
+		then allother.send!(helpDef(Position)) .
+	
+	if (_).sent!(helpDef(Position))then insert(helpDef(Position)).
+	
+	forall a-goal(goLocation(UnrealID)), bel(helpDef(Position))
+		do drop(goLocation(UnrealID))+ adopt(goLocationHelp(Position)). 	
 	
 	
 }

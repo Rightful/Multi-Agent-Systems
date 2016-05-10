@@ -5,6 +5,8 @@ module defenceMain {
 	
 	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
 	
+	if goal(goLocationHelp(UnrealID)) then drop(goLocationHelp(UnrealID)) + navigate(UnrealID).
+	
 	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
 	
 	
