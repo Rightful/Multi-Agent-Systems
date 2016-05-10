@@ -48,8 +48,6 @@ module defenceEvents {
 	
 	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 	
-
-
 	% Handle the path percept from the path action
 	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
 		
@@ -83,6 +81,26 @@ module defenceEvents {
 	% Update the slowVolumes the bot sees.
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
+		
+	% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	
+	% Update Flag stuff.
+	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
+	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+	
+	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
+		
+	% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	
+	% Update Flag stuff.
+	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
+	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+	
+	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 		
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position), inRadius(UnrealID), weapon(enforcer,_,_)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(goLocation(UnrealID)).

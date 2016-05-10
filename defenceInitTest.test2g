@@ -1,4 +1,4 @@
-use UTBot.
+use MAS_Group_28.
 use UTbot as knowledge.
 use defenceInit as module.
 timeout = 5.

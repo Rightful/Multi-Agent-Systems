@@ -15,7 +15,19 @@ module abstractInit {
 	% Store information about the bot.
 	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
 	
+		% save our coördinates for our base.
+		if percept(navPoint(BaseUnrealID, Location, _)), bel(
+			self(_, _, Team),
+			base(Team, BaseUnrealID)
+		) then insert(ourBaseLocation(Location)).
 	
+	% save our coördinates for enemy base.
+		if percept(navPoint(BaseUnrealID, Location, _)),bel(
+			self(_, _, Team),
+			base(Team2, BaseUnrealID),
+			Team\=Team2
+		) then insert(enemyBaseLocation(Location)).
+		
 	% Initially, we have no armor.
 	if true then insert(armor(none,none,none,none)).
 	
