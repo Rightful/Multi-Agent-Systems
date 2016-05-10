@@ -46,6 +46,40 @@ module defenceEvents {
 	
 	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 		
+	% Handle the path percept from the path action
+	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
+		
+	% Update the logic iteration, currently not used
+	forall bel(logic(OldIt)), percept(logic(It)) do delete(logic(OldIt)) + insert(logic(It)).
+	
+	% Update the information on the current game.
+	forall bel(game(OldGType,OldMap,OldGScore,OldTLimit)), percept(game(GType,Map,GScore,TLimit)) do
+		delete(game(OldGType,OldMap,OldGScore,OldTLimit)) + insert(game(GType,Map,GScore,TLimit)).
+		
+	% Update the scores of both teams.
+	forall bel(teamScore(OldTeam,OldOpp)), percept(teamScore(Team,Opp)) do
+		delete(teamScore(OldTeam,OldOpp)) + insert(teamScore(Team,Opp)).
+		
+	% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then delete(flagState(Team,FlagState)).
+	
+	% Update the items the bot sees and drop any getItem goals associated with them.
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
+	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
+	
+	% Update the other bots the bot sees.
+	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	forall percept(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do insert(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	
+	% Update the pickups the bot sees.
+	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
+	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
+	
+	% Update the slowVolumes the bot sees.
+	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
+	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).	
+		
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(getItem(UnrealID)).
 
