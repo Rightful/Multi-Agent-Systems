@@ -6,7 +6,7 @@ use abstractInit as module.
 module attackInit {
 	
 	if true then abstractInit.
-	if true then adopt(captureFlag).
+	if true then adopt(captureFlag).	
 	
 % set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
