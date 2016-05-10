@@ -1,7 +1,10 @@
 :-dynamic navigation/2, navPoint/3, prevLocation/3, self/3, orientation/3, status/2, score/3, currentWeapon/2, weapon/3,
 	powerup/2, armor/4, fragged/4, path/4, logic/1, pickup/3, base/2, game/4, teamScore/2, flagState/2, item/4,
 	bot/6, pickup/1, slowVolume/1, getItem/1 ,captureFlag/0,flagState/2, flag/3, look/1, shoot/1, enemyBaseLocation/1, 
-	ourBaseLocation/1, lastKnownLocFlag/1.
+	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1.
+	
+radius(1500).
+
 	
 	% We are at a certain location if the IDs match, or ...
 	at(UnrealID) :- navigation(reached,UnrealID).
@@ -29,5 +32,4 @@
 	betterWeapon(A,B) :- better(A,B,[shock_rifle,flak_cannon,link_gun,stinger_minigun,sniper_rifle,enforcer,impact_hammer]).
 	better(A,B,[X|T]) :- A = X, not(B=X).
 	better(A,B,[X|T]) :- not(A=X), not(B=X), better(A,B,T).
-
 

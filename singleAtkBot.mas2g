@@ -1,0 +1,25 @@
+use "ut-environment.jar" as environment with
+	visualizer = "rmi://127.0.0.1:1099",
+	botServer = "ut://127.0.0.1:3000",
+	controlServer = "ut://127.0.0.1:3001",
+	logLevel = "WARNING", 
+	bots = [
+			[
+			 	["name", "Bot 1"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"],
+				["team", "blue"]
+			]
+		   ].
+
+define attackbot as agent{
+	use attackMain as main.
+	use attackInit as init.
+	use attackEvents as event.
+}
+
+launchpolicy{
+
+			when type=bot launch attackbot.
+}

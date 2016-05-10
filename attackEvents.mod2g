@@ -2,9 +2,7 @@ use UTbot as knowledge.
 
 module attackEvents {
 	
-	
-	
-	%if we die sent a message to other bots that we died and that the lastknown location is at this position.
+	%if we die send a message to other bots that we died and that the lastknown location is at this position.
 	if percept(fragged(_, _, ID, _)), bel(self(ID,_,_), flag('red',ID, Pos))then allother.send(lastKnownLocFlag(Pos)).
 	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
 	
@@ -73,7 +71,7 @@ module attackEvents {
 	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
-	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
 	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
 	
 	% Update the other bots the bot sees.
@@ -93,6 +91,6 @@ module attackEvents {
 	 forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
 		
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
-	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(getItem(UnrealID)).
+	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
 
 }

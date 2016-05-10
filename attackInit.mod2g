@@ -1,6 +1,15 @@
 use UTbot as knowledge.
 use Action as actionspec.
 
+% Code for using the abstractinit module.
+
+%use abstractInit as module.
+
+%module attackInit {
+%	if true then adopt(captureFlag).
+%	if true then abstractInit.
+%	}
+	
 module attackInit {
 	if true then adopt(captureFlag).
 	
@@ -69,3 +78,4 @@ module attackInit {
 	% Initially, we have no previous location
 	if true then insert(prevLocation(none,none,none)).
 }
+
