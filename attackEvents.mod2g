@@ -1,6 +1,14 @@
 use UTbot as knowledge.
 
 module attackEvents {
+	
+	
+	
+	%if we die sent a message to other bots that we died and that the lastknown location is at this position.
+	if percept(fragged(_, _, ID, _)), bel(self(ID,_,_), flag('red',ID, Pos))then allother.send(lastKnownLocFlag(Pos)).
+	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
+	
+	if bel(lastKnownLocFlag(POS)) , percept(flagState('red', 'home'))then delete(lastKnownLocFlag(POS)).
 	% Update the orientation of the bot
 	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
 		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
@@ -65,7 +73,7 @@ module attackEvents {
 		
 	% Updates the state of the flag.
 	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
-	if percept(flagState(Team,FlagState)) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
 	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
