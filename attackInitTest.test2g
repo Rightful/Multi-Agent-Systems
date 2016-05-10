@@ -1,0 +1,41 @@
+use UTBot.
+use UTbot as knowledge.
+use attackInit as module.
+timeout = 5.
+
+test attackInit with
+	pre{ true }
+	in{
+		% Percepts
+		
+		%Records enemy flag location, send once
+		percept(flag(Team , OldHolderID , OldPosition)) leadsto bel(flag(Team , OldHolderID , OldPosition)).	 		 
+		%Records information about bot itself, send once 
+		percept(self(UnrealID,Name,Team)) leadsto bel(self(UnrealID,Name,Team)). 		
+		% Store all navpoints on the map, send once
+		percept(navPoint(UnrealID,Position,NeighsUnrealID)) leadsto bel(navPoint(UnrealID,Position,NeighsUnrealID)).					
+		% Store all pickups on the map, send once 
+		percept(pickup(UnrealID,Label,ItemType)) leadsto bel(pickup(UnrealID,Label,ItemType)).	
+		% Store all flag bases on the map, send once
+		percept(base(Team,UnrealID)) leadsto bel(base(Team,UnrealID)).
+		
+		%Initialized beliefs that are update by on change percepts, should occur at least once:
+		eventually bel(orientation(location(none,none,none),rotation(none,none,none),velocity(none,none,none))).
+		eventually bel(status(none,none)).
+		eventually bel(score(none,none,none)).
+		eventually bel(currentWeapon(none,none)).
+		eventually bel(weapon(none,none,none)).
+		eventually bel(powerup(none,none)).
+		eventually bel(armor(none,none,none,none)).
+		eventually bel(navigation(none, none)).
+		eventually bel(path(none,none,none,none)).
+		eventually bel(game(none,none,none,none)).
+		eventually bel(teamScore(none,none)).
+		eventually bel(prevLocation(none,none,none)).
+		
+		}
+	post{true}
+	
+attackbot {
+	do attackInit. 
+}
