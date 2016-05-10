@@ -2,6 +2,13 @@ use UTbot as knowledge.
 
 module attackEvents {
 	
+	% if the Red flag is at home , the adopt the goal to go there.
+	if bel(base('red', ID) ,flagState('red', 'home')) then adopt(at(ID)).
+	%if we  have a flag
+	if bel (not(flag(_,_,_)) , lastKnownLocFlag(Pos)) then adopt (at(Pos)).
+	
+	if bel(flag('red',[], Pos), not(flagState('red', 'held'))) then adopt(at(Pos)).
+	if bel(base('blue', Home), flag('red',ID,_), self(ID,_,_)) then adopt(at(Home)).
 	%if we die send a message to other bots that we died and that the lastknown location is at this position.
 	if percept(fragged(_, _, ID, _)), bel(self(ID,_,_), flag('red',ID, Pos))then allother.send(lastKnownLocFlag(Pos)).
 	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
