@@ -15,4 +15,8 @@ define look(Target) with
 define shoot(TargetLabel) with
 			pre { true }
 			post { true }
+			
+define prefer(WeaponList) with
+			pre { true }
+			post { true }
 		

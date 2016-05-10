@@ -1,5 +1,6 @@
 use UTbot as knowledge.
 use Action as actionspec.
+exit = always.
 module CaptureTheFlag {
 		if a-goal (captureFlag) , bel(base('red', ID) ,flagState('red', 'home'))then navigate(ID).
 		if a-goal (captureFlag) , bel(flag('red',[], Position)) then navigate(Position). 
