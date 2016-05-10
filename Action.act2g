@@ -5,3 +5,18 @@ define navigate(Destination) with
 	pre{ not(navigation(navigating,_)) }
 	post{ true }
 	
+	
+% Define pre and post conditions of look
+define look(Target) with
+			pre { true }
+			post { true }	
+		
+% Define the conditions needed for the shoot action
+define shoot(TargetLabel) with
+			pre { true }
+			post { true }
+			
+define prefer(WeaponList) with
+			pre { true }
+			post { true }
+		
