@@ -3,6 +3,6 @@ use CaptureTheFlag as module.
 module attackMain {
 	if true then CaptureTheFlag.
 	
-	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + navigate(UnrealID).
+	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
 	
 }

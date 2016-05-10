@@ -1,6 +1,6 @@
 :-dynamic 
 	armor/4,
-	at/1,	
+	% at/1,	
 	base/2,  
 	bot/6,
 	captureFlag/0,
@@ -10,7 +10,9 @@
 	flagState/2, 
 	fragged/4, 
 	game/4, 
-	getItem/1,
+	% getItem/1,
+	goLocation/1,
+	inRadius/1,
 	item/4,
 	logic/1, 
 	navigation/2, 

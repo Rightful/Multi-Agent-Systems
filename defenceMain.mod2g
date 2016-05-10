@@ -3,5 +3,6 @@ use Action as actionspec.
 
 module defenceMain {
 		
-	if goal(getItem(UnrealID)) then drop(getItem(UnrealID)) + navigate(UnrealID).
+	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
+
 }

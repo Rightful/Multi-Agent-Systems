@@ -68,7 +68,7 @@ module attackEvents {
 	if percept(flagState(Team,FlagState)) then delete(flagState(Team,FlagState)).
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
-	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
 	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
 	
 	% Update the other bots the bot sees.
@@ -84,6 +84,6 @@ module attackEvents {
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 	
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
-	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(getItem(UnrealID)).
+	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
 
 }

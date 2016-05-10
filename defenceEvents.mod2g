@@ -69,7 +69,7 @@ module defenceEvents {
 	if percept(flagState(Team,FlagState)) then delete(flagState(Team,FlagState)).
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
-	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(getItem(UnrealID)).
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
 	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
 	
 	% Update the other bots the bot sees.
@@ -85,8 +85,8 @@ module defenceEvents {
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 		
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
-	%if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(getItem(UnrealID)).
+	if bel(item(UnrealID,Label,ItemType,Position), inRadius(UnrealID), weapon(enforcer,_,_)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(goLocation(UnrealID)).
 	
 	% The bot will adopt being at all places that are in radius of the flagbase.
-	forall bel(at(UnrealID)) do adopt(getItem(UnrealID)).
+	forall bel(inRadius(UnrealID)) do adopt(goLocation(UnrealID)).
 }
