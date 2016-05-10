@@ -3,8 +3,7 @@ use UTbot as knowledge.
 % Make a best effort attempt to go to the Destination.
 define navigate(Destination) with
 	pre{ not(navigation(navigating,_)) }
-	post{ true }
-	
+	post{ true }	
 	
 % Define pre and post conditions of look
 define look(Target) with
@@ -19,4 +18,7 @@ define shoot(TargetLabel) with
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
-		
+
+define respawn with
+	pre{true}
+	post{true}

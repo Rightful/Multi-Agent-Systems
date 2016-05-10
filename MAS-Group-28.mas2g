@@ -33,7 +33,8 @@ use "ut-environment.jar" as environment with
 				["logLevel", "WARNING"],
 				["team", "blue"]
 			]
-		],
+		]
+		,
 	nativebots = [
 					[
 						["name", "Native1"],
