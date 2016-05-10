@@ -12,14 +12,11 @@ module attackEvents {
 	
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(at(Home)).
 	
-<<<<<<< HEAD
+
 	% if you are not holding the flag anymore than drop to goal to be at our base.
 	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player,_,Team), not(flag(Team2,Player,_)), not(Team=Team2)) then drop(at(ID)).
 	 	
-	if bel(flag('red',[], Pos), not(flagState('red', 'held'))) then adopt(at(Pos)).
-	if bel(base('blue', Home), flag('red',ID,_), self(ID,_,_)) then adopt(at(Home)).
-=======
->>>>>>> 75b14569052e6b073964e631e28c879938ac9b38
+
 	%if we die send a message to other bots that we died and that the lastknown location is at this position.
 	if percept(fragged(_, _, ID, _)), bel(self(ID,_,_), flag('red',ID, Pos))then allother.send(lastKnownLocFlag(Pos)).
 	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
