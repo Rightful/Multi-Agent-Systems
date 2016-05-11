@@ -93,8 +93,8 @@ module defenceEvents {
 	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 		
 	% Updates the state of the flag.
-	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
-	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
+	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
 	% Update Flag stuff.
 	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
@@ -109,16 +109,20 @@ module defenceEvents {
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
 
+	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
 	
+	% If the bot sees the enemybot that holds the flag, the bot will send all bots the coordinations of the bots.
 	if bel(self(_,_,TeamColor), flag(TeamColor, _, Position), flagState(TeamColor, 'held')) 
-		then allother.send!(helpDef(Position)) .
+		then all.send!(helpDef(Position)) .
 	
+	% If the bot gets location of helpDef the bot will insert that location.
 	if (_).sent!(helpDef(Position))then insert(helpDef(Position)).
 	
+	% If the believes gets a help defence location and has other places to go the bot will go first to the helpDef location
 	forall a-goal(goLocation(UnrealID)), bel(helpDef(Position))
-		do drop(goLocation(UnrealID))+ adopt(goLocationHelp(Position)). 	
+		do drop(goLocation(UnrealID))+ delete(helpDef(Position))+ adopt(goLocationHelp(Position)). 	
 	
 	
 }
