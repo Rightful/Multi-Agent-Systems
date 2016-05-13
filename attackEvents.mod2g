@@ -6,7 +6,14 @@ module attackEvents {
 	if bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), (Team \= Team2)) then adopt(at(Location)).
 	%if we  have a flag
 	if bel (not(flag(_,_,_)) , lastKnownLocFlag(Pos)) then adopt (at(Pos)).
-
+	
+	% we adopt a goal to escort if the enemy flag is held by our team.
+	if bel(flagState(Team,held),flagState(Team2,home), self(_,_,Team2), Team \= Team2) then adopt (escort).
+	%if we have succesfully delivered the flag , or when they recapture it. Drop the escort goal.
+	if a-goal(escort),bel(flagState(Team,home),self(_,_,Team2), Team \= Team2) then drop(escort).
+	
+	if a-goal(escort), bel(flag(Team , HolderID, Pos),bot(HolderID,_,Team2, Pos,_,_), self(_,_,Team2), Team \= Team2)then adopt(at(Pos)).
+	if a-goal(escort), bel(flag(Team , [], Pos), self(_,_,Team2), Team \= Team2)then adopt(at(Pos))+drop(escort).
 	% if flag of opponent is already held then drop the goal to be at the flag base.
 	forall a-goal (at(ID)) , bel(enemyBaseLocation(ID), flagState(Team2 , held), self(Player, _, Team), Team \=Team2) do drop(at(ID)).
 	
@@ -20,7 +27,7 @@ module attackEvents {
 	 	
 
 	%if we die send a message to other bots that we died and that the lastknown location is at this position.
-	if percept(fragged(_, _, ID, _)), bel(self(ID,_,_), flag('red',ID, Pos))then allother.send(lastKnownLocFlag(Pos)).
+	if percept(fragged(_, _, ID, _)), bel(self(ID,_,Team2), flag(Team,ID, Pos), Team\=Team2)then allother.send(lastKnownLocFlag(Pos)).
 	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
 	
 	if bel(lastKnownLocFlag(POS)) , percept(flagState('red', 'home'))then delete(lastKnownLocFlag(POS)).
