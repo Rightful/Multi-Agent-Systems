@@ -125,4 +125,5 @@ module defenceEvents {
 		do drop(goLocation(UnrealID))+ delete(helpDef(Position))+ adopt(goLocationHelp(Position)). 	
 	
 	
+	
 }
