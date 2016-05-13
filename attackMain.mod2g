@@ -8,6 +8,6 @@ module attackMain {
 	% if no action then navigate around enemy base
 	%if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
 	
-	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
+	%if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
 	
 }
