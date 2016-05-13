@@ -18,34 +18,33 @@ use "ut-environment.jar" as environment with
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
 				["team", "blue"]
+			],
+			
+			[
+			 	["name", "Defender 1"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"],
+				["team", "blue"]
+			],
+			[
+			 	["name", "Defender 2"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"],
+				["team", "blue"]
 			]
-			%,
-			%[
-			% 	["name", "Defender 1"],
-			%	["skill", 5],
-			%	["skin", "BotA"],
-			%	["logLevel", "WARNING"],
-			%	["team", "blue"]
-			%],
-			%[
-			% 	["name", "Defender 2"],
-			%	["skill", 5],
-			%	["skin", "BotA"],
-			%	["logLevel", "WARNING"],
-			%	["team", "blue"]
-			%]
 		]
+		
 	%	,
 	%nativebots = [
-	%				[
-	%					["name", "Native1"],
-	%					["skill", 5],
-	%					["team", "red"]
-	%				]
+	%		[
+	%			["name", "Native1"],
+	%			["skill", 5],
+	%			["team", "red"]
+	%		]
 	%			]
 	.
-
-		
 
 define defencebot as agent{
 	use defenceMain as main.

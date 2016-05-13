@@ -2,6 +2,7 @@ use UTbot as knowledge.
 use CaptureTheFlag as module.
 use Pickup as module.
 module attackMain {
+	
 	if a-goal(captureFlag) then CaptureTheFlag.
 	if a-goal(pickup) then Pickup.
 	

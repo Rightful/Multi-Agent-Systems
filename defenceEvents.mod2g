@@ -2,6 +2,7 @@ use UTbot as knowledge.
 order = linearall.
 
 module defenceEvents {
+	
 	% Update the orientation of the bot
 	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
 		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
@@ -36,9 +37,8 @@ module defenceEvents {
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
-
-		
-		% Updates the state of the flag.
+	
+	% Updates the state of the flag.
 	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
 	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
 	
