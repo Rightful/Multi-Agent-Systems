@@ -97,9 +97,9 @@ module attackEvents {
 	if bel(lastKnownLocFlag(POS)) , percept(flagState('red', 'home'))then delete(lastKnownLocFlag(POS)).
 	
 	% if you see an opponent bot then adopt to kill that bot.
-	 forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
+	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 		
-	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
+	% If the bot sees an item that is not the bio rifle or ammo for it, adopt the goal to go get it.
 	if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
 
 }

@@ -1,7 +1,7 @@
 :-dynamic navigation/2, navPoint/3, prevLocation/3, self/3, orientation/3, status/2, score/3, currentWeapon/2, weapon/3,
 	powerup/2, armor/4, fragged/4, path/4, logic/1, pickup/3, base/2, game/4, teamScore/2, flagState/2, item/4,
-	bot/6, pickup/1, slowVolume/1, getItem/1 ,captureFlag/0,flagState/2, flag/3, look/1, shoot/1, enemyBaseLocation/1, 
-	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup.
+	bot/6, pickup/1, slowVolume/1,flagState/2, flag/3, enemyBaseLocation/1, captureFlag/0, 
+	ourBaseLocation/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, weaponSelected/0.
 	
 radius(1500).
 
@@ -14,8 +14,12 @@ radius(1500).
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1). 
 	
 	% Fragged predicate to adopt suitable goals.
-    	fraggedBot(ID):- fragged(_, _, ID, _).
+    	fraggedBot(ID, location(X,Y,Z)):- fragged(_, _, ID, _).
 	
+	% Distance predicate that calculates the 3D distance between 2 bots in Unreal Units
+	distance(X,Y,Z,X1,Y1,Z1,D) :- DX is (X-X1), DY is (Y-Y1), DZ is (Z-Z1), Xsq is (DX*DX), Ysq is (DY*DY), Zsq is (DZ*DZ),
+		XYsum is Xsq+Ysq, XYZsum is XYsum+Zsq, D is sqrt(XYZsum).
+
 	% enemy bot
 	enemyBot(UnrealID, Location) :-
 		bot(UnrealID,_,Team,Location,_,_),

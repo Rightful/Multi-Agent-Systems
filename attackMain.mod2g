@@ -1,11 +1,14 @@
 use UTbot as knowledge.
 use CaptureTheFlag as module.
+use selectWeapon as module.
+
 module attackMain {
 	if a-goal(captureFlag) then CaptureTheFlag.
 	
 	% if no action then navigate around enemy base
 	if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
 	
+	if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
 	if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
 	
 }
