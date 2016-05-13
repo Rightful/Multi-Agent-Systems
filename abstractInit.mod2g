@@ -1,0 +1,75 @@
+use UTbot as knowledge.
+order = linearall.
+module abstractInit {
+	
+	
+	% Store all flag bases on the map.
+	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).
+	
+	% Store all navpoints on the map.
+	forall percept(navPoint(UnrealID,Position,NeighsUnrealID)) do insert(navPoint(UnrealID,Position,NeighsUnrealID)).
+	
+	% Store all pickups on the map.
+	forall percept(pickup(UnrealID,Label,ItemType)) do insert(pickup(UnrealID,Label,ItemType)).
+	
+	% Store information about the bot.
+	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
+	
+		% save our coördinates for our base.
+		if percept(navPoint(BaseUnrealID, Location, _)), bel(
+			self(_, _, Team),
+			base(Team, BaseUnrealID)
+		) then insert(ourBaseLocation(Location)).
+	
+	% save our coördinates for enemy base.
+		if percept(navPoint(BaseUnrealID, Location, _)),bel(
+			self(_, _, Team),
+			base(Team2, BaseUnrealID),
+			Team\=Team2
+		) then insert(enemyBaseLocation(Location)).
+		
+	% Initially, we have no armor.
+	if true then insert(armor(none,none,none,none)).
+	
+	% Initially, we have no weapon equipped.
+	if true then insert(currentWeapon(none,none)).
+	
+	% Initially, we have no weapon equipped so no deployable.
+	if true then insert(deployable([])).
+	
+	% Initially, there is no game being played.
+	if true then insert(game(none,none,none,none)).
+
+	% Store all the logic predicates.
+	if true then insert(logic(none)).
+
+	% Initially, we are going nowhere.
+	if true then insert(navigation(none, none)).
+
+	% Initially, we are nowhere.
+	if true then insert(orientation(location(none,none,none),rotation(none,none,none),velocity(none,none,none))).
+	
+	% Initially, we have no powerup.
+	if true then insert(powerup(none,none)).
+	
+	% Initially, we have no previous location
+	if true then insert(prevLocation(none,none,none)).
+	
+	% Initially, our score is 0 across the board.
+	if true then insert(score(none,none,none)).
+	
+	% Initially, our score is 0 across the board.
+	if true then insert(score(none,none,none)).
+	
+	% Initially, we have neither hp nor armor.
+	if true then insert(status(none,none)).
+	
+	% Initially, both teams have no points.
+	if true then insert(teamScore(none,none)).
+	
+	% Initially, our inventory is empty.
+	if true then insert(weapon(none,none,none)).
+	
+	
+	
+}
