@@ -22,3 +22,8 @@ define prefer(WeaponList) with
 define respawn with
 	pre{true}
 	post{true}
+
+	
+define stop with
+	pre{true}
+	post{true}

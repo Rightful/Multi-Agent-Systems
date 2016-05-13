@@ -38,10 +38,10 @@ module abstractInit {
 	if true then insert(deployable([])).
 	
 	% Initially, there is no game being played.
-	if true then insert(game(none,none,none,none)).
+	%if true then insert(game(none,none,none,none)).
 
 	% Store all the logic predicates.
-	if true then insert(logic(none)).
+	%if true then insert(logic(none)).
 
 	% Initially, we are going nowhere.
 	if true then insert(navigation(none, none)).
@@ -56,16 +56,13 @@ module abstractInit {
 	if true then insert(prevLocation(none,none,none)).
 	
 	% Initially, our score is 0 across the board.
-	if true then insert(score(none,none,none)).
-	
-	% Initially, our score is 0 across the board.
-	if true then insert(score(none,none,none)).
+	%if true then insert(score(none,none,none)).
 	
 	% Initially, we have neither hp nor armor.
 	if true then insert(status(none,none)).
 	
 	% Initially, both teams have no points.
-	if true then insert(teamScore(none,none)).
+	%if true then insert(teamScore(none,none)).
 	
 	% Initially, our inventory is empty.
 	if true then insert(weapon(none,none,none)).
