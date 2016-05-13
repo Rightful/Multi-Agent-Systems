@@ -86,7 +86,16 @@ module attackEvents {
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 	
-		
+	if bel(not(holdingFlag), flagState(Team2 , held), self(Player, _, Team), Team \=Team2) then adopt(pickup).
+	% if you are not holding the flag anymore than drop to goal to be at our base.
+	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player,_,Team), not(flag(Team2,Player,_)), not(Team=Team2)) then drop(at(ID)).
+	
+	%if we die send a message to other bots that we died and that the lastknown location is at this position.
+	if percept(fragged(_, _, ID, _)), bel(self(ID,_,Team2), flag(Team,ID, Pos), Team\=Team2)then allother.send(lastKnownLocFlag(Pos)).
+	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
+	
+	if bel(lastKnownLocFlag(POS)) , percept(flagState('red', 'home'))then delete(lastKnownLocFlag(POS)).
+	
 	% if you see an opponent bot then adopt to kill that bot.
 	 forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
 		
