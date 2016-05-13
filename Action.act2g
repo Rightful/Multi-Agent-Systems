@@ -16,7 +16,7 @@ define shoot(TargetLabel) with
 			post { true }
 			
 define prefer(WeaponList) with
-			pre { a-goal(fraggedBot(UnrealID,location(X,Y,Z))) }
+			pre { true }
 			post { true }
 
 define respawn with
