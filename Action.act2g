@@ -8,7 +8,7 @@ define navigate(Destination) with
 % Define pre and post conditions of look
 define look(Target) with
 			pre { true }
-			post { true }	
+			post { lookingAt(Target) }	
 		
 % Define the conditions needed for the shoot action
 define shoot(TargetLabel) with

@@ -1,6 +1,23 @@
 use UTbot as knowledge.
+use Action as actionspec.
 
 module attackEvents {
+	
+	% Belief base cleaning.
+	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
+	 	
+	% Updating where to look.
+	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
+		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
+	
+	% if we're shot at but dont see anyone, look at where you came from
+	%if bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C)), percept(status(NewHealth,_)) then look(location(A,B,C)).
+	
+	% If bot sees enemy bot.
+	if bel(enemyBot(_, LOC)) then look(LOC).	
+	
+	% keep track of own location.
+	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
 	
 	% Update the orientation of the bot
 	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
