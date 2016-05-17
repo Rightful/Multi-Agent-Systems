@@ -88,9 +88,6 @@ module attackEvents {
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 	
-	
-	
-	
 	if bel(holdingFlag,ownLocation(X,Z,Y)) then allother.send(locationOfFlag(X,Y,Z)).
 	if(_).sent(locationOfFlag(X,Y,Z)), a-goal(escort) then adopt(at(location(X,Y,Z))).
 	
@@ -129,7 +126,6 @@ module attackEvents {
 	% if you are not holding the flag anymore than drop the goal to be at our base.
 	if a-goal(at(ID)), bel(ourBaseLocation(ID), not(holdingFlag)) then drop(at(ID)).
 	 	
-
 	%if we die send a message to other bots that we died and that the lastknown location is at this position.
 	if percept(fragged(_, _, ID, _)), bel(self(ID,_,Team2), flag(Team,ID, Pos), Team\=Team2)then allother.send(lastKnownLocFlag(Pos)).
 	if (_).sent(lastKnownLocFlag(Pos))then insert(lastKnownLocFlag(Pos)).
@@ -139,12 +135,12 @@ module attackEvents {
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
 	forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
 	forall a-goal(fraggedBot(A)), bel(not(enemyBot(A,_))) do drop(fraggedBot(A)).
+
 	% if you see an opponent bot then adopt to kill that bot.
-	 forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
-		
+	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
+
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
 	%if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
-	
 
 	% Weet niet of dit het doet aangezien capture the flag module het niet doet
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
