@@ -16,10 +16,10 @@ module attackInit {
 	% set general shoot priority.
 	if true then shoot([enemyFlagCarrier,nearestEnemy]).
 		
-	%if true then prefer([shock_rifle,flak_cannon,link_gun,stinger_minigun,sniper_rifle,enforcer,impact_hammer]).
+	% set basic weapon priorities.
 	if true then prefer([weapon(shock_rifle,primary),
 		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
-		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary)]).
+		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary), weapon(bio_rifle,primary)]).
 
 }
 
