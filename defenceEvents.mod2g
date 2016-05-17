@@ -2,6 +2,7 @@ use UTbot as knowledge.
 order = linearall.
 
 module defenceEvents {
+	
 	% Update the orientation of the bot
 	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
 		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
@@ -36,6 +37,16 @@ module defenceEvents {
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+		
+	% Updates the state of the flag.
+	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
+	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	
+	%Update Flag stuff.
+	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
+	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+	
+	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 	
 	% Handle the path percept from the path action
 	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
@@ -66,8 +77,6 @@ module defenceEvents {
 	% Update the slowVolumes the bot sees.
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
-
-	
 	
 	% Updates the state of the flag.
 	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
@@ -77,7 +86,6 @@ module defenceEvents {
 	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
 	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
 		
-	
 	% If the bot sees an item that is a weapon(but not the bio gun) or ammo for one, adopt the goal to get it.
 	if bel(item(UnrealID,Label,ItemType,Position), inRadius(UnrealID), weapon(enforcer,_,_)), not(bel(item(UnrealID,Label,bio_gun,Position))) then adopt(goLocation(UnrealID)).
 	

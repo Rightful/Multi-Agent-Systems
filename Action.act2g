@@ -9,12 +9,6 @@ define navigate(Destination) with
 define look(Target) with
 			pre { true }
 			post { lookingAt(Target) }	
-		
-% Define the conditions needed for the shoot action
-define shoot(TargetLabel) with
-			pre { true }
-			post { true }
-			
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
@@ -27,3 +21,9 @@ define respawn with
 define stop with
 	pre{true}
 	post{true}
+	
+	% Define the conditions needed for the shoot action
+	define shoot(TargetLabel) with
+		pre { true }
+		post { true }
+	

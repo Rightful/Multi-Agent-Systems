@@ -12,10 +12,4 @@ module attackMain {
 	if a-goal(captureFlag) then CaptureTheFlag.
 	if a-goal(pickup) then Pickup.
 	
-	% if no action then navigate around enemy base
-	%if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
-	%if the bot sees an enemy he should terminate him.
-	
-	%if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
-	
 }

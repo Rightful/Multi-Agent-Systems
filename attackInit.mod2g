@@ -3,18 +3,20 @@ use Action as actionspec.
 
 use abstractInit as module.
 
+order = linearall.
+
 module attackInit {
 	
 	if true then abstractInit.
 	if true then adopt(captureFlag).	
 	
-% set that we ought to look at the nearest enemy.
+	% set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
 		
-% set general shoot priority.
+	% set general shoot priority.
 	if true then shoot([enemyFlagCarrier,nearestEnemy]).
 		
-%if true then prefer([shock_rifle,flak_cannon,link_gun,stinger_minigun,sniper_rifle,enforcer,impact_hammer]).
+	%if true then prefer([shock_rifle,flak_cannon,link_gun,stinger_minigun,sniper_rifle,enforcer,impact_hammer]).
 	if true then prefer([weapon(shock_rifle,primary),
 		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
 		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary)]).
