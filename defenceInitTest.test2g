@@ -6,18 +6,22 @@ timeout = 5.
 test defenceInit with
 	pre{ true }
 	in{
-		% Percepts
+	
+	% Percepts
 		
-		% Store information about the bot, send once
-		percept(self(UnrealID,Name,Team)) leadsto bel(self(UnrealID,Name,Team)).
-		% Store all navpoints on the map, send once
-		percept(navPoint(UnrealID,Position,NeighsUnrealID)) leadsto bel(navPoint(UnrealID,Position,NeighsUnrealID)).
-		% Store all pickups on the map, send once
-		percept(pickup(UnrealID,Label,ItemType)) leadsto bel(pickup(UnrealID,Label,ItemType)).
-		% Store all flag bases on the map, send once
-		percept(base(Team,UnrealID)) leadsto bel(base(Team,UnrealID)).
+	% Store information about the bot, send once
+	percept(self(UnrealID,Name,Team)) leadsto bel(self(UnrealID,Name,Team)).
+	
+	% Store all navpoints on the map, send once
+	percept(navPoint(UnrealID,Position,NeighsUnrealID)) leadsto bel(navPoint(UnrealID,Position,NeighsUnrealID)).
+	
+	% Store all pickups on the map, send once
+	percept(pickup(UnrealID,Label,ItemType)) leadsto bel(pickup(UnrealID,Label,ItemType)).
+	
+	% Store all flag bases on the map, send once
+	percept(base(Team,UnrealID)) leadsto bel(base(Team,UnrealID)).
 
-		}
+	}
 	post{true}
 	
 defencebot {

@@ -1,0 +1,8 @@
+use UTbot as knowledge.
+use Action as actionspec.
+
+exit = always.
+module Pickup {
+	
+	if bel(pickup(UnrealID,_,_)) then adopt (at(UnrealID)).
+}

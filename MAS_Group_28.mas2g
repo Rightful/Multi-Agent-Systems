@@ -5,7 +5,7 @@ use "ut-environment.jar" as environment with
 	logLevel = "WARNING", 
 	bots = [
 			[
-			 	["name", "Bot 1"],
+			 	["name", "Attacker 1"],
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
@@ -13,21 +13,22 @@ use "ut-environment.jar" as environment with
 			]
 			,
 			[
-			 	["name", "Bot 2"],
+			 	["name", "Attacker 2"],
+				["skill", 5],
+				["skin", "BotA"],
+				["logLevel", "WARNING"],
+				["team", "blue"]
+			],
+			
+			[
+			 	["name", "Defender 1"],
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
 				["team", "blue"]
 			],
 			[
-			 	["name", "Bot 3"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
-				["team", "blue"]
-			],
-			[
-			 	["name", "Bot 4"],
+			 	["name", "Defender 2"],
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
@@ -50,5 +51,5 @@ define attackbot as agent{
 
 launchpolicy{
 		when type=bot launch attackbot with max = 2.
-		when type=bot launch defencebot with max = 2.
+	%	when type=bot launch defencebot with max = 2.
 }
