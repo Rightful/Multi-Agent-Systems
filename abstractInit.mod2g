@@ -37,10 +37,10 @@ module abstractInit {
 	if true then insert(deployable([])).
 	
 	% Initially, there is no game being played.
-	if true then insert(game(none,none,none,none)).
+	%if true then insert(game(none,none,none,none)).
 
 	% Store all the logic predicates.
-	if true then insert(logic(none)).
+	%if true then insert(logic(none)).
 
 	% Initially, we are going nowhere.
 	if true then insert(navigation(none, none)).
@@ -54,19 +54,40 @@ module abstractInit {
 	% Initially, we have no previous location
 	if true then insert(prevLocation(none,none,none)).
 	
-	% Initially, our score is 0 across the board.
-	if true then insert(score(none,none,none)).
 	
 	% Initially, our score is 0 across the board.
-	if true then insert(score(none,none,none)).
+	%if true then insert(score(none,none,none)).
 	
 	% Initially, we have neither hp nor armor.
 	if true then insert(status(none,none)).
 	
 	% Initially, both teams have no points.
-	if true then insert(teamScore(none,none)).
+	%if true then insert(teamScore(none,none)).
 	
 	% Initially, our inventory is empty.
 	if true then insert(weapon(none,none,none)).
-
+	
+	% Angle horizontal and vertical.
+	if true then insert(viewAngle(0)).
+		
+	% Needs to be set so we can interleave between updates.
+	if true then insert(lastAngleUpdater(0)).
+	
+	% Own location.
+	if true then insert(ownLocation(0,0,0)).
+	
+	% angle(Angle, Sinus, CoSinus).
+	if true then insert(angle(0, 	0, 			1)).
+	if true then insert(angle(30, 	0.5, 		0.866)).
+	if true then insert(angle(60, 	0.866, 		0.5)).
+	if true then insert(angle(90, 	1, 			0)).
+	if true then insert(angle(120, 	0.866, 		-0.5)).
+	if true then insert(angle(150, 	0.5, 		-0.866)).
+	if true then insert(angle(180, 	0, 			-1)).
+	if true then insert(angle(210, 	-0.5, 		-0.866)).
+	if true then insert(angle(240, 	-0.866, 	-0.5)).
+	if true then insert(angle(270, 	-1, 		0)).
+	if true then insert(angle(300, 	-0.866, 	0.5)).
+	if true then insert(angle(330, 	-0.5, 		0.866)).
+	
 }

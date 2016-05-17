@@ -37,7 +37,7 @@ module defenceEvents {
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
-	
+
 	% Updates the state of the flag.
 	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
 	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).

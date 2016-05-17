@@ -5,6 +5,6 @@ order = linearrandom.
 module CaptureTheFlag {
 		
 		if a-goal(at(ID))then navigate(ID).
-		if a-goal(killModus), bel(navPoint(ID,_,_))then navigate(ID).
+		%if a-goal(killModus), bel(navPoint(ID,_,_))then navigate(ID).
 		
 }
