@@ -21,5 +21,5 @@ define defencebot as agent{
 
 launchpolicy{
 
-			when type=bot launch defencebot.
+			when type=bot launch defencebot with max = 2.
 }
