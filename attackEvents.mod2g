@@ -90,9 +90,11 @@ module attackEvents {
 	
 	
 	
-	
+	%If we are holding the flag , send to other bots our location. thus 
 	if bel(holdingFlag,ownLocation(X,Z,Y)) then allother.send(locationOfFlag(X,Y,Z)).
-	if(_).sent(locationOfFlag(X,Y,Z)), a-goal(escort) then adopt(at(location(X,Y,Z))).
+	%if(_).sent(locationOfFlag(X,Y,Z)), a-goal(escort) then adopt(at(location(X,Y,Z))).
+	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
+	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
 	
 	% if the Red flag is at home , the adopt the goal to go there.
 	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), (Team \= Team2)) then adopt(at(Location)).
@@ -103,6 +105,7 @@ module attackEvents {
 	if not(a-goal(escort)) ,bel(flagState(Team2 , held), flagState(Team , home),flag(Team2,ID,_) ,self(ID2,_,Team),ID\=ID2, Team\=Team2) then adopt(escort).
 	%if we see the flag , go there.
 	if bel(not(enemyBaseLocation(POSBase)), flag(Team,none,POS), self(_,_,Team2), Team\=Team2 , POS\=POSBase) then adopt(at(POS)).
+	
 	
 	% If we have the flag , go back to base.
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(at(Home)).
