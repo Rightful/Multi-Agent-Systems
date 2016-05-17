@@ -2,15 +2,14 @@ use UTbot as knowledge.
 use CaptureTheFlag as module.
 use killModus as module.
 use Pickup as module.
+use selectWeapon as module.
+	
+
+
 module attackMain {
-	%if the bot sees an enemy he should terminate him.
 	if a-goal(fraggedBot(UnrealID)) then stop + killModus.
+	if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
 	if a-goal(captureFlag) then CaptureTheFlag.
 	if a-goal(pickup) then Pickup.
-	
-	% if no action then navigate around enemy base
-	%if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
-	
-	%if goal(goLocation(UnrealID)) then drop(goLocation(UnrealID)) + navigate(UnrealID).
 	
 }
