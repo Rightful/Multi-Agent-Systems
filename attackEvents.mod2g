@@ -143,10 +143,11 @@ module attackEvents {
 
 	% Weet niet of dit het doet aangezien capture the flag module het niet doet
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	% forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-	%	do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
+	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		then adopt(goLocationFlag(Position)).
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
-	% forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
+	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))
+		do drop(goLocationFlag(UnrealID)).
 	
 }
