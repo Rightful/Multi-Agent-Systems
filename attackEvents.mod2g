@@ -58,25 +58,19 @@ module attackEvents {
 	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
 	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
 	
-	% Update Flag stuff.
-	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
-	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+		% Updates the state of the flag.
+	if percept(not(flag(Team , HolderID , Position))) then delete(flag(Team , HolderID , Position)).
+	if percept(flag(Team , HolderID , Position)) then insert(flag(Team , HolderID , Position)).
 	
-	if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
+	
+	
+	
+	%if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 
 	% Handle the path percept from the path action
 	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
 		
-	% Update the logic iteration, currently not used
-	%forall bel(logic(OldIt)), percept(logic(It)) do delete(logic(OldIt)) + insert(logic(It)).
 	
-	% Update the information on the current game.
-	%forall bel(game(OldGType,OldMap,OldGScore,OldTLimit)), percept(game(GType,Map,GScore,TLimit)) do
-		%delete(game(OldGType,OldMap,OldGScore,OldTLimit)) + insert(game(GType,Map,GScore,TLimit)).
-		
-	% Update the scores of both teams.
-	%forall bel(teamScore(OldTeam,OldOpp)), percept(teamScore(Team,Opp)) do
-		%delete(teamScore(OldTeam,OldOpp)) + insert(teamScore(Team,Opp)).
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
 	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
@@ -97,6 +91,8 @@ module attackEvents {
 	
 	
 	
+	if bel(holdingFlag,ownLocation(X,Z,Y)) then allother.send(locationOfFlag(X,Y,Z)).
+	if(_).sent(locationOfFlag(X,Y,Z)), a-goal(escort) then adopt(at(location(X,Y,Z))).
 	
 	% if the Red flag is at home , the adopt the goal to go there.
 	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), (Team \= Team2)) then adopt(at(Location)).
@@ -104,9 +100,9 @@ module attackEvents {
 	% if flag of opponent is already held then drop the goal to be at the flag base.
 	forall a-goal(at(ID)) , bel(enemyBaseLocation(ID), flagState(Team2 , held), self(Player, _, Team), Team \=Team2, not(flag(Team2,Player,_)) ) do drop(at(ID)) +adopt(escort).
 	
-
+	if not(a-goal(escort)) ,bel(flagState(Team2 , held), flagState(Team , home),flag(Team2,ID,_) ,self(ID2,_,Team),ID\=ID2, Team\=Team2) then adopt(escort).
 	%if we see the flag , go there.
-	if bel(not(enemyBaseLocation(POS)), flag(Team,[],POS), self(_,_,Team2), Team\=Team2) then adopt(at(POS)).
+	if bel(not(enemyBaseLocation(POSBase)), flag(Team,none,POS), self(_,_,Team2), Team\=Team2 , POS\=POSBase) then adopt(at(POS)).
 	
 	% If we have the flag , go back to base.
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(at(Home)).

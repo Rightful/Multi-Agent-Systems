@@ -2,7 +2,7 @@
 	powerup/2, armor/4, fragged/4, path/4, logic/1, pickup/3, base/2, game/4, teamScore/2, flagState/2, item/4,
 	bot/6, pickup/1, slowVolume/1, getItem/1 ,captureFlag/0,flagState/2, flag/3, look/1, shoot/1, enemyBaseLocation/1, 
 	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup/0, escort/0, killModus/0, 
-	angle/3, viewAngle/1, lastAngleUpdater/1, ownLocation/3, lookingAt/1.
+	angle/3, viewAngle/1, lastAngleUpdater/1, ownLocation/3, lookingAt/1, lastFlag/3.
 	
 	radius(1500).
 
@@ -43,7 +43,7 @@
 		Team \= Team2.
 		
 	%checks if a player is holding a flag.
-	holdingFlag :- flag(Team2,Player,_), self(Player,_,Team).
+	holdingFlag :- flag(Team2,Player,_), self(Player,_,Team), Team \= Team2.
 	
 	%Gives the dropped flag location.
 	droppedFlagAt(Location) :- flagState(Team,'dropped'), flag(Team,_,Location).
