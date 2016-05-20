@@ -1,0 +1,11 @@
+use UTbot as knowledge.
+use attackEvents as module.
+use attackMain as module.
+use defenceEvents as module.
+module UTBotMain {
+	if a-goal(attack) then AttackEvents.
+	if a-goal(attack) then attackMain.
+	
+	if a-goal(defence) then defenceEvents.
+	
+}

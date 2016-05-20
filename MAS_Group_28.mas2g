@@ -48,8 +48,14 @@ define attackbot as agent{
 	use attackInit as init.
 	use attackEvents as event.
 }
+define GOD as agent{
+	use GODMain as main.
+	use GODInit as init.
+	use GODEvent as event.
+}
 
 launchpolicy{
 		when type=bot launch attackbot with max = 2.
-	%	when type=bot launch defencebot with max = 2.
+		when type=bot launch defencebot with max = 2.
+		launch GOD.
 }
