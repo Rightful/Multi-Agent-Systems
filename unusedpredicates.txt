@@ -14,3 +14,12 @@ Defensive Bot.
 	slowVolume\1.
 
 Offensive Bot.
+	prevLocation\3.
+	status\2.
+	score\3.
+	currentWeapon\2.
+	weapon\3.
+	powerup\2.
+	armor\4.
+	navigation\2.
+	path\4.
