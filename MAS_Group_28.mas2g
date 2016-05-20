@@ -55,7 +55,7 @@ define GOD as agent{
 }
 
 launchpolicy{
-		when type=bot launch attackbot with max = 2.
-		when type=bot launch defencebot with max = 2.
+		when type=bot launch attackbot with max = 1.
+		%when type=bot launch defencebot with max = 2.
 		launch GOD.
 }

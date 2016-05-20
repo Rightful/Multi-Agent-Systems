@@ -6,5 +6,5 @@ use selectWeapon as module.
 	
 
 module GODMain {
-	
+	if true then drop(true).
 }

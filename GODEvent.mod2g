@@ -4,5 +4,5 @@ use Action as actionspec.
 order = linearall.
 
 module GODEvent {
-	
+	if true then drop(true).	
 }
