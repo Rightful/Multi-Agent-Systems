@@ -1,10 +1,11 @@
 use UTbot as knowledge.
 use Action as actionspec.
 exit = always.
-order = linear.
+order = linearrandom.
 module killModus {
 	 if bel(holdingFlag) then exit-module.
 	 if bel(enemyBot(_,Position)) then navigate(Position).
 	 if bel(fraggedBot(UnrealID),self(UnrealID,_,Team)) then exit-module.
 	 if bel(not(navigation(navigating,_)), not(enemyBot(_,_))) then exit-module.  
+	 if bel(navPoint(UnrealID,_,_)) then navigate(UnrealID).
 }

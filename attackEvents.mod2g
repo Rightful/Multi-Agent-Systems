@@ -53,12 +53,12 @@ module attackEvents {
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
 
 	% Updates the state of the flag.
-	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
-	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
+	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
+	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
-		% Updates the state of the flag.
-	if percept(not(flag(Team , HolderID , Position))) then delete(flag(Team , HolderID , Position)).
-	if percept(flag(Team , HolderID , Position)) then insert(flag(Team , HolderID , Position)).
+	% Update Flag stuff.
+	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
+	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
 	
 	%if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 
@@ -128,8 +128,8 @@ module attackEvents {
 	if bel(lastKnownLocFlag(POS),(flagState(Team, 'home');flagState(Team, 'held')), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
 	
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
-	forall a-goal(fraggedBot(A)), bel(not(enemyBot(A,_))) do drop(fraggedBot(A)).
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
 	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
 	
