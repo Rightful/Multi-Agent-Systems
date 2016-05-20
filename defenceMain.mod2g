@@ -3,7 +3,7 @@ use Action as actionspec.
 
 module defenceMain {
 	
-	if goal(goLocationHome(UnrealID)) then drop(goLocationHome(UnrealID)) + navigate(UnrealID).
+	if goal(goHomeWithFlag(UnrealID)) then drop(goHomeWithFlag(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
 	

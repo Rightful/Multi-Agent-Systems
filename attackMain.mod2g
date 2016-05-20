@@ -7,10 +7,12 @@ use selectWeapon as module.
 
 
 module attackMain {
-	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
+	
+	if a-goal(captureFlag) then CaptureTheFlag.
+	
 	if a-goal(fraggedBot(UnrealID)) then stop + killModus.
 	if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
-	if a-goal(captureFlag) then CaptureTheFlag.
+	
 	if a-goal(pickup) then Pickup.
 	
 }

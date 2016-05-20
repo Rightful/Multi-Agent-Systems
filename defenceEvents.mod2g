@@ -38,10 +38,6 @@ module defenceEvents {
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
 		
-	% Updates the state of the flag.
-	if percept(not(flagState(Team,FlagState))) then delete(flagState(Team,FlagState)).
-	if percept(flagState(Team,FlagState)) then insert(flagState(Team,FlagState)).
-	
 	%Update Flag stuff.
 	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
 	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
@@ -121,7 +117,7 @@ module defenceEvents {
 	
 	% If the bot holds the flag and the FriendlyFlag is at our base. The bot will go to the base.
 	forall a-goal(goLocation(UnrealID)), bel(self(HolderID,_,TeamColor), flag(NotTeamColor, HolderID, Position),ourBaseLocation(Location), flagState(TeamColor, 'home'), TeamColor \= NotTeamColor)
-		do drop(goLocation(UnrealID)) + adopt(goLocationHome(Location)).
+		do drop(goLocation(UnrealID)) + adopt(goHomeWithFlag(Location)).
 	
 	
 	
