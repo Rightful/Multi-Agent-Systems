@@ -1,6 +1,6 @@
 use UTbot as knowledge.
 order = linearall.
 module GODInit {
-	
-	forall percept(navPoint(X,Y,Z)) do insert(navPoint(X,Y,Z)).
+	if true then allother.send(navPoint).
+	forall (AGENT).sent(navPoint(X,Y,Z)) do insert(navPoint(X,Y,Z)).
 }

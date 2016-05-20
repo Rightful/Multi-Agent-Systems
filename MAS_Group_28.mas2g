@@ -53,9 +53,14 @@ define GOD as agent{
 	use GODInit as init.
 	use GODEvent as event.
 }
-
+define UTBot as agent{
+	use UTBotInit as init.
+	use UTBotMain as main.
+	
+}
 launchpolicy{
-		when type=bot launch attackbot with max = 1.
+		%when type=bot launch attackbot with max = 1.
 		%when type=bot launch defencebot with max = 2.
-		launch GOD.
+		when type=bot launch UTBot with max =4 .
+		when type=bot launch GOD with max=1.
 }
