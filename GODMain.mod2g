@@ -1,0 +1,10 @@
+use UTbot as knowledge.
+use CaptureTheFlag as module.
+use killModus as module.
+use Pickup as module.
+use selectWeapon as module.
+	
+
+module GODMain {
+	
+}
