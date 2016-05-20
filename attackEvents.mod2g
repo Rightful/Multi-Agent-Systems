@@ -89,9 +89,9 @@ module attackEvents {
 	if bel(not(holdingFlag), flagState(Team, 'held'), self(_,_,Team2), Team\=Team2) then insert(escort).
 
 
-	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then all.send!(locationOfFlag(X,Y,Z)).
+	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
 	
-	if (_).sent!(locationOfFlag(X,Y,Z)), bel(escort)then insert(locationOfFlag(X,Y,Z)).
+	if (_).sent!(locationOfFlag(X,Y,Z))then insert(locationOfFlag(X,Y,Z)).
 	
 	if bel(locationOfFlag(X,Y,Z)) then delete(locationOfFlag(X,Y,Z)) + adopt(goEscort(location(X,Y,Z))).
 	
@@ -158,8 +158,8 @@ module attackEvents {
 		then adopt(goLocationFlag(Position)).
 	
 	
-	forall a-goal(goLocationFlagEnemy(X)), bel(escort)
-		do drop(goLocationFlagEnemy(X)).
+	forall a-goal(captureFlag), bel(escort)
+		do drop(captureFlag).
 	
 	forall a-goal(goEscort(X)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		do drop(goEscort(X))+ adopt(goLocationFlag(Position)).
