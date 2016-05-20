@@ -9,17 +9,6 @@ module attackInit {
 	
 	if true then abstractInit.
 	if true then adopt(captureFlag).	
-	
-	% set that we ought to look at the nearest enemy.
-	if true then look([enemyFlagCarrier,nearestEnemy]).
-		
-	% set general shoot priority.
-	if true then shoot([enemyFlagCarrier,nearestEnemy]).
-		
-	% set basic weapon priorities.
-	if true then prefer([weapon(shock_rifle,primary),
-		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
-		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary), weapon(bio_rifle,primary)]).
 
 }
 
