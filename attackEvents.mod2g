@@ -85,7 +85,7 @@ module attackEvents {
 
 	if bel(holdingFlag) then allother.send:(escort).
 	
-	if (_).sent:(escort) then insert(escort).
+	if (_).sent:(escort), bel(not(holdingFlag)) then insert(escort).
 
 
 	if bel(enemyBaseLocation(Location), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
@@ -100,13 +100,13 @@ module attackEvents {
 	if  bel(escort, flagState(Team,held), self(_,_,Team)) then delete(escort) + adopt(killModus).
 	
 	% TODO: EXPERIMENTAL
-	%if bel(holdingFlag) then delete(escort).
+	if bel(flag(Team2,Player,_), self(Player,_,Team), Team \= Team2) then delete(escort).
 	
 	%If we are holding the flag , send to other bots our location. thus 
 	if bel(holdingFlag, ownLocation(X,Y,Z), not(escort)) then allother.send(locationOfFlag(X,Y,Z)).
 	
 	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
-	if (_).sent(locationOfFlag(X,Y,Z) )then insert(lastKnownLocFlag(location(X,Y,Z))).
+	if (_).sent(locationOfFlag(X,Y,Z) ), bel(escort)then adopt(lastKnownLocFlag(location(X,Y,Z))).
 	
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).	
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'dropped')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).
@@ -115,8 +115,6 @@ module attackEvents {
 	% If we have the flag , go back to base.
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)).
 	
-	%if we  have the location of a flag from a  teammate go to there.
-	if bel (lastKnownLocFlag(Location), escort) then delete(lastKnownLocFlag(Location))+ adopt (goEscort(Location)).
 	
 	
 
@@ -163,10 +161,14 @@ module attackEvents {
 
 	% Weet niet of dit het doet aangezien capture the flag module het niet doet
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	% forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-	%	do drop(goLocation(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goGrabEnemy(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goGrabEnemy(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goHomeWithFlag(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goHomeWithFlag(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goEscort(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goEscort(UnrealID))+ adopt(goLocationFlag(Position)).
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
-	% forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
+	 forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
 	
 }
