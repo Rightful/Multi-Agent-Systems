@@ -88,7 +88,7 @@ module attackEvents {
 	if (_).sent:(escort), bel(not(holdingFlag)) then insert(escort).
 
 
-	if bel(enemyBaseLocation(Location), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
+	if bel(flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
 	
 	% if the Red flag is at home , the adopt the goal to go there.
 	if bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then delete(escort) + adopt(goGrabEnemy(Location)).
@@ -115,20 +115,23 @@ module attackEvents {
 	% If we have the flag , go back to base.
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)).
 	
+	forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
+		do adopt(goRandom(UnrealID)).
 	
-	
-
 	forall a-goal(goHomeWithFlag(Home)), bel(escort) do drop(goHomeWithFlag(Home)).
+	forall a-goal(goRandom(Location)), bel(escort) do drop(goRandom(Location)).
 	forall a-goal(goGrabEnemy(Location)), bel(escort) do drop(goGrabEnemy(Location)).
 	
 	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
 	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
-	
+	forall a-goal(goRandom(Location)), bel(holdingFlag) do drop(goRandom(Location)).
 
 	forall a-goal(goEscort(Location)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
 		do drop(goEscort(Location)).
 	forall a-goal(goHomeWithFlag(Home)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
 		do drop(goHomeWithFlag(Home)).
+	forall a-goal(goRandom(Home)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
+		do drop(goRandom(Home)).
 
 	
 	% if you have been fragged then delete all (at +  fraggedBot) goals.

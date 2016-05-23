@@ -15,8 +15,11 @@ module attackMain {
 		
 		if a-goal(goGrabEnemy(ID)), bel(not(escort))then drop(goGrabEnemy(ID)) + navigate(ID).
 		
+		if a-goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
+		
 		if a-goal(killModus), bel(pickup(UnrealID,_,_), not(escort)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).
-
+	
+		
 	
 	
 	if goal(goEscort(UnrealID)), bel(escort) then drop(goEscort(UnrealID)) + navigate(UnrealID).
