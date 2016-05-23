@@ -135,13 +135,7 @@ module defenceEvents {
 	
 	% If the bot holds the flag and the FriendlyFlag is at our base. The bot will go to the base.
 	forall a-goal(goLocation(UnrealID)), bel(self(HolderID,_,TeamColor), flag(NotTeamColor, HolderID, Position),ourBaseLocation(Location), flagState(TeamColor, 'home'), TeamColor \= NotTeamColor)
-<<<<<<< HEAD
 		do drop(goLocation(UnrealID)) + adopt(goHomeWithFlag(Location)).
 	
-	
-	
-	
-=======
-		do drop(goLocation(UnrealID)) + adopt(goLocationHome(Location)).
->>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
+
 }
