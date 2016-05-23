@@ -13,7 +13,7 @@ module attackEvents {
 		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
 	% if we're shot at but dont see anyone, look at where you came from
-	%if bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C)), percept(status(NewHealth,_)) then look(location(A,B,C)).
+	 if percept(status(NewHealth,_)), bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
 	
 	% If bot sees enemy bot.
 	if bel(enemyBot(_, LOC)) then look(LOC).	
@@ -28,10 +28,6 @@ module attackEvents {
 	% Update the bot's status
 	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
 		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
-		
-	% Update the bot's score
-	%forall bel(score(OldK,OldD,OldS)), percept(score(K,D,S)) do
-		%delete(score(OldK,OldD,OldS)) + insert(score(K,D,S)).
 		
 	% Update the bot's current weapon
 	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
@@ -60,9 +56,15 @@ module attackEvents {
 	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
 	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
+<<<<<<< HEAD
 		% Updates the state of the flag.
 	forall percept(not(flag(Team , HolderID , Position))) do delete(flag(Team , HolderID , Position)).
 	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).
+=======
+	% Update Flag stuff.
+	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
+	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	
 	%if percept(flag(Team , HolderID , Position)), not(bel(flag(Team , _ , _)))then insert(flag(Team , HolderID , Position)).
 
@@ -84,10 +86,19 @@ module attackEvents {
 	% Update the slowVolumes the bot sees.
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
+
+	%If we are holding the flag , send to other bots our location. thus 
+	if bel(holdingFlag,ownLocation(X,Z,Y)) then allother.send(locationOfFlag(X,Y,Z)).
 	
+	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
+	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
+	
+<<<<<<< HEAD
 	
 	if bel(not(holdingFlag), flagState(Team, 'held'), self(_,_,Team2), Team\=Team2) then insert(escort).
 
+=======
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 
 	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
 	
@@ -96,6 +107,7 @@ module attackEvents {
 	if bel(locationOfFlag(X,Y,Z)) then delete(locationOfFlag(X,Y,Z)) + adopt(goEscort(location(X,Y,Z))).
 	
 	% if the Red flag is at home , the adopt the goal to go there.
+<<<<<<< HEAD
 	if bel(not(escort), enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), (Team \= Team2)) 
 		then adopt(goLocationFlagEnemy(Location)).
 	
@@ -103,17 +115,34 @@ module attackEvents {
 	if bel(not(escort), flag(Team, _, Position),flagState(Team, 'dropped'), self(_,_,Team2), Team\=Team2) then adopt(goLocationFlagEnemy(Position)).
 	
 	
+=======
+	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(at(Location)).
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	
 	% if flag of opponent is already held then drop the goal to be at the flag base.
 	forall a-goal(goLocationFlagEnemy(Location)), bel(escort)
 		do drop(goLocationFlagEnemy(Location)).
 	
+<<<<<<< HEAD
+=======
+	%If we are not the escort , but the flag is taken , adopt the escort goal.
+	if not(a-goal(escort)) ,bel(flagState(Team2 , held), flagState(Team , home),flag(Team2,ID,_) ,self(ID2,_,Team),ID\=ID2, Team\=Team2) then adopt(escort).
+
+	%if we see the flag , go there.
+	if bel(not(enemyBaseLocation(POSBase)), flag(Team,none,POS), self(_,_,Team2), Team\=Team2 , POS\=POSBase) then adopt(at(POS)).
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
+	
 	
 	% If we have the flag , go back to base.
 	if bel(ourBaseLocation(Location), self(MyID, _, Team), flag(Team2, MyID, _), Team\=Team2) then adopt(goHomeWithFlag(Location)).
 	
+<<<<<<< HEAD
 	%if we  have the location of a flag from a fragged teammate go to there.
 	if bel (lastKnownLocFlag(Location)) then adopt (goLastKnown(Location)) + delete(lastKnownLocFlag(Location)).
+=======
+	%if we  have the location of a flag from a  teammate go to there.
+	if a-goal(escort), bel (lastKnownLocFlag(Pos)) then adopt (at(Pos)).
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	
 	%if we have succesfully delivered the flag , or when they recapture it. Drop the escort goal.
 	if bel(escort, flagState(Team, 'home'),self(_,_,Team2), Team \= Team2) then delete(escort).
@@ -121,8 +150,13 @@ module attackEvents {
 	if bel(escort, flagState(Team, 'dropped'),self(_,_,Team2), Team \= Team2) then delete(escort).
 	
 	
+<<<<<<< HEAD
+=======
+	%if a-goal(escort), bel(flag(Team , HolderID, Pos),bot(HolderID,_,Team2, Pos,_,_), self(_,_,Team2), Team \= Team2)then adopt(at(Pos)).
+
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	%if we are a escort and we see the enemy flag , go pick it up (Happens when the flag carrier dies)
-	%if a-goal(escort), bel(flag(Team , [], Pos), self(_,_,Team2), Team \= Team2)then adopt(at(Pos))+drop(escort).
+	if a-goal(escort), bel(flag(Team , none, Pos), self(_,_,Team2), Team \= Team2)then adopt(at(Pos))+drop(escort).
 	
 	%if we were escorting a person , and our flag was taken , the escort should go in killmodus.
 	if bel(escort, flagState(Team,held), self(_,_,Team), Team\=Team2) then delete(escort)+  adopt(killModus).
@@ -130,20 +164,30 @@ module attackEvents {
 	if a-goal(killModus), bel(flagState(Team, home), self(_,_,Team)) then drop(killModus).		
 	
 	% if you are not holding the flag anymore than drop the goal to be at our base.
+<<<<<<< HEAD
 		
 	%if we die send a message to other bots that we died and that the lastknown location is at this position.
 	if percept(fragged(_, _, ID, _)), bel(self(ID,_,Team2), flag(Team,_, Location), Team\=Team2)
 		then allother.send(lastKnownLocFlag(Location)).
 	
 	if (_).sent(lastKnownLocFlag(Location))then insert(lastKnownLocFlag(Location)).
+=======
+	if a-goal(at(ID)), bel(ourBaseLocation(ID), not(holdingFlag)) then drop(at(ID)).
+	 	
+	
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home');flagState(Team, 'held')), self(_,_,Team2), Team\=Team2) 
 		do delete(lastKnownLocFlag(Location)).
 	
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
-	forall a-goal(fraggedBot(A)), bel(not(enemyBot(A,_))) do drop(fraggedBot(A)).
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
+<<<<<<< HEAD
+=======
+	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	
 	% if you see an opponent bot then adopt to kill that bot.
 	 forall bel(escort, enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).

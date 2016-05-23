@@ -20,7 +20,7 @@ define respawn with
 	
 define stop with
 	pre{true}
-	post{true}
+	post{navigation(waiting,none)}
 	
 	% Define the conditions needed for the shoot action
 	define shoot(TargetLabel) with

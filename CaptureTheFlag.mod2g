@@ -3,6 +3,7 @@ use Action as actionspec.
 exit = always.
 module CaptureTheFlag {
 		
+<<<<<<< HEAD
 		if goal(goHomeWithFlag(UnrealID)) then drop(goHomeWithFlag(UnrealID)) + navigate(UnrealID).
 	
 		if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
@@ -14,3 +15,9 @@ module CaptureTheFlag {
 		if goal(lastKnownLocFlag(UnrealID)) then drop(lastKnownLocFlag(UnrealID)) + navigate(UnrealID).
 	
 }
+=======
+		if a-goal(at(ID))then navigate(ID).
+		if a-goal(killModus), bel(pickup(UnrealID,_,_)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).
+		
+}
+>>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
