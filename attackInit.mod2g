@@ -8,7 +8,7 @@ order = linearall.
 module attackInit {
 	
 	if true then abstractInit.
-	if true then adopt(captureFlag).	
+	%if true then adopt(captureFlag).	
 
 }
 
