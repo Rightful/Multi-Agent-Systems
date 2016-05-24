@@ -8,17 +8,24 @@ use Action as actionspec.
 
 
 module attackMain {
+		
+		if a-goal(goHelp(ID)) then drop(goHelp(ID)) + navigate(ID).
 	
-	if bel(not(escort)) then CaptureTheFlag.
+		if a-goal(goLocationFlag(ID)) then drop(goLocationFlag(ID)) + navigate(ID).
+		
+		if a-goal(goHomeWithFlag(ID)), bel(not(escort))then drop(goHomeWithFlag(ID)) + navigate(ID).
+		
+		if a-goal(goGrabEnemy(ID)), bel(not(escort))then drop(goGrabEnemy(ID)) + navigate(ID).
+		
+		if a-goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
+		
+		if a-goal(killModus), bel(pickup(UnrealID,_,_), not(escort)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).
 	
+		if goal(goEscort(UnrealID)), bel(escort) then drop(goEscort(UnrealID)) + navigate(UnrealID).
 	
-	if goal(goEscort(UnrealID)) then drop(goEscort(UnrealID)) + navigate(UnrealID).
+		if a-goal(fraggedBot(UnrealID)) then stop + killModus.
+		if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
 	
-	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
-	
-	if a-goal(fraggedBot(UnrealID)) then stop + killModus.
-	if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
-	
-	if a-goal(pickup) then Pickup.
+		if a-goal(pickup) then Pickup.
 	
 }

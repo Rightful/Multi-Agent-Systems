@@ -53,9 +53,10 @@ module defenceEvents {
 		
 	%Update Flag stuff.
 	if percept(flag(Team , HolderID , Position)),  bel(flag(Team , OldHolderID , OldPosition)) then
-	delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
+		delete(flag(Team , OldHolderID , OldPosition))+insert(flag(Team , HolderID , Position)).
 	if percept(flag(Team , HolderID , Position)) then insert(flag(Team , HolderID , Position)).
 
+	% Handle the path percept from the path action
 	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
 		
 	% Update the items the bot sees and drop any getItem goals associated with them.
@@ -73,9 +74,6 @@ module defenceEvents {
 	% Update the slowVolumes the bot sees.
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
-
-	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
-	if bel(item(UnrealID,Label,ItemType,Position), inRadius(UnrealID), item(UnrealID,weapon,_,_)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
 	
 	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
 	% For now only in defender! Maybe attacker too, somewhere..
@@ -96,20 +94,18 @@ module defenceEvents {
 	% pickup health
 	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<70, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
-	
+
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
 	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
->>>>>>> 0874409168cbaae3cf106a6831456c5f3d438d86
 	
 	% if you see an opponent bot then adopt to kill that bot.
 	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 	 
 	% The bot will adopt being at all places that are in radius of the flagbase.
-	forall bel(inRadius(UnrealID)), not(a-goal(goLocation(UnrealID)))
-		do adopt(goLocation(UnrealID)).
+	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
 
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))

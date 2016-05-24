@@ -74,9 +74,6 @@ module attackEvents {
 	% Update the slowVolumes the bot sees.
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
-
-	%If we are holding the flag , send to other bots our location. thus 
-	if bel(holdingFlag,ownLocation(X,Z,Y)) then allother.send(locationOfFlag(X,Y,Z)).
 	
 	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
 	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
@@ -97,21 +94,20 @@ module attackEvents {
 	% pickup health
 	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
-	
-	if bel(not(holdingFlag), flagState(Team, 'held'), self(_,_,Team2), Team\=Team2) then insert(escort).
 
 	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
+
+	% if we hold the flag then send to other escort
+	if bel(holdingFlag) then allother.send:(escort).
 	
-	if (_).sent!(locationOfFlag(X,Y,Z))then insert(locationOfFlag(X,Y,Z)).
+	if bel(holdingFlag, status(H, _), ownLocation(X,Y,Z), H < 20 )then allother.send!(help(location(X,Y,Z))).
 	
-	if bel(locationOfFlag(X,Y,Z)) then delete(locationOfFlag(X,Y,Z)) + adopt(goEscort(location(X,Y,Z))).
+	% if someone send escort then insert escort
+	if (_).sent:(escort), bel(not(holdingFlag)) then insert(escort).
 	
-	% if the Red flag is at home , the adopt the goal to go there.
-	if bel(not(escort), enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), (Team \= Team2)) 
-		then adopt(goLocationFlagEnemy(Location)).
-	
-	%if we see the flag , go there.
-	if bel(not(escort), flag(Team, _, Position),flagState(Team, 'dropped'), self(_,_,Team2), Team\=Team2) then adopt(goLocationFlagEnemy(Position)).
+	if (_).sent!(help(UnrealID)), bel(not(holdingFlag)) then adopt(goHelp(UnrealID)).
+
+	if bel(flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
 	
 	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(at(Location)).
 	
@@ -129,11 +125,30 @@ module attackEvents {
 
 	%if we  have the location of a flag from a  teammate go to there.
 	if a-goal(escort), bel (lastKnownLocFlag(Pos)) then adopt (at(Pos)).
+
+	% if the bot holds the flag he cant be the escort
+	if bel(flag(Team2,Player,_), self(Player,_,Team), Team \= Team2) then delete(escort).
 	
-	%if we have succesfully delivered the flag , or when they recapture it. Drop the escort goal.
-	if bel(escort, flagState(Team, 'home'),self(_,_,Team2), Team \= Team2) then delete(escort).
+	%If we are holding the flag , send to other bots our location. thus 
+	if bel(holdingFlag, ownLocation(X,Y,Z), not(escort)) then allother.send(locationOfFlag(X,Y,Z)).
 	
-	if bel(escort, flagState(Team, 'dropped'),self(_,_,Team2), Team \= Team2) then delete(escort).
+	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
+	if (_).sent(locationOfFlag(X,Y,Z) ), bel(escort)then adopt(goEscort(location(X,Y,Z))).
+	
+	% if the flag of the enemy is dropped or at home, then the last location of the flag arent valid
+	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).	
+	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'dropped')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).
+	
+	% If we have the flag , go back to base.
+	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)).
+	
+	% Not stable yet
+	% forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
+	%	do adopt(goRandom(UnrealID)).
+	
+	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
+	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
+	forall a-goal(goRandom(Location)), bel(holdingFlag) do drop(goRandom(Location)).
 	
 	%if we were escorting a person , and our flag was taken , the escort should go in killmodus.
 	if bel(escort, flagState(Team,held), self(_,_,Team), Team\=Team2) then delete(escort)+  adopt(killModus).
@@ -152,30 +167,42 @@ module attackEvents {
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home');flagState(Team, 'held')), self(_,_,Team2), Team\=Team2) 
 		do delete(lastKnownLocFlag(Location)).
 	
+	forall a-goal(goEscort(Location)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
+		do drop(goEscort(Location)).
+	forall a-goal(goHomeWithFlag(Home)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
+		do drop(goHomeWithFlag(Home)).
+	forall a-goal(goRandom(Home)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
+		do drop(goRandom(Home)).
+		
+	forall a-goal(goHomeWithFlag(Home)), bel(escort) do drop(goHomeWithFlag(Home)).
+	forall a-goal(goRandom(Location)), bel(escort) do drop(goRandom(Location)).
+	forall a-goal(goGrabEnemy(Location)), bel(escort) do drop(goGrabEnemy(Location)).
+	
+	
+
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
-	
-	% if you see an opponent bot then adopt to kill that bot.
-	 forall bel(escort, enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 
-	% Weet niet of dit het doet aangezien capture the flag module het niet doet
+	% if you see an opponent bot then adopt to kill that bot.
+	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
+
+	% if flag of opponent is already held then drop the goal to be at the flag base.
+	forall a-goal(goGrabEnemy(Location)) , bel(flagState(Team2 , held), self(Player, _, Team), Team \=Team2, not(flag(Team2,Player,_)) ) 
+		do drop(goGrabEnemy(Location)).
+	
+	%drop killModus if our flag is home.
+	if a-goal(killModus), bel(flagState(Team, home), self(_,_,Team)) then drop(killModus).		
+
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-		then adopt(goLocationFlag(Position)).
-	
-	
-	forall a-goal(captureFlag), bel(escort)
-		do drop(captureFlag).
-	
-	forall a-goal(goEscort(X)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-		do drop(goEscort(X))+ adopt(goLocationFlag(Position)).
-		
-	forall a-goal(lastKnownLocFlag(X)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-		do drop(lastKnownLocFlag(X))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goGrabEnemy(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goGrabEnemy(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goHomeWithFlag(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goHomeWithFlag(UnrealID))+ adopt(goLocationFlag(Position)).
+	forall a-goal(goEscort(UnrealID)), bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		do drop(goEscort(UnrealID))+ adopt(goLocationFlag(Position)).
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
-	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))
-		do drop(goLocationFlag(UnrealID)).
+	 forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
 	
 }
