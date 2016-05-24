@@ -8,6 +8,8 @@ use Action as actionspec.
 
 
 module attackMain {
+		
+		if a-goal(goHelp(ID)) then drop(goHelp(ID)) + navigate(ID).
 	
 		if a-goal(goLocationFlag(ID)) then drop(goLocationFlag(ID)) + navigate(ID).
 		

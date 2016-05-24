@@ -85,9 +85,13 @@ module attackEvents {
 	% if we hold the flag then send to other escort
 	if bel(holdingFlag) then allother.send:(escort).
 	
+	if bel(holdingFlag, status(H, _), ownLocation(X,Y,Z), H < 20 )then allother.send!(help(location(X,Y,Z))).
+
+	
 	% if someone send escort then insert escort
 	if (_).sent:(escort), bel(not(holdingFlag)) then insert(escort).
-
+	
+	if (_).sent!(help(UnrealID)), bel(not(holdingFlag)) then adopt(goHelp(UnrealID)).
 
 	if bel(flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
 	
