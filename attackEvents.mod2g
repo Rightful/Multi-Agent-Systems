@@ -87,7 +87,32 @@ module attackEvents {
 	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
 	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
 	
+		% if you have been fragged then delete all (at +  fraggedBot) goals.
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
+	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
+	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
+	
+	% if you see an opponent bot then adopt to kill that bot.
+	forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
+	 
+	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
+	% pickup shieldbelt
+	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+		
+	% pickup helmet
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	
+	% pickup thighpad
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+		
+	% pickup vest
+	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+		
+	% pickup health
+	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
+	
 	% if the Red flag is at home , the adopt the goal to go there.
 	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(at(Location)).
 	
@@ -126,15 +151,6 @@ module attackEvents {
 	
 
 	if bel(lastKnownLocFlag(POS),(flagState(Team, 'home');flagState(Team, 'held')), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
-	
-	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
-	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
-
-	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
-	
-	% if you see an opponent bot then adopt to kill that bot.
-	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 
 	% If the bot sees an item that is a weapon(but not the bio rifle) or ammo for one, adopt the goal to get it.
 	%if bel(item(UnrealID,Label,ItemType,Position)), not(bel(item(UnrealID,Label,bio_rifle,Position))) then adopt(goLocation(UnrealID)).
