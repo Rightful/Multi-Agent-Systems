@@ -1,0 +1,23 @@
+use UTbot as knowledge.
+use Action as actionspec.
+
+exit = never.
+order = linearall.
+module PickupOther {
+%if bel navigating to a place and no path then exit
+		if bel(navigation('noPath',_)) then exit-module.
+		if bel(navigation('stuck',_)) then exit-module.
+		
+		% exit module if you dont see item anymore.
+		if bel(not(item(_,'other',_,UnrealID)), pickup(UnrealID,'other',_)) then exit-module.
+		if bel(pickup(UnrealID,'other',O), item(_,_,_,UnrealID), navigation('noPath',UnrealID)) then exit-module.
+		if bel(pickup(UnrealID,'other',O), item(_,_,_,UnrealID), navigation('stuck',UnrealID)) then  exit-module.
+
+		% pickup powerups.
+		if bel(pickup(UnrealID,'other',O), not(O=invisibility), not(O=jump_boots), not(O=berserk), item(_,_,_,UnrealID), navigation(navigating,_)) then stop. 
+		if bel(pickup(UnrealID,'other',O), not(O=invisibility), not(O=jump_boots), not(O=berserk), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then navigate(UnrealID).
+}
+
+
+
+

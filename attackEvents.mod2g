@@ -98,19 +98,19 @@ module attackEvents {
 	 
 	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
 	% pickup shieldbelt
-	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 		
 	% pickup helmet
-	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 	
 	% pickup thighpad
-	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 		
 	% pickup vest
-	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 		
 	% pickup health
-	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
+	%if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
 	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
 	
 	% if the Red flag is at home , the adopt the goal to go there.
