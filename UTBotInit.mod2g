@@ -9,6 +9,6 @@ module UTBotInit {
 	 if true then abstractInit.
 	 if true then attackInit.
 	 if true then adopt(attack).
-	 forall bel(navPoint(X,Y,Z)), (GOD).sent?(navpoint) do (GOD).send(navPoint(X,Y,Z)).
-	 forall bel(pickup(X,Y,Z)), (GOD).sent?(pickup) do (GOD).send(pickUp(X,Y,Z)).
+	 forall bel(navPoint(X,Y,Z)), (GOD).sent?(navpoint) do (GOD).send:(navPoint(X,Y,Z)).
+	 forall bel(pickup(X,Y,Z)), (GOD).sent?(pickup) do (GOD).send:(pickUp(X,Y,Z)).
 }
