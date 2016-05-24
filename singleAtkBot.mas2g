@@ -28,5 +28,5 @@ define attackbot as agent{
 
 launchpolicy{
 
-			when type=bot launch attackbot with max =1.
+			when type=bot launch attackbot with max =2.
 }
