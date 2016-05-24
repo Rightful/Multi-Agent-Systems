@@ -1,10 +1,16 @@
 use UTbot as knowledge.
 use Action as actionspec.
 exit = always.
-order = linearrandom.
 module CaptureTheFlag {
-		
-		if a-goal(at(ID))then navigate(ID).
-		if a-goal(killModus), bel(pickup(UnrealID,_,_)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).
-		
+	
+		if goal(goHomeWithFlag(UnrealID)) then drop(goHomeWithFlag(UnrealID)) + navigate(UnrealID).
+	
+		if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
+	
+		if goal(goLocationFlagEnemy(UnrealID)) then drop(goLocationFlagEnemy(UnrealID)) + navigate(UnrealID).
+	
+		if goal(goEscort(UnrealID)) then drop(goEscort(UnrealID)) + navigate(UnrealID).
+	
+		if goal(lastKnownLocFlag(UnrealID)) then drop(lastKnownLocFlag(UnrealID)) + navigate(UnrealID).
+	
 }

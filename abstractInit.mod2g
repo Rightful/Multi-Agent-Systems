@@ -38,6 +38,9 @@ module abstractInit {
 	% Initially, we have no weapon equipped so no deployable.
 	if true then insert(deployable([])).
 	
+	% Initially, there are no flags
+	if true then insert(flag(none,none,none)).
+	
 	% set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
 		
