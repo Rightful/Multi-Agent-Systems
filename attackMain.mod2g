@@ -21,15 +21,11 @@ module attackMain {
 		
 		if a-goal(killModus), bel(pickup(UnrealID,_,_), not(escort)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).
 	
-		
+		if goal(goEscort(UnrealID)), bel(escort) then drop(goEscort(UnrealID)) + navigate(UnrealID).
 	
+		if a-goal(fraggedBot(UnrealID)) then stop + killModus.
+		if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
 	
-	if goal(goEscort(UnrealID)), bel(escort) then drop(goEscort(UnrealID)) + navigate(UnrealID).
-	
-	
-	if a-goal(fraggedBot(UnrealID)) then stop + killModus.
-	if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
-	
-	if a-goal(pickup) then Pickup.
+		if a-goal(pickup) then Pickup.
 	
 }

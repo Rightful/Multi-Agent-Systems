@@ -1,6 +1,6 @@
 Defensive Bot.
 	orientation\3.
-	status\2.
+	
 	score\3.
 	currentWeapon\2.
 	powerup\2.
