@@ -11,6 +11,8 @@ module UTBotEvent {
 	if percept(flagState(Team,StatusNew)), bel(flagState(Team,StatusOld)) then (god).send(flagState(Team,StatusNew)).
 	if (god).sent(prayToMe) then (god).send(godIsGreat).
 	
+
+	
 	
 	
 	

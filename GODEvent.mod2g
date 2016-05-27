@@ -5,12 +5,8 @@ order = linearall.
 
 module GODEvent {
 	
-	%We define how many bots are under control of  the god agent.
-	if not(bel(peasant(X,Y))) then allother.send(prayToMe).
 	
-	%We insert the bots in the belief base of the god agent, the predicate peasant(X,Y) says that bot X has the duty Y.
-	forall (X).sent(godIsGreat) do insert(peasant(X,none)).
-
+	%SENDONCE PERCEPTS COMMUNICATION.
 	%if there are no navpoints in belief base then send request to msgbot
 	if not(bel(navPoint(_,_,_))) then (msgBot).send?(navPoint).
 	%parse navpoints.
@@ -25,9 +21,21 @@ module GODEvent {
 	if not(bel(base(_,_))) then (msgBot).send?(base).
 	%parse bases.
 	forall (msgBot).sent(base(Team,ID)) do insert(base(Team,ID)).
+
 	
+	%update FLag percepts
 	forall (msgBot).sent(flagState(Team,ID)) , bel(flagState(Team,Old)) do delete(flagState(Team ,Old)) + insert(flagState(Team,ID)).
 	
 	
+	%BOTS REGISTERY AND LOCATION
+	
+	%We define how many bots are under control of  the god agent.
+	if not(bel(peasant(X,Y))) then allother.send(prayToMe).
+	
+	%We insert the bots in the belief base of the god agent, the predicate peasant(X,Y) says that bot X has the duty Y.
+	forall (X).sent(godIsGreat) do insert(peasant(X,none))+ insert(botLoc(X, ownlocation(none,none,none))).
+	
+	%We have always the current location of all the bots. 
+	forall (AGENT).sent(ownLocation(X,Y,Z)), bel(botLoc(AGENT,ownlocation(OX,OY,OZ))) do delete(botLoc(AGENT,ownlocation(OX,OY,OZ)))+ insert(botLoc(AGENT,ownlocation(X,Y,Z))).
 	
 }
