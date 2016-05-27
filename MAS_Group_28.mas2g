@@ -37,19 +37,26 @@ use "ut-environment.jar" as environment with
 		]
 		.
 
-define GOD as agent{
+define god as agent{
 	use GODMain as main.
 	use GODInit as init.
 	use GODEvent as event.
 }
-define UTBot as agent{
+define utBot as agent{
 	use UTBotInit as init.
 	use UTBotMain as main.
+	use UTBotEvent as event.
 	
+}
+define msgBot as agent{
+	use UTBotMain as main.
+	use MsgBotInit as init.
+	use MsgBotEvent as event.
 }
 launchpolicy{
 
-		when type=bot launch UTBot with max =4 .
-		launch GOD with max=1.
+		when type=bot launch utBot with max = 3.
+		when type=bot launch msgBot with max = 1.
+		launch god with max=1.
 
 }

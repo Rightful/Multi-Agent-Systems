@@ -4,5 +4,8 @@ use Action as actionspec.
 order = linearall.
 
 module GODEvent {
-	if true then drop(true).	
+	if not(bel(navPoint(X,Y,Z))) then adopt(haveNavPoints).	
+	if goal(haveNavPoints) then (msgBot).send?(navPoint).
+	forall (msgBot).sent(navPoint(X,Y,Z)) do insert(navPoint(X,Y,Z)).
+	if bel(navPoint(X,Y,Z)) then drop(haveNavPoints).
 }

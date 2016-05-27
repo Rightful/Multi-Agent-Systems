@@ -3,12 +3,7 @@ use attackEvents as module.
 use attackMain as module.
 use defenceEvents as module.
 use defenceMain as module.
+
 module UTBotMain {
-	if a-goal(attack) then attackEvents.
-	if a-goal(attack) then attackMain.
-	
-	if a-goal(defense) then defenceEvents.
-	if a-goal(defense) then defenceMain.
-	
-	
+	if true then adopt(attack).
 }

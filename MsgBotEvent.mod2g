@@ -1,0 +1,8 @@
+use UTbot as knowledge.
+use Action as actionspec.
+
+order = linearall.
+
+module UTBotEvent {
+	forall (god).sent?(navPoint), bel(navPoint(X,Y,Z)) do (god).send(navPoint(X,Y,Z)).
+}

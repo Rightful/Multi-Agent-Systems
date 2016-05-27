@@ -1,0 +1,13 @@
+use UTbot as knowledge.
+use abstractInit as module.
+use attackInit as module.
+
+
+order = linearall.
+
+module UTBotInit {
+	 if true then abstractInit.
+	 if true then attackInit.
+	 if true then adopt(attack).
+	 
+}
