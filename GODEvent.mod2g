@@ -4,8 +4,30 @@ use Action as actionspec.
 order = linearall.
 
 module GODEvent {
-	if not(bel(navPoint(X,Y,Z))) then adopt(haveNavPoints).	
-	if goal(haveNavPoints) then (msgBot).send?(navPoint).
+	
+	%We define how many bots are under control of  the god agent.
+	if not(bel(peasant(X,Y))) then allother.send(prayToMe).
+	
+	%We insert the bots in the belief base of the god agent, the predicate peasant(X,Y) says that bot X has the duty Y.
+	forall (X).sent(godIsGreat) do insert(peasant(X,none)).
+
+	%if there are no navpoints in belief base then send request to msgbot
+	if not(bel(navPoint(_,_,_))) then (msgBot).send?(navPoint).
+	%parse navpoints.
 	forall (msgBot).sent(navPoint(X,Y,Z)) do insert(navPoint(X,Y,Z)).
-	if bel(navPoint(X,Y,Z)) then drop(haveNavPoints).
+	
+	%if there are no pickups in belief base  then send request to msgbot
+	if not(bel(pickup(ID,Label,Type))) then (msgBot).send?(pickup).
+	%parse pickups.
+	forall (msgBot).sent(pickup(X,Y,Z)) do insert(pickup(X,Y,Z)).
+	
+	%if there are no bases in belief base  then send request to msgbot
+	if not(bel(base(_,_))) then (msgBot).send?(base).
+	%parse bases.
+	forall (msgBot).sent(base(Team,ID)) do insert(base(Team,ID)).
+	
+	forall (msgBot).sent(flagState(Team,ID)) , bel(flagState(Team,Old)) do delete(flagState(Team ,Old)) + insert(flagState(Team,ID)).
+	
+	
+	
 }

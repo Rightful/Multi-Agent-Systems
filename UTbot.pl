@@ -4,7 +4,7 @@
 	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup/0, escort/0, killModus/0, 
 	angle/3, viewAngle/1, lastAngleUpdater/1, ownLocation/3, lookingAt/1, lastFlag/3, goLocationFlag/1, inRadius/1, 
 	helpDef/2, goLocationHelp/1, goLocationHome/1, goLocationFlagEnemy/1, weaponSelected/0, fraggedBot/2, fraggedBot/1,attack/0 ,defense/0,
-	role/1,haveNavPoints/0.
+	role/1,haveNavPoints/0 , peasant/2.
 
 	
 radius(1000).

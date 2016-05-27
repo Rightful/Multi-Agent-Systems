@@ -1,5 +1,6 @@
 use UTbot as knowledge.
 order = linearall.
 module GODInit {
-	if true then drop(true).
+	if true then insert(flagState(red,home)).
+	if true then insert(flagState(blue,home)).
 }
