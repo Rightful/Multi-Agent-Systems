@@ -122,8 +122,8 @@ module attackEvents {
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)).
 	
 	% Not stable yet
-	% forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
-	%	do adopt(goRandom(UnrealID)).
+	forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
+		do adopt(goRandom(UnrealID)).
 	
 	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
 	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
