@@ -81,6 +81,21 @@ module attackEvents {
 	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 
+	% pickup shieldbelt
+	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)).
+		
+	% pickup helmet
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)).
+	
+	% pickup thighpad
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)).
+		
+	% pickup vest
+	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)).
+		
+	% pickup health
+	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)).
+
 
 	% if we hold the flag then send to other escort
 	if bel(holdingFlag) then allother.send:(escort).
@@ -128,6 +143,7 @@ module attackEvents {
 	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
 	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
 	forall a-goal(goRandom(Location)), bel(holdingFlag) do drop(goRandom(Location)).
+	forall a-goal(pu(X)), bel(holdingFlag) do drop(pu(X)).
 	
 	
 	forall a-goal(goEscort(Location)), bel(flag(Team,none,Location); (flagState(Team, 'home'), self(_,_, Team2), Team \= Team2)) 
@@ -184,5 +200,12 @@ module attackEvents {
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
 	 forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
+	
+	if a-goal(pu(X), goGrabEnemy(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goGrabEnemy(ID)).
+	if a-goal(pu(X), goRandom(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goRandom(ID)).
+	if a-goal(pu(X), goEscort(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goEscort(ID)).
+	
+		
+	
 	
 }

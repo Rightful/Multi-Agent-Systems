@@ -15,6 +15,11 @@ module attackMain {
 		
 		if a-goal(goHomeWithFlag(ID)), bel(not(escort))then drop(goHomeWithFlag(ID)) + navigate(ID).
 		
+		if a-goal(pu(X)), a-goal(goGrabEnemy(ID)) then stop + navigate(X) + drop(pu(X))+ adopt(goGrabEnemy(ID)).
+		if a-goal(pu(X)), a-goal(goRandom(ID)) then stop + navigate(X) + drop(pu(X))+ adopt(goRandom(ID)).
+		if a-goal(pu(X)), a-goal(goEscort(ID)) then  stop + navigate(X) + drop(pu(X))+ adopt(goEscort(ID)).
+	
+		
 		if a-goal(goGrabEnemy(ID)), bel(not(escort))then drop(goGrabEnemy(ID)) + navigate(ID).
 		
 		if a-goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
