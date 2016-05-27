@@ -104,6 +104,9 @@ module defenceEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held')) 
 		then all.send!(helpDef(Position, HolderID)).
 	
+	forall bel(atkRad(UnrealID), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
+		do adopt(goRandom(UnrealID)).
+	
 	% If the bot gets location of helpDef the bot will insert that location.
 	if (_).sent!(helpDef(Position, HolderID))then insert(helpDef(Position, HolderID)).
 	
@@ -121,4 +124,7 @@ module defenceEvents {
 	% If the bot holds the flag and the FriendlyFlag is at our base. The bot will go to the base.
 	forall a-goal(goLocation(UnrealID)), bel(self(HolderID,_,TeamColor), flag(NotTeamColor, HolderID, Position),ourBaseLocation(Location), flagState(TeamColor, 'home'), TeamColor \= NotTeamColor)
 		do drop(goLocation(UnrealID)) + adopt(goLocationHome(Location)).
+
+	forall a-goal(goRandom(UnrealID)), bel( self(_,_,TeamColor),( flag(TeamColor, _, _); flagState(TeamColor, 'home')))
+		do drop(goRandom(UnrealID)).
 }
