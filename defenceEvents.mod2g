@@ -85,22 +85,21 @@ module defenceEvents {
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
-	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
+	%% TEST: new def PickupSystem	
+	% pickup helmet
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)) + exit-module.
 	
-	%% pickup helmet
-	%if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)) + exit-module.
-	%
-	%% pickup thighpad
-	%if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
-	%
-	%% pickup vest
-	%if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
-	%
-	%% pickup health
-	%if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
-	%
-	%% pickup shieldbelt
-	%if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	% pickup thighpad
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup vest
+	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup health
+	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<500, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup shieldbelt
+	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
 		
 	
 		
