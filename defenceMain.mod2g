@@ -2,8 +2,8 @@ use UTbot as knowledge.
 use Action as actionspec.
 
 module defenceMain {
-	
-	if goal(pu(UnrealID)) then stop + drop(pu(UnrealID)) + navigate(UnrealID).
+	%% TEST: new def PickupSystem
+	%if goal(pu(UnrealID)) then stop + drop(pu(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goHomeWithFlag(UnrealID)) then drop(goHomeWithFlag(UnrealID)) + navigate(UnrealID).
 	
