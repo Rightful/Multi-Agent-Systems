@@ -2,13 +2,16 @@ use UTbot as knowledge.
 use Action as actionspec.
 
 module defenceMain {
-	if goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
+	
+	if goal(pu(UnrealID)) then stop + drop(pu(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goHomeWithFlag(UnrealID)) then drop(goHomeWithFlag(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goLocationFlag(UnrealID)) then drop(goLocationFlag(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goLocationFlagEnemy(UnrealID)) then drop(goLocationFlagEnemy(UnrealID)) + navigate(UnrealID).
+	
+	if goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
 	
 	if goal(goLocationHelp(UnrealID)) then drop(goLocationHelp(UnrealID)) + navigate(UnrealID).
 	
