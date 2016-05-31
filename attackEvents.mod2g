@@ -96,10 +96,10 @@ module attackEvents {
 
 	if bel(flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2) then delete(escort).
 	
-	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(goLocationFlag(Location)).
+	if not(a-goal(escort)), bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(goGrabEnemy(Location)).
 	
 	% if flag of opponent is already held then drop the goal to be at the flag base.
-	forall a-goal(goLocationFlagEnemy(Location)), bel(escort) do drop(goLocationFlagEnemy(Location)).
+	forall a-goal(goLocationFlagEnemy(Location)), bel(escort) do drop(goGrabEnemy(Location)).
 
 	%If we are not the escort , but the flag is taken , adopt the escort goal.
 	if not(a-goal(escort)) ,bel(flagState(Team2 , held), flagState(Team , home),flag(Team2,ID,_) ,self(ID2,_,Team),ID\=ID2, Team\=Team2) then adopt(escort).
@@ -107,9 +107,6 @@ module attackEvents {
 	%if we see the flag , go there.
 	if bel(not(enemyBaseLocation(POSBase)), flag(Team,none,POS), self(_,_,Team2), Team\=Team2 , POS\=POSBase) then adopt(goLocationFlag(POS)).	
 	
-	% If we have the flag , go back to base.
-	if bel(ourBaseLocation(Location), self(MyID, _, Team), flag(Team2, MyID, _), Team\=Team2) then adopt(goHomeWithFlag(Location)).
-
 	%if we  have the location of a flag from a  teammate go to there.
 	if a-goal(escort), bel (lastKnownLocFlag(Pos)) then adopt (goHelp(Pos)).
 
@@ -136,7 +133,6 @@ module attackEvents {
 	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
 	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
 	forall a-goal(goRandom(Location)), bel(holdingFlag) do drop(goRandom(Location)).
-	forall a-goal(pu(X)), bel(holdingFlag) do drop(pu(X)).
 	
 	%if we were escorting a person , and our flag was taken , the escort should go in killmodus.
 	if bel(escort, flagState(Team,held), self(_,_,Team), Team\=Team2) then delete(escort)+  adopt(killModus).
@@ -192,12 +188,5 @@ module attackEvents {
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
 	 forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
-	
-	if a-goal(pu(X), goGrabEnemy(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goGrabEnemy(ID)).
-	if a-goal(pu(X), goRandom(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goRandom(ID)).
-	if a-goal(pu(X), goEscort(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goEscort(ID)).
-	
-		
-	
 	
 }
