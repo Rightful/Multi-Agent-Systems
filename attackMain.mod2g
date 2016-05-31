@@ -25,9 +25,9 @@ module attackMain {
 	if a-goal(goLocationFlag(ID)) then drop(goLocationFlag(ID)) + navigate(ID).
 		
 	if a-goal(goHomeWithFlag(ID)), bel(not(escort))then drop(goHomeWithFlag(ID)) + navigate(ID).
-		
+			
 	if a-goal(goGrabEnemy(ID)), bel(not(escort))then drop(goGrabEnemy(ID)) + navigate(ID).
-		
+
 	if a-goal(goRandom(UnrealID)) then drop(goRandom(UnrealID)) + navigate(UnrealID).
 		
 	if a-goal(killModus), bel(pickup(UnrealID,_,_), not(escort)),not(bel(pickup(UnrealID,_,bio_rifle)))then navigate(UnrealID).

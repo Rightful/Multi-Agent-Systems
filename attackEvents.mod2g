@@ -82,7 +82,7 @@ module attackEvents {
 	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
 	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
 
-	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
+	%if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
 
 	% if we hold the flag then send to other escort
 	if bel(holdingFlag) then allother.send:(escort).
@@ -130,12 +130,13 @@ module attackEvents {
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)).
 	
 	% Not stable yet
-	% forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
-	%	do adopt(goRandom(UnrealID)).
+	forall bel(atkRad(UnrealID), flagState(Team, 'dropped'), self(_,_, Team2), Team \= Team2, not(flag(_,_,_)) ) 
+		do adopt(goRandom(UnrealID)).
 	
 	forall a-goal(goGrabEnemy(Location)), bel(holdingFlag) do drop(goGrabEnemy(Location)).
 	forall a-goal(goEscort(Location)), bel(holdingFlag) do drop(goEscort(Location)).
 	forall a-goal(goRandom(Location)), bel(holdingFlag) do drop(goRandom(Location)).
+	forall a-goal(pu(X)), bel(holdingFlag) do drop(pu(X)).
 	
 	%if we were escorting a person , and our flag was taken , the escort should go in killmodus.
 	if bel(escort, flagState(Team,held), self(_,_,Team), Team\=Team2) then delete(escort)+  adopt(killModus).
@@ -191,5 +192,12 @@ module attackEvents {
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
 	 forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), flagState(TeamColor, 'home'))do drop(goLocationFlag(UnrealID)).
+	
+	if a-goal(pu(X), goGrabEnemy(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goGrabEnemy(ID)).
+	if a-goal(pu(X), goRandom(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goRandom(ID)).
+	if a-goal(pu(X), goEscort(ID)) then drop(pu(X))+ stop + navigate(X) + adopt(goEscort(ID)).
+	
+		
+	
 	
 }

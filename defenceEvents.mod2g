@@ -99,8 +99,26 @@ module defenceEvents {
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
 	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
-	%if bel(lastKnownLocFlag(POS),flagState(Team, 'home'), self(_,_,Team2), Team\=Team2) then delete(lastKnownLocFlag(POS)).
+	%% TEST: new def PickupSystem	
+	% pickup helmet
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID)) + exit-module.
 	
+	% pickup thighpad
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup vest
+	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup health
+	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<500, not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+	
+	% pickup shieldbelt
+	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then adopt(pu(UnrealID))+ exit-module.
+		
+	
+		
+			
+		
 	% if you see an opponent bot then adopt to kill that bot.
 	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 	 
@@ -118,21 +136,39 @@ module defenceEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held')) 
 		then all.send!(helpDef(Position, HolderID)).
 	
+	forall bel(atkRad(UnrealID), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
+		do adopt(goRandom(UnrealID)).
+	
 	% If the bot gets location of helpDef the bot will insert that location.
 	if (_).sent!(helpDef(Position, HolderID))then insert(helpDef(Position, HolderID)).
+	
+	if bel(atkRad(UnrealID), navigation(navigating, UnrealID), not(flagState(TeamColor, 'held')))
+		then stop.
 	
 	% If the believes gets a help defence location and has other places to go the bot will go first to the helpDef location
 	forall a-goal(goLocation(UnrealID)), bel(helpDef(Position, HolderID))
 		do drop(goLocation(UnrealID))+ adopt(goLocationHelp(Position)) +delete(helpDef(Position, HolderID)). 
+	forall a-goal(goRandom(UnrealID)), bel(helpDef(Position, HolderID))
+		do drop(goRandom(UnrealID))+ adopt(goLocationHelp(Position)) +delete(helpDef(Position, HolderID)). 
 	
 	% If the bot already is fragged than the help goLocationHelp goal is dropped
-	forall a-goal(goLocationHelp(Position)), bel(helpDef(Position, HolderID), fragged(_, _, HolderID, _)) do drop(goLocationHelp(Position)).
+	forall a-goal(goLocationHelp(Position)), bel(helpDef(Position, HolderID), fragged(_, _, HolderID, _)) 
+		do drop(goLocationHelp(Position)).
+	forall a-goal(goRandom(Position)), bel(helpDef(Position, HolderID), fragged(_, _, HolderID, _)) 
+		do drop(goRandom(Position)).
 
 	% If the bot sees the enemy flag the bot will pick up the enemy flag
 	forall a-goal(goLocation(UnrealID)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), flagState(NotTeamColor, _), TeamColor \= NotTeamColor)
 		do drop(goLocation(UnrealID)) + adopt(goLocationFlagEnemy(Position)).
+	forall a-goal(goRandom(UnrealID)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), flagState(NotTeamColor, _), TeamColor \= NotTeamColor)
+		do drop(goRandom(UnrealID)) + adopt(goLocationFlagEnemy(Position)).
 	
 	% If the bot holds the flag and the FriendlyFlag is at our base. The bot will go to the base.
 	forall a-goal(goLocation(UnrealID)), bel(self(HolderID,_,TeamColor), flag(NotTeamColor, HolderID, Position),ourBaseLocation(Location), flagState(TeamColor, 'home'), TeamColor \= NotTeamColor)
-		do drop(goLocation(UnrealID)) + adopt(goLocationHome(Location)).
+		do drop(goLocation(UnrealID)) + adopt(goHomeWithFlag(Location)).
+	forall a-goal(goRandom(UnrealID)), bel(self(HolderID,_,TeamColor), flag(NotTeamColor, HolderID, Position),ourBaseLocation(Location), flagState(TeamColor, 'home'), TeamColor \= NotTeamColor)
+		do drop(goRandom(UnrealID)) + adopt(goHomeWithFlag(Location)).
+
+	forall a-goal(goRandom(UnrealID)), bel(not(flagState(TeamColor, 'held')))
+		do drop(goRandom(UnrealID)).
 }
