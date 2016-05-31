@@ -81,23 +81,6 @@ module attackEvents {
 	
 	%if someone sends me the location  I put it in my believe base as lastknownFlagLoc
 	if (_).sent(locationOfFlag(X,Y,Z)), bel(lastKnownLocFlag(location(Q,W,R))) then delete(lastKnownLocFlag(location(Q,W,R))) +insert(lastKnownLocFlag(location(X,Y,Z))).
-	
-	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
-	% pickup shieldbelt
-	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
-		
-	% pickup helmet
-	if bel(armor(Helmet, _, _, _), pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), Helmet < 20, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
-	
-	% pickup thighpad
-	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
-		
-	% pickup vest
-	if bel(armor(_, Vest, _, _), pickup(UnrealID,_,'armor_vest'),item(_,_,_,UnrealID), Vest < 50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
-		
-	% pickup health
-	if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), status(Health, _), Health=<50, not(navigation(reached,UnrealID))) then stop + navigate(UnrealID).
-	%++++++++++++++++++++++++++++++++PICKUPS++++++++++++++++++++++++%
 
 	if bel(self(MyID, _, Team), flag(Team2, MyID, location(X,Y,Z)), Team\=Team2) then allother.send!(locationOfFlag(X,Y,Z)).
 
