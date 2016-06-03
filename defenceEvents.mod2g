@@ -96,8 +96,14 @@ module defenceEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held')) 
 		then all.send!(helpDef(Position, HolderID)).
 	
-	
-	
+	% If the flag is back at the base the goLocationFlag goal is dropped
+	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
+		do drop(goLocationFlag(UnrealID)).
+		
+	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
+	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+		then adopt(goLocationFlag(Position)) + exit-module.
+
 	
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag))
 		do drop(goHomeWithFlag(UnrealID)).		
@@ -106,14 +112,6 @@ module defenceEvents {
 		then adopt(goHomeWithFlag(Home)) + exit-module.
 	
 	
-
-	% If the flag is back at the base the goLocationFlag goal is dropped
-	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
-		do drop(goLocationFlag(UnrealID)).
-		
-	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
-		then adopt(goLocationFlag(Position)) + exit-module.
 	
 	forall a-goal(goLocationHelp(UnrealID)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
 		do drop(goLocationHelp(UnrealID)).
@@ -122,7 +120,6 @@ module defenceEvents {
 	if (_).sent!(helpDef(Position, HolderID))then adopt(goLocationHelp(Position)) + exit-module.
 	
 
-	
 	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
 		
