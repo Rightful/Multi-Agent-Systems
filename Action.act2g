@@ -24,6 +24,6 @@ define stop with
 	
 	% Define the conditions needed for the shoot action
 	define shoot(TargetLabel) with
-		pre { true }
+		pre { weaponSelected }
 		post { true }
 	
