@@ -83,14 +83,15 @@ module defenceEvents {
 	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
 
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
-	forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
+	% forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A,location(X,Y,Z))).
+	% forall a-goal(fraggedBot(A,location(X,Y,Z))), bel(not(enemyBot(A,_))) do drop(fraggedBot(A,location(X,Y,Z))).
 
 	% if you see an opponent bot then adopt to kill that bot.
-	 forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
+	% forall bel(enemyBot(UnrealID,location(X,Y,Z))) do adopt(fraggedBot(UnrealID,location(X,Y,Z))).
 	 
 	% The bot will adopt being at all places that are in radius of the flagbase.
-	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
+	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) 
+		do adopt(goLocation(UnrealID)).
 	
 		% If the bot sees the enemybot that holds the flag, the bot will send all bots the coordinations of the bots.
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held')) 
@@ -100,6 +101,9 @@ module defenceEvents {
 	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
 		do drop(goLocationFlag(UnrealID)).
 		
+	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'), navigation(navigating, UnrealID), UnrealID \= Position)
+		then stop + adopt(goLocationFlag(Position)) + exit-module.
+		
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.
@@ -108,20 +112,30 @@ module defenceEvents {
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag))
 		do drop(goHomeWithFlag(UnrealID)).		
 	
+	if bel(holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home')))
+		then exit-module.
+		
 	if bel(ourBaseLocation(Home), holdingFlag)
 		then adopt(goHomeWithFlag(Home)) + exit-module.
-	
-	
+		
 	
 	forall a-goal(goLocationHelp(UnrealID)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
 		do drop(goLocationHelp(UnrealID)).
 	
 	% If the bot gets location of helpDef the bot will insert that location.
-	if (_).sent!(helpDef(Position, HolderID))then adopt(goLocationHelp(Position)) + exit-module.
+	if (_).sent!(helpDef(Position, HolderID)), bel(navigation(navigating, UnrealID), Position \= UnrealID)
+		then stop + adopt(goLocationHelp(Position)) + exit-module.
+	
+	% If the bot gets location of helpDef the bot will insert that location.
+	if (_).sent!(helpDef(Position, HolderID))
+		then adopt(goLocationHelp(Position)) + exit-module.
 	
 
 	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
+		
+	if bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
+		then stop + adopt(goLocationFlagEnemy(Position)) + exit-module.
 		
 	if bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
 		then adopt(goLocationFlagEnemy(Position)) + exit-module.
@@ -135,5 +149,16 @@ module defenceEvents {
 		
 	forall a-goal(goLocation(UnrealID)), bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
 		do drop(goLocation(UnrealID)) + adopt(goRandom(Position)) + exit-module.
+		
+		
+		
+	forall a-goal(goLocationKill(Position)), bel(not(enemyBot(UnrealID, Position)))
+		do drop(goLocationKill(Position)).
+		
+	if bel(enemyBot(UnrealID, Position), navigation(navigating, Position2), Position \= Position2) 
+		then stop + all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position)) + exit-module.
+	
+	if bel(enemyBot(UnrealID, Position)) 
+		then all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position)) + exit-module.
 
 }
