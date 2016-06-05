@@ -86,10 +86,6 @@ module defenceEvents {
 	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) 
 		do adopt(goLocation(UnrealID)).
 	
-	% If the bot sees the enemybot that holds the flag, the bot will send all bots the coordinations of the bots.
-	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held')) 
-		then all.send!(helpDef(Position, HolderID)).
-	
 	% If the flag is back at the base the goLocationFlag goal is dropped
 	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
 		do drop(goLocationFlag(UnrealID)).
@@ -119,11 +115,12 @@ module defenceEvents {
 		do drop(goLocationHelp(UnrealID)).
 	
 	% If the bot gets location of helpDef the bot will insert that location.
-	if (_).sent!(helpDef(Position, HolderID)), bel(navigation(navigating, UnrealID), Position \= UnrealID)
+	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'), 
+		navigation(navigating, UnrealID), Position \= UnrealID)		
 		then stop + adopt(goLocationHelp(Position)) + exit-module.
 	
 	% If the bot gets location of helpDef the bot will insert that location.
-	if (_).sent!(helpDef(Position, HolderID))
+	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'))
 		then adopt(goLocationHelp(Position)) + exit-module.
 	
 	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal
