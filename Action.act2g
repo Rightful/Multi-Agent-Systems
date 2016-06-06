@@ -12,6 +12,10 @@ define look(Target) with
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
+			
+define path(Location, Location2) with
+	pre { true }
+	post { true }
 
 define respawn with
 	pre{true}
