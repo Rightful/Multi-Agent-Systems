@@ -67,6 +67,7 @@ module abstractInit {
 	% Initially, our inventory is empty.
 	if true then insert(weapon(none,none,none)).
 	
+	%test
 	% Angle horizontal and vertical.
 	if true then insert(viewAngle(0)).
 		
