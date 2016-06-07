@@ -1,8 +1,118 @@
 use UTbot as knowledge.
 use Action as actionspec.
-
+use attackEvents as module.
+use defenceEvents as module.
 order = linearall.
 
 module UTBotEvent {
-	if true then drop(true).	
+	
+	
+	
+	
+	% General Events 
+	
+	% Belief base cleaning.
+	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
+	 	
+	% Updating where to look.
+	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
+		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
+	
+	% if we're shot at but dont see anyone, look at where you came from
+
+	 if percept(status(NewHealth,_)), bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
+	 
+	 
+	% If bot sees enemy bot.
+	if bel(enemyBot(_, LOC)) then look(LOC).	
+	
+	% keep track of own location.
+	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
+	
+	% Update the orientation of the bot
+	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
+		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
+		
+	% Update the bot's status
+	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
+		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
+		
+	% Update the bot's current weapon
+	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
+		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
+		
+	% Update the bot's inventory
+	if percept(not(weapon(WeapType,Ammo,AltAmmo))), bel(weapon(WeapType,Ammo,AltAmmo)) then delete(weapon(WeapType,Ammo,AltAmmo)).
+	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
+		
+	% Update the bot's current powerup
+	forall bel(powerup(OldType,OldDur)), percept(powerup(Type,Dur)) do
+		delete(powerup(OldType,OldDur)) + insert(powerup(Type,Dur)).
+		
+	% Update the bot's current armor
+	forall bel(armor(OldHelm,OldVest,OldPads,OldBelt)), percept(armor(Helm,Vest,Pads,Belt)) do
+		delete(armor(OldHelm,OldVest,OldPads,OldBelt)) + insert(armor(Helm,Vest,Pads,Belt)).
+		
+	% Store all kills made in the match
+	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
+	
+	% Update the navigation state of the bot ('send on change' percept).
+	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
+		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+
+	% Updates the state of the flag.
+	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
+	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
+	
+	% Update Flag stuff.
+	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
+	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
+	
+	% Handle the path percept from the path action
+	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
+	
+	% Update the items the bot sees and drop any getItem goals associated with them.
+	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
+	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
+	
+	% Update the other bots the bot sees.
+	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	forall percept(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do insert(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	
+	% Update the pickups the bot sees.
+	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
+	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
+	
+	% Update the slowVolumes the bot sees.
+	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
+	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	if a-goal(attack) then attackEvents.	
+	if a-goal(defense) then defenceEvents.
+	
+	%If god says prayToMe then sendback a standard message.
+	if (god).sent(prayToMe) then (god).send(godIsGreat).
+	%sent your ownLocation to god.
+	if bel(ownLocation(X,Y,Z)) then (god).send(location(X,Y,Z)).
+	%if we don't have a goal yet  and god sents a goal to be attack or defense. do it then.
+	if not(a-goal(defense , attack)),(god).sent!(changeToAttack) then adopt(attack).
+	if not(a-goal(attack, defense)), (god).sent!(changeToDefense) then adopt(defense).
+	
+	%If we already have a goal to be attack or defense. and we get a goal to change then delete old goal and insert new one.
+	if a-goal(attack), (god).sent!(changeToDefense) then adopt(defense) + delete(attack).
+	if a-goal(attack), (god).sent!(changeToDefense) then adopt(defense)+delete (attack).
+	%If god sent a message to be at a specific location then go there.
+	if (god).sent!(at(X)) then adopt(at(X)).
+	
+	%If we are killed then sent to god that we are killed. 
+	if percept(fragged(_,_,Self,_)) , bel(self(Self,_,_))then (god).send(iAmKilled).
+	
 }

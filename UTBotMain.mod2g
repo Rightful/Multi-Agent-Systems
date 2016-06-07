@@ -5,5 +5,7 @@ use defenceEvents as module.
 use defenceMain as module.
 
 module UTBotMain {
-	if true then adopt(attack).
+	if a-goal(attack) then attackMain.
+	if a-goal(defense) then defenceMain.
+	
 }

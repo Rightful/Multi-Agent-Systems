@@ -50,7 +50,7 @@ define utBot as agent{
 }
 define msgBot as agent{
 	use UTBotMain as main.
-	use MsgBotInit as init.
+	use UTBotInit as init.
 	use MsgBotEvent as event.
 }
 launchpolicy{

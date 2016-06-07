@@ -1,15 +1,20 @@
 use UTbot as knowledge.
 use Action as actionspec.
+use attackEvents as module.
+use defenceEvents as module.
+use UTBotEvent as module.
 
 order = linearall.
 
-module UTBotEvent {
+module MsgBotEvent {
 	forall (god).sent?(navPoint), bel(navPoint(X,Y,Z)) do (god).send(navPoint(X,Y,Z)).
 	forall (god).sent?(pickup) , bel(pickup(ID,Label,Type)) do (god).send(navPoint(ID,Label,Type)).
 	forall (god).sent?(base) , bel(base(Team,ID)) do (god).send(base(Team,ID)).
 	
 	if percept(flagState(Team,StatusNew)), bel(flagState(Team,StatusOld)) then (god).send(flagState(Team,StatusNew)).
-	if (god).sent(prayToMe) then (god).send(godIsGreat).
+	
+	if true then UTBotEvent.
+	
 	
 
 	

@@ -38,4 +38,7 @@ module GODEvent {
 	%We have always the current location of all the bots. 
 	forall (AGENT).sent(ownLocation(X,Y,Z)), bel(botLoc(AGENT,ownlocation(OX,OY,OZ))) do delete(botLoc(AGENT,ownlocation(OX,OY,OZ)))+ insert(botLoc(AGENT,ownlocation(X,Y,Z))).
 	
+	if (AGENT).sent(holdingFlag) then insert(flagCarrier(AGENT)).
+	forall bel(peasant(X , none), numberOfAttackBot(Y), (Y<2)) do (X).send(changeToAttack) +delete(numberOfAttackBot(Y))+ insert(numberOfAttackBot(Y+1)).
+	forall bel(peasant(X , none), numberOfDefenseBot(Y), (Y<2)) do (X).send(changeToDefense) +delete(numberOfDefenseBot(Y))+ insert(numberOfDefenseBot(Y+1)).
 }
