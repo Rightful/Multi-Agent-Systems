@@ -12,6 +12,10 @@ module attackInit {
 	forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
 		bel(self(_,_,Color), base(Color2, UnrealID), Color \= Color2, navPoint(UnrealID, location(X,Y,Z),_), 
 			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(atkRad(UnrealIDi)).
+			
+	forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
+		bel(self(_,_,Color), base(Color, UnrealID), navPoint(UnrealID, location(X,Y,Z),_), 
+			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(inRadius(UnrealIDi)).
 	
 	%if true then adopt(captureFlag).	
 

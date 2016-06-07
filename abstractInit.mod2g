@@ -39,7 +39,7 @@ module abstractInit {
 	if true then insert(deployable([])).
 	
 	% Initially, there are no flags
-	if true then insert(flag(none,none,none)).
+	%if true then insert(flag(none,none,none)).
 	
 	% set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
