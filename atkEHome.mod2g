@@ -1,0 +1,40 @@
+use UTbot as knowledge.
+use Action as actionspec.
+exit = never.
+order = linearall.
+
+module atkEHome {
+	
+	if bel( self(_, _, Color), flagState(Color2, 'dropped'), Color\=Color2 ) then exit-module.
+	if bel( self(_, _, Color), flagState(Color2, 'held'), Color\=Color2 ) then exit-module.
+	
+	
+	
+	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
+		then path(Position, Enemy) + shoot(HolderID).
+	
+	if percept( path(Position, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Enemy), self(_, _, Color2) , Color \= Color2)
+		then adopt( goLocation(H)) + exit-module.
+	
+	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(Color2 \= Color ,navigation(navigating, Base), base(Color2, Base), self(_, _, Color))
+		then stop +  adopt( goLocation(H)) + exit-module.		
+		
+		
+	if bel( base(Color, Enemy), self(_, _, Color), bot(HolderID, _, _,Position, _, _))
+		then path(Position, Enemy) + shoot(HolderID).
+	
+	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Enemy), self(_, _, Color))
+		then adopt( goLocation(H)) + exit-module.
+	
+	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(navigation(navigating, location(X,Y,Z)), base(Color, Base), self(_, _, Color))
+		then stop +  adopt( goLocation(H)) + exit-module.	
+	
+	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(Color2 \= Color , navigation(navigating, Base), base(Color2, Base), self(_, _, Color))
+		then stop +  adopt( goLocation(H)) + exit-module.	
+	
+	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2, base(Color2, Base)) 
+		then adopt( goLocation(Base)) + exit-module.
+	
+	if true then exit-module.
+	
+}

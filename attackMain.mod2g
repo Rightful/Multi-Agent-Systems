@@ -1,38 +1,7 @@
 use UTbot as knowledge.
-use CaptureTheFlag as module.
-use killModus as module.
-use PickupArmor as module.
-use PickupHealth as module.
-use PickupOther as module.
-
-use selectWeapon as module.
 use Action as actionspec.
 	
 module attackMain {
-	% pick up health on our way
 	
-	if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
-	if bel(status(Health,_), Health =< 60,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
-
-	% Let the bot go to a module to pick up armor if needed.
-	% pick up other items
-	if bel(item(_,'other',O,UnrealID), not(holdingFlag), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
-	if goal(goGrabEnemy(Position)), bel(self(_,_,Color), not(flagState(Color2, 'home')), Color \= Color2) then drop(goGrabEnemy(Position)).
-	
-	if goal(goLocationFlag(Position)) then drop(goLocationFlag(Position)) + navigate(Position).
-		
-	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
-		
-	if goal(goLocationHelp(Position, UnrealID)) then drop(goLocationHelp(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
-	
-	if goal(goLocationFlagEnemy(Position)) then drop(goLocationFlagEnemy(Position)) + navigate(Position).
-	
-	if goal(goRandom(Position)) then drop(goRandom(Position)) + navigate(Position).
-	
-	if goal(goLocationKill(Position, UnrealID)) then drop(goLocationKill(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
-	
-	if goal(goEscort(Position)) then  navigate(Position) + drop(goEscort(Position)).
-	
-	if goal(goGrabEnemy(Position)) then drop(goGrabEnemy(Position)) + navigate(Position).
-
+	if a-goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
 }
