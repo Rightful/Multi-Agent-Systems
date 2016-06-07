@@ -13,9 +13,6 @@ module attackMain {
 	
 	%if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
 	%if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
-	
-	%if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), not(bel(weaponSelected)) then selectWeapon.
-	%if a-goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(weaponSelected) then delete(weaponSelected) + shoot(UnrealID).
 
 	% Let the bot go to a module to pick up armor if needed.
 	% pick up other items
