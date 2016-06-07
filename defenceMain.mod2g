@@ -10,7 +10,7 @@ module defenceMain {
 	% TEST: new def PickupSystem
 	
 	if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
-	if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
+	if bel(status(Health,_), Health =< 60,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
 
 	if bel(item(_,'other',O,UnrealID), not(holdingFlag), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
 		

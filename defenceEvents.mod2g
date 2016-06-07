@@ -77,11 +77,7 @@ module defenceEvents {
 	% Update the pickups the bot sees.
 	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
-	
-	% Update the slowVolumes the bot sees.
-	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
-	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
- 
+
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(UnrealID)),not(a-goal(goLocation(UnrealID))) 
 		do adopt(goLocation(UnrealID)).
@@ -90,10 +86,6 @@ module defenceEvents {
 	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
 		do drop(goLocationFlag(UnrealID)).
 	
-	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	%if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'), navigation(navigating, UnrealID), UnrealID \= Position)
-		%then stop + adopt(goLocationFlag(Position)) + exit-module.
-		
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.

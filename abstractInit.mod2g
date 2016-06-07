@@ -37,10 +37,7 @@ module abstractInit {
 	
 	% Initially, we have no weapon equipped so no deployable.
 	if true then insert(deployable([])).
-	
-	% Initially, there are no flags
-	%if true then insert(flag(none,none,none)).
-	
+
 	% set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
 		
@@ -51,12 +48,6 @@ module abstractInit {
 	if true then prefer([weapon(shock_rifle,primary),
 		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
 		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary)]).
-	
-	% Initially, there is no game being played.
-	%if true then insert(game(none,none,none,none)).
-
-	% Store all the logic predicates.
-	%if true then insert(logic(none)).
 
 	% Initially, we are going nowhere.
 	if true then insert(navigation(none, none)).
@@ -69,16 +60,9 @@ module abstractInit {
 	
 	% Initially, we have no previous location
 	if true then insert(prevLocation(none,none,none)).
-	
-	
-	% Initially, our score is 0 across the board.
-	%if true then insert(score(none,none,none)).
-	
+
 	% Initially, we have neither hp nor armor.
 	if true then insert(status(none,none)).
-	
-	% Initially, both teams have no points.
-	%if true then insert(teamScore(none,none)).
 	
 	% Initially, our inventory is empty.
 	if true then insert(weapon(none,none,none)).

@@ -21,7 +21,7 @@ use "ut-environment.jar" as environment with
 			],
 			
 			[
-			 	["name", "Attacker 3"],
+			 	["name", "Defender 2"],
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
@@ -50,6 +50,6 @@ define attackbot as agent{
 }
 
 launchpolicy{
-		when type=bot launch attackbot with max = 3.
-		when type=bot launch defencebot with max = 1.
+		when type=bot launch attackbot with max = 2.
+		when type=bot launch defencebot with max = 2.
 }
