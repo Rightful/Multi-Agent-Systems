@@ -17,11 +17,6 @@ define path(Location, Location2) with
 	pre { true }
 	post { true }
 
-define respawn with
-	pre{true}
-	post{true}
-
-	
 define stop with
 	pre{true}
 	post{navigation(waiting,none)}

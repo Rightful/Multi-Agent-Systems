@@ -76,12 +76,6 @@ module attackEvents {
 	% Update the pickups the bot sees.
 	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
-	
-	% Update the slowVolumes the bot sees.
-	forall percept(not(slowVolume([UnrealID]))) do delete(slowVolume([UnrealID])).
-	forall percept(slowVolume([UnrealID])) do insert(slowVolume([UnrealID])).
-	
-
 
 	% if we hold the flag then send to other escort
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z)) then path(location(X,Y,Z), Home).
@@ -91,28 +85,17 @@ module attackEvents {
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).	
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'dropped')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).
 
-
-
 	% if the Red flag is at home , the adopt the goal to go there.
 	if bel(enemyBaseLocation(Location), flagState(Team, 'home'), self(_,_, Team2), Team \= Team2) then adopt(goGrabEnemy(Location)).
-	
-	
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped
 	forall a-goal(goLocationFlag(UnrealID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped')))
 		do drop(goLocationFlag(UnrealID)).
-	
-	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'), navigation(navigating, UnrealID), UnrealID \= Position)
-		then stop + adopt(goLocationFlag(Position)) + exit-module.
 		
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.
 
-	
-	
-	
 	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag))
 		do drop(goHomeWithFlag(UnrealID)).		
@@ -124,7 +107,6 @@ module attackEvents {
 	% If the bot holds the flag the bot will go home.	
 	if bel(ourBaseLocation(Home), holdingFlag)
 		then adopt(goHomeWithFlag(Home)) + exit-module.	
-	
 	
 	% If the bot believes the flag is not held and has a goal of going to a helpLocation the bot will drop the goal
 	forall a-goal(goLocationHelp(Position, UnrealID)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
@@ -139,8 +121,6 @@ module attackEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'))
 		then adopt(goLocationHelp(Position, HolderID)) + exit-module.
 	
-	
-	
 	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal
 	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
@@ -153,9 +133,6 @@ module attackEvents {
 	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
 		do  drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
-	
-	
-	
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
 	forall a-goal(goRandom(Position)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'held')))
 		do drop(goRandom(Position)).
@@ -166,8 +143,6 @@ module attackEvents {
 	forall bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
 		do adopt(goRandom(Position)) + exit-module.
 		
-	
-	
 	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
 		do drop(goLocationKill(Position, UnrealID)).
 		
@@ -189,8 +164,5 @@ module attackEvents {
 	
 	forall bel(atkRad(Position), self(_,_,Color), flagState(Color2, 'dropped'), Color \= Color2)
 		do adopt(goRandom(Position))+ exit-module.
-	
-		
-		
 	
 }
