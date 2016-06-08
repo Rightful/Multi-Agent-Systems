@@ -3,9 +3,10 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkEHome {
+module atkRandom {
 	
-	if bel( self(_, _, Color), flagState(Color2, 'dropped'), Color\=Color2 ) then exit-module.
+	
+	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2 ) then exit-module.
 	if bel( self(_, _, Color), flagState(Color2, 'held'), Color\=Color2 ) then exit-module.
 	
 	
@@ -30,13 +31,13 @@ module atkEHome {
 	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Friendly), self(_, _, Color))
 		then adopt( goLocation(H)) + exit-module.
 	
-	if bel( self(_, _, Color), flagState(Color2, 'home'), base(Color2, Base), navigation(navigating, Position),  Color\=Color2, Base\=Position ) 
-		then stop + adopt( goLocation(Base)) + exit-module.
+	if bel(self(_, _, Color), atkRad(Position), not(temp(Position)), base(Color2, Enemy), navigation(navigating, Enemy) ,Color \= Color2) 
+		then stop + insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
 	
-	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2, base(Color2, Base)) 
-		then adopt( goLocation(Base)) + exit-module.
-
-		
+	if bel(self(_, _, Color), atkRad(Position), not(temp(Position))) 
+		then insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
+	
+			
 	if true then exit-module.
 	
 }

@@ -4,6 +4,8 @@ use Action as actionspec.
 use atkEHome as module.
 use atkDeliver as module.
 use atkDrop as module.
+use atkEscort as module.
+use atkRandom as module.
 order = linearall.
 
 module attackEvents {
@@ -64,38 +66,21 @@ module attackEvents {
 	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
+	forall bel(temp(X), flagState(_, 'home')) do delete(temp(X)).
 	% if we hold the flag then send to other escort
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z), holdingFlag) then path(location(X,Y,Z), Home).
 	if bel(self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(escorting(LocationThird)).
 
 	
-	if bel(flag(Color, _, _), Color \= none) then atkDrop.
+	if bel(flag(Color, none, _), flagState(Color, 'dropped'), Color \= none) then atkDrop + exit-module.
 	
 	if bel(holdingFlag) then atkDeliver + exit-module.
 	
 	if bel(self(_, _, Color), flagState(Color2, 'home'), Color\=Color2) then atkEHome + exit-module.
 	
+	if bel(self(_, _, Color), flagState(Color2, 'held'), Color \=Color2) then atkEscort + exit-module.
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	%if bel(self(_, _, Color), flagState(Color2, 'held'). Color\=Color2)
-	%if bel(self(_, _, Color), flagState(Color2, 'dropped'). Color\=Color2)
-	
-	
-	
-	
-	
-	
-	
-	
+	if bel(self(_, _, Color), flagState(Color2, 'dropped'), Color \=Color2) then atkRandom + exit-module.
 	
 	
 	
