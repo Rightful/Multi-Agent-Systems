@@ -5,6 +5,9 @@ order = linearall.
 
 module pickWeapon {
 	
+	if a-goal(goHealth(Position, H)) then exit-module.
+	if a-goal(goArmor(Position, A)) then exit-module.
+	
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				

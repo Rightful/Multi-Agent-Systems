@@ -3,16 +3,22 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkRandom {
+module pickArmor {
 	
+	if bel(holdingFlag, status(_, Armor), Armor > 0) then exit-module.
+	if bel(flag(Color, none, _), flagState(Color, 'dropped'), status(_, Armor), Armor > 0) then exit-module.
 	
-	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2 ) then exit-module.
-	if bel( self(_, _, Color), flagState(Color2, 'held'), Color\=Color2 ) then exit-module.
+	if a-goal(goHealth(Position, Health)) then exit-module.
 	
-	if a-goal(goItem(Position, W)) then exit-module.
-	if a-goal(goHealth(Position, H)) then exit-module.
-	if a-goal(goArmor(Position, A)) then exit-module.
-	
+	if percept(item(_, 'armor', 'armor_helmet', UnrealID), pickup(UnrealID)), bel(armor(Helmet, _, _, _), Helmet > 0)
+		then exit-module.
+	if percept(item(_, 'armor', 'armor_vest', UnrealID), pickup(UnrealID)), bel(armor(_, Vest, _, _), Vest > 0)
+		then exit-module.	
+    if percept(item(_, 'armor', 'armor_thighpads', UnrealID), pickup(UnrealID)), bel(armor(_, _, Thighpad, _), Thighpad > 0)
+		then exit-module.	
+	if percept(item(_, 'armor', 'armor_shield_belt', UnrealID), pickup(UnrealID)), bel(armor(_, _, _, Belt), Belt > 0)
+		then exit-module.
+			
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				
@@ -33,13 +39,13 @@ module atkRandom {
 	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Friendly), self(_, _, Color))
 		then adopt( goLocation(H)) + exit-module.
 	
-	if bel(self(_, _, Color), atkRad(Position), not(temp(Position)), base(Color2, Enemy), navigation(navigating, Enemy) ,Color \= Color2) 
-		then stop + insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
 	
-	if bel(self(_, _, Color), atkRad(Position), not(temp(Position))) 
-		then insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
+	if percept(item(_, 'armor', _, UnrealID), pickup(UnrealID)), bel(status(_, Armor), navigation(navigating, Position), Position \= UnrealID)
+		then stop + adopt(goArmor(UnrealID, Armor)) + exit-module.
 	
-			
+	if percept(item(_, 'health', _, UnrealID), pickup(UnrealID)), bel(status(_, Armor))
+		then adopt(goArmor(UnrealID, Armor)) + exit-module.
+		
+		
 	if true then exit-module.
-	
 }

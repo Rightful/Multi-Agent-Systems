@@ -9,6 +9,7 @@ use atkRandom as module.
 
 use pickWeapon as module.
 use pickHealth as module.
+use pickArmor as module.
 
 order = linearall.
 
@@ -77,10 +78,14 @@ module attackEvents {
 
 	forall a-goal(goHealth(Position, Health)), bel(status(NewHealth, _), Health \= NewHealth) do drop(goHealth(Position, Health)).
 	
+	forall a-goal(goArmor(Position, Armor)), bel(status(_, NewArmor), Armor \= NewArmor) do drop(goArmor(Position, Armor)).
+	
 	forall a-goal(goItem(Position, OtherWeapon)), percept(weapon(OtherWeapon, _, _)) do drop(goItem(Position, OtherWeapon)).
 	
 	
 	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)) then pickHealth.
+	
+	if percept(item(_, 'armor', Type, UnrealID), pickup(UnrealID)) then pickArmor.
 	
 	if bel(flag(Color, none, _), flagState(Color, 'dropped'), Color \= none) then atkDrop + exit-module.
 	

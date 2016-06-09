@@ -10,6 +10,9 @@ module atkDrop {
 	if bel( self(_, _, Color), Color\=Color2, flagState(Color2, 'held'), flagState(Color, 'home') ) then exit-module.
 	if bel( self(_, _, Color), Color\=Color2, flagState(Color2, 'held'), flagState(Color, 'held') ) then exit-module.
 	
+
+	if a-goal(goHealth(Position, H)) then exit-module.
+	if a-goal(goArmor(Position, A)) then exit-module.
 	
 	if bel( self(_, _, Color), flagState(Color, 'dropped'), flag(Color, none, Position) ,navigation(navigating, Location), Location \= Position)
 		then stop + adopt(goLocation(Position)) + exit-module.
