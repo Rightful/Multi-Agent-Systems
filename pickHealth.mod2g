@@ -3,14 +3,13 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkEscort {
+module pickHealth {
 	
-	if bel( self(_, _, Color), flagState(Color2, 'dropped'), Color\=Color2 ) then exit-module.
-	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2 ) then exit-module.
-
-	if a-goal(goItem(Position, W)) then exit-module.
-	
-	
+	if bel(holdingFlag, status(Health, _), Health > 40) then exit-module.
+	if bel(flag(Color, none, _), flagState(Color, 'dropped'), status(Health, _), Health > 40) then exit-module.
+	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)), bel(Type \= 'super_health', status(Health, _), Health > 80)
+		then exit-module.
+		
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				
@@ -31,19 +30,13 @@ module atkEscort {
 	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Friendly), self(_, _, Color))
 		then adopt( goLocation(H)) + exit-module.
 	
-	if bel(self(_, _, Color), flagState(Color, 'held'), atkRad(Position), not(temp(Position)), base(Color2, Enemy), navigation(navigating, Enemy) ,Color \= Color2) 
-		then stop + insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
 	
+	if percept(item(_, 'health', _, UnrealID), pickup(UnrealID)), bel(status(Health, _), navigation(navigating, Position), Position \= UnrealID)
+		then stop + adopt(goHealth(UnrealID, Health)) + exit-module.
 	
-	if bel(self(_, _, Color), flagState(Color, 'held'), atkRad(Position), not(temp(Position))) 
-		then insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
-	
-	if bel( self(_, _, Color), flagState(Color2, 'held'), base(Color2, Enemy), navigation(_, Enemy) ,Color \= Color2), (_).sent:(escorting(LocationThird))
-		then stop + adopt( goLocation(LocationThird)) + exit-module.
-	
-	if bel( self(_, _, Color), flagState(Color2, 'held') ,Color \= Color2), (_).sent:(escorting(LocationThird))
-		then  adopt( goLocation(LocationThird)) + exit-module.
+	if percept(item(_, 'health', _, UnrealID), pickup(UnrealID)), bel(status(Health, _))
+		then adopt(goHealth(UnrealID, Health)) + exit-module.
+		
 		
 	if true then exit-module.
-	
 }

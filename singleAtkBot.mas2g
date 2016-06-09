@@ -10,13 +10,6 @@ use "ut-environment.jar" as environment with
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
 				["team", "blue"]
-			],
-			[
-			 	["name", "Bot 1"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
-				["team", "blue"]
 			]
 		   ].
 

@@ -6,6 +6,10 @@ use atkDeliver as module.
 use atkDrop as module.
 use atkEscort as module.
 use atkRandom as module.
+
+use pickWeapon as module.
+use pickHealth as module.
+
 order = linearall.
 
 module attackEvents {
@@ -71,12 +75,23 @@ module attackEvents {
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z), holdingFlag) then path(location(X,Y,Z), Home).
 	if bel(self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(escorting(LocationThird)).
 
+	forall a-goal(goHealth(Position, Health)), bel(status(NewHealth, _), Health \= NewHealth) do drop(goHealth(Position, Health)).
+	
+	forall a-goal(goItem(Position, OtherWeapon)), percept(weapon(OtherWeapon, _, _)) do drop(goItem(Position, OtherWeapon)).
+	
+	
+	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)) then pickHealth.
 	
 	if bel(flag(Color, none, _), flagState(Color, 'dropped'), Color \= none) then atkDrop + exit-module.
 	
 	if bel(holdingFlag) then atkDeliver + exit-module.
 	
+	if percept(item(_, 'weapon', Weapon, UnrealID), pickup(UnrealID)), bel(not(weapon(Weapon, _, _))) then pickWeapon + exit-module.
+	
 	if bel(self(_, _, Color), flagState(Color2, 'home'), Color\=Color2) then atkEHome + exit-module.
+	
+	if percept(item(_, 'ammo', Weapon, UnrealID), pickup(UnrealID)), bel(weapon(Weapon, _, Ammo), Ammo < 5) then pickWeapon + exit-module.
+	
 	
 	if bel(self(_, _, Color), flagState(Color2, 'held'), Color \=Color2) then atkEscort + exit-module.
 	

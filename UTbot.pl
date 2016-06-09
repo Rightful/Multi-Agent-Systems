@@ -4,7 +4,7 @@
 	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup/0, escorting/2, escorting/1, killModus/0, 
 	angle/3, viewAngle/1, lastAngleUpdater/1, ownLocation/3, lookingAt/1, lastFlag/3, goLocationFlag/1, inRadius/1, 
 	helpDef/2, goLocationHelp/2, goLocationHome/1, goLocationFlagEnemy/1, weaponSelected/0, fraggedBot/2, fraggedBot/1, goEscort/1, 
-	goHomeWithFlag/1, t/0, pu/1, eL/2, temp/1, tempEL/2, goLastKnown/1, locationOfFlag/3, goGrabEnemy/1, atkRad/1, goRandom/1, goHelp/1, goLocationKill/2, path/4, path/2.
+	goHomeWithFlag/1, goItem/2, goHealth/2, t/0, pu/1, eL/2, temp/1, tempEL/2, goLastKnown/1, locationOfFlag/3, goGrabEnemy/1, atkRad/1, goRandom/1, goHelp/1, goLocationKill/2, path/4, path/2.
 
 	
 radius(1000).

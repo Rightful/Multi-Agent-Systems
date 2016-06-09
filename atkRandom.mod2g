@@ -9,7 +9,7 @@ module atkRandom {
 	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2 ) then exit-module.
 	if bel( self(_, _, Color), flagState(Color2, 'held'), Color\=Color2 ) then exit-module.
 	
-	
+	if a-goal(goItem(Position, W)) then exit-module.
 	
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
