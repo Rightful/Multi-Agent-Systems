@@ -1,5 +1,11 @@
 use UTbot as knowledge.
 use Action as actionspec.
+
+use pickWeapon as module.
+use pickHealth as module.
+use pickArmor as module.
+use pickOther as module.
+
 order = linearall.
 
 module defenceEvents {
@@ -140,6 +146,29 @@ module defenceEvents {
 			
 	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
 		do drop(goLocationKill(Position, UnrealID)).
+		
+			forall a-goal(goHealth(Position, Health)), bel(status(NewHealth, _), Health \= NewHealth) do drop(goHealth(Position, Health)).
+	
+	forall a-goal(goArmor(Position, Armor)), bel(status(_, NewArmor), Armor \= NewArmor) do drop(goArmor(Position, Armor)).
+	
+	forall a-goal(goItem(Position, OtherWeapon)), percept(weapon(OtherWeapon, _, _)) do drop(goItem(Position, OtherWeapon)).
+	
+	forall a-goal(goOther(Position)), percept(powerup(Powerup, _)), bel(Powerup \= 'none') do drop(goOther(Position)).
+	
+	forall a-goal(goRack(Position)), bel(currentWeapon(Weapon, _), Weapon \= 'enforcer') do drop(goRack(Position)).
+	
+	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)) then pickHealth.
+	
+	if percept(item(_, 'armor', Type, UnrealID), pickup(UnrealID)) then pickArmor.
+	
+		
+	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), bel(not(currentWeapon(enforcer_, _))) then pickWeapon + exit-module.
+		
+	if percept(item(_, 'weapon', Weapon, UnrealID), pickup(UnrealID)), bel(not(weapon(Weapon, _, _))) then pickWeapon + exit-module.
+	
+	if percept(item(_, 'other', Weapon, UnrealID), pickup(UnrealID)), bel(powerup('none', _)) then pickOther + exit-module.
+		
+	if percept(item(_, 'ammo', Weapon, UnrealID), pickup(UnrealID)), bel(weapon(Weapon, _, Ammo), Ammo < 5) then pickWeapon + exit-module.
 		
 	if bel(enemyBot(UnrealID, Position), navigation(navigating, Position2), Position \= Position2) 
 		then stop + all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position, UnrealID)) + exit-module.

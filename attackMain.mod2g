@@ -3,7 +3,9 @@ use Action as actionspec.
 	
 module attackMain {
 	
-	if bel(navigation('noPath', _), navigation('stuck', _)) then respawn.
+	if bel(navigation('noPath', _); navigation('stuck', _)) then respawn.
+	
+	if a-goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
 	
 	if a-goal(goHealth(Position, Health)) then navigate(Position).
 	
@@ -15,5 +17,4 @@ module attackMain {
 	
 	if a-goal(goOther(Position)) then navigate(Position).	
 	
-	if a-goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
 }

@@ -5,6 +5,30 @@ use Action as actionspec.
 
 module defenceMain {
 	
-	if true then exit-module.	
+	if bel(navigation('noPath', _); navigation('stuck', _)) then respawn.
+	
+	if goal(goLocationFlag(Position)) then drop(goLocationFlag(Position)) + navigate(Position).
+		
+	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
+		
+	if goal(goLocationHelp(Position, UnrealID)) then drop(goLocationHelp(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
+	
+	if goal(goLocationFlagEnemy(Position)) then drop(goLocationFlagEnemy(Position)) + navigate(Position).
+	
+	if goal(goRandom(Position)) then drop(goRandom(Position)) + navigate(Position).
+	
+	if goal(goLocationKill(Position, UnrealID)) then drop(goLocationKill(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
+	
+	if goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
+	
+	if a-goal(goHealth(Position, Health)) then navigate(Position).
+	
+	if a-goal(goArmor(Position, Armor)) then navigate(Position).
+	
+	if a-goal(goItem(Position, Weapon)) then navigate(Position).
+	
+	if a-goal(goRack(Position)) then navigate(Position).
+	
+	if a-goal(goOther(Position)) then navigate(Position).
 	
 }

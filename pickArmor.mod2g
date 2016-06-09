@@ -28,7 +28,7 @@ module pickArmor {
 	if percept( path(Position, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Enemy), self(_, _, Color2) , Color \= Color2)
 		then adopt( goLocation(H)) + exit-module.
 	
-		
+	if bel(not(item(_,'armor',_,_))) then exit-module.
 		
 	if bel( base(Color, Friendly), self(_, _, Color), bot(HolderID, _, Color2,Position, _, _) , Color \= Color2)
 		then path(Position, Friendly) + shoot(HolderID).	

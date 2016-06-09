@@ -13,7 +13,7 @@ radius(1000).
 	timeForUpdate :- 
 		lastAngleUpdater(LastAngleUpdateTime), 
 		get_time(CurrentTime),
-		NextTime is LastAngleUpdateTime+0.3,
+		NextTime is LastAngleUpdateTime+0.5,
 		CurrentTime > NextTime.
 
 	% Calculate the next angle.

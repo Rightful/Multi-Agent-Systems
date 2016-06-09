@@ -10,6 +10,8 @@ module pickHealth {
 	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)), bel(Type \= 'super_health', status(Health, _), Health > 80)
 		then exit-module.
 		
+	if bel(not(item(_,'health',_,_))) then exit-module.
+
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				
