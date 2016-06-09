@@ -11,6 +11,7 @@ use pickWeapon as module.
 use pickHealth as module.
 use pickArmor as module.
 use pickOther as module.
+use pickAmmo as module.
 
 order = linearall.
 
@@ -77,6 +78,8 @@ module attackEvents {
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z), holdingFlag) then path(location(X,Y,Z), Home).
 	if bel(self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(escorting(LocationThird)).
 
+	
+	
 	forall a-goal(goHealth(Position, Health)), bel(status(NewHealth, _), Health \= NewHealth) do drop(goHealth(Position, Health)).
 	
 	forall a-goal(goArmor(Position, Armor)), bel(status(_, NewArmor), Armor \= NewArmor) do drop(goArmor(Position, Armor)).
@@ -87,7 +90,7 @@ module attackEvents {
 	
 	forall a-goal(goRack(Position)), bel(currentWeapon(Weapon, _), Weapon \= 'enforcer') do drop(goRack(Position)).
 	
-	
+	forall a-goal(goAmmo(Position, Weapon, Ammo)), bel(weapon(Weapon, _, NewAmmo), Ammo\=NewAmmo) do drop(goAmmo(Position, Weapon, Ammo)).
 
 	
 	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)) then pickHealth.
@@ -98,7 +101,7 @@ module attackEvents {
 	
 	if bel(holdingFlag) then atkDeliver + exit-module.
 	
-	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), bel(not(currentWeapon(enforcer_, _))) then pickWeapon + exit-module.
+	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), bel(currentWeapon(enforcer_, _)) then pickWeapon + exit-module.
 		
 	if percept(item(_, 'weapon', Weapon, UnrealID), pickup(UnrealID)), bel(not(weapon(Weapon, _, _))) then pickWeapon + exit-module.
 	
@@ -107,7 +110,7 @@ module attackEvents {
 	
 	if bel(self(_, _, Color), flagState(Color2, 'home'), Color\=Color2) then atkEHome + exit-module.
 	
-	if percept(item(_, 'ammo', Weapon, UnrealID), pickup(UnrealID)), bel(weapon(Weapon, _, Ammo), Ammo < 5) then pickWeapon + exit-module.
+	if percept(item(_, 'ammo', Weapon, UnrealID), pickup(UnrealID)), bel(weapon(Weapon, _, Ammo), Ammo < 5) then pickAmmo + exit-module.
 	
 	
 	if bel(self(_, _, Color), flagState(Color2, 'held'), Color \=Color2) then atkEscort + exit-module.

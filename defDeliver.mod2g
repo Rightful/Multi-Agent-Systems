@@ -3,7 +3,7 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkDeliver {
+module defDeliver {
 	
 	if bel(not(holdingFlag)) then exit-module.
 	

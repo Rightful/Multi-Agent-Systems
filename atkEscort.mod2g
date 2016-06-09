@@ -13,6 +13,7 @@ module atkEscort {
 	if a-goal(goArmor(Position, A)) then exit-module.
 	if a-goal(goRack(Position)) then exit-module.
 	if a-goal(goOther(Position)) then exit-module.	
+	if a-goal(goAmmo(Position, Weapon, Ammo)) then exit-module.
 	
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).

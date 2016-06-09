@@ -3,12 +3,11 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkDeliver {
-	
-	if bel(not(holdingFlag)) then exit-module.
+module defGrab {
 	
 	if a-goal(goHealth(Position, H)) then exit-module.
 	if a-goal(goArmor(Position, A)) then exit-module.
+	if bel(holdingFlag) then exit-module.
 	
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
@@ -35,14 +34,15 @@ module atkDeliver {
 		
 	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Friendly), self(_, _, Color))
 		then adopt( goLocation(H)) + exit-module.
-		
-		
-	if bel( defRad(Position), self(_, _, Color), flagState(Color, 'dropped'), not(temp(Position))) then insert(temp(Position)) + adopt(goLocation(Position)).
-	if bel( defRad(Position), self(_, _, Color), flagState(Color, 'held'), not(temp(Position))) then insert(temp(Position)) + adopt(goLocation(Position)).
 	
 	
-
-
+	
+	%if bel(self(_, _, Color), flag(Color2, 'none', Location), flagState(Color2, 'home'), Color2\=Color) 
+	%	 then adopt(goLocation(Location)) + exit-module.
+	
+	%if bel(self(_, _, Color), flag(Color2, 'none', Location), flagState(Color2, 'home'), navigation('navigating', Position), Location\=Position, Color2\=Color) 
+	%    then stop + adopt(goLocation(Location)) + exit-module.
+	
 	if true then exit-module.
 	
 }

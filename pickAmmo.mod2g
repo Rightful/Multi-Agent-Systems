@@ -6,7 +6,9 @@ order = linearall.
 module pickAmmo {
 	if a-goal(goHealth(Position, H)) then exit-module.
 	if a-goal(goArmor(Position, A)) then exit-module.
-	
+	if a-goal(goRack(Position)) then exit-module.
+	if a-goal(goOther(Position)) then exit-module.
+		
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				
@@ -28,12 +30,12 @@ module pickAmmo {
 		then adopt( goLocation(H)) + exit-module.
 	
 	if percept(item(_, 'ammo', OtherWeapon, UnrealID), pickup(UnrealID)), 
-		bel(navigation(navigating, Position), weapon(OtherWeapon,_ ,_), OtherWeapon \='bio_rifle', Position \= UnrealID)
-		then stop + adopt(goItem(UnrealID, OtherWeapon)) + exit-module.
+		bel(navigation(navigating, Position), weapon(OtherWeapon,_ ,Ammo), OtherWeapon \='bio_rifle', Position \= UnrealID)
+		then stop + adopt(goAmmo(UnrealID, OtherWeapon, Ammo)) + exit-module.
 		
 	if percept(item(_, 'ammo', OtherWeapon, UnrealID),  pickup(UnrealID)), 
-		bel(weapon(OtherWeapon,_ ,_), OtherWeapon \='bio_rifle')
-		then adopt(goItem(UnrealID, OtherWeapon)) + exit-module.
+		bel(weapon(OtherWeapon,_ ,Ammo), OtherWeapon \='bio_rifle')
+		then adopt(goAmmo(UnrealID, OtherWeapon ,Ammo)) + exit-module.
 		
 	if true then exit-module.
 }

@@ -3,34 +3,38 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 
-module atkRandom {
-	
-	
-	if bel( self(_, _, Color), flagState(Color2, 'home'), Color\=Color2 ) then exit-module.
-	if bel( self(_, _, Color), flagState(Color2, 'held'), Color\=Color2 ) then exit-module.
-	
+module defAssault {
+
+	if bel(self(_, _, Color), flagState(Color, 'dropped')) then exit-module.
+	if bel(self(_, _, Color), flagState(Color, 'home')) then exit-module.
+
 	if a-goal(goItem(Position, W)) then exit-module.
 	if a-goal(goHealth(Position, H)) then exit-module.
 	if a-goal(goArmor(Position, A)) then exit-module.
 	if a-goal(goRack(Position)) then exit-module.
-	if a-goal(goOther(Position)) then exit-module.
-	if a-goal(goAmmo(Position, Weapon, Ammo)) then exit-module.
+	if a-goal(goOther(Position)) then exit-module.	
 	
 	if bel( base(Color2, Enemy), flag(Color, HolderID, _),self(_, _, Color), bot(HolderID, _, Color2,Position, _, _), Color \= Color2)
 		then path(Position, Enemy) + shoot(HolderID).
 				
-	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(navigation(navigating, Enemy), base(Color2, Enemy), self(_, _, Color), Color2 \= Color  )
+	if percept( path(_, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(navigation(navigating, Friendly), base(Color, Friendly), base(Color2, Enemy), self(_, _, Color), Color2 \= Color  )
 		then stop +  adopt( goLocation(H)) + exit-module.	
 	
 	if percept( path(Position, Enemy, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Enemy), self(_, _, Color2) , Color \= Color2)
 		then adopt( goLocation(H)) + exit-module.
+		
 	
 		
+	if bel( self(_, _, Color), flagState(Color, 'home'), base(Color, Base), navigation(navigating, Position), Postion \= Base) 
+		then stop + adopt(goLocation(Base)) + exit-module.
 		
+	if bel( self(_, _, Color), flagState(Color, 'home'), base(Color, Base)) then adopt(goLocation(Base)) + exit-module.
+
+
 	if bel( base(Color, Friendly), self(_, _, Color), bot(HolderID, _, Color2,Position, _, _) , Color \= Color2)
 		then path(Position, Friendly) + shoot(HolderID).	
 	
-	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(navigation(navigating, Base),base(Color, Friendly), base(Color2, Base), self(_, _, Color), Color2 \= Color)
+	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel(navigation(navigating, Friendly),base(Color, Friendly), self(_, _, Color))
 		then stop +  adopt( goLocation(H)) + exit-module.
 		
 	if percept( path(_, Friendly, _, [ H1 | [ H2 | [ H | T ] ] ] )), bel( base(Color, Friendly), self(_, _, Color))
@@ -42,7 +46,7 @@ module atkRandom {
 	if bel(self(_, _, Color), atkRad(Position), not(temp(Position))) 
 		then insert(temp(Position)) + adopt(goLocation(Position)) + exit-module.
 	
-			
+	
 	if true then exit-module.
 	
 }

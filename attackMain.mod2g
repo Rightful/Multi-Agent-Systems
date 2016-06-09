@@ -15,5 +15,7 @@ module attackMain {
 	
 	if a-goal(goOther(Position)) then navigate(Position).	
 	
-	if a-goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
+	if a-goal(goAmmo(Position, Weapon, Ammo)) then navigate(Position).
+	
+	if a-goal(goLocation(Position)) then navigate(Position)+ drop(goLocation(Position)).
 }
