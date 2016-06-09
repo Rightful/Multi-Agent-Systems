@@ -10,6 +10,7 @@ use atkRandom as module.
 use pickWeapon as module.
 use pickHealth as module.
 use pickArmor as module.
+use pickOther as module.
 
 order = linearall.
 
@@ -82,16 +83,27 @@ module attackEvents {
 	
 	forall a-goal(goItem(Position, OtherWeapon)), percept(weapon(OtherWeapon, _, _)) do drop(goItem(Position, OtherWeapon)).
 	
+	forall a-goal(goOther(Position)), percept(powerup(Powerup, _)), bel(Powerup \= 'none') do drop(goOther(Position)).
+	
+	forall a-goal(goRack(Position)), bel(currentWeapon(Weapon, _), Weapon \= 'enforcer') do drop(goRack(Position)).
+	
+	
+
 	
 	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)) then pickHealth.
 	
 	if percept(item(_, 'armor', Type, UnrealID), pickup(UnrealID)) then pickArmor.
 	
-	if bel(flag(Color, none, _), flagState(Color, 'dropped'), Color \= none) then atkDrop + exit-module.
+	if bel(flag(Color, 'none', _), flagState(Color, 'dropped'), Color \= 'none') then atkDrop + exit-module.
 	
 	if bel(holdingFlag) then atkDeliver + exit-module.
 	
+	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), bel(not(currentWeapon(enforcer_, _))) then pickWeapon + exit-module.
+		
 	if percept(item(_, 'weapon', Weapon, UnrealID), pickup(UnrealID)), bel(not(weapon(Weapon, _, _))) then pickWeapon + exit-module.
+	
+	if percept(item(_, 'other', Weapon, UnrealID), pickup(UnrealID)), bel(powerup('none', _)) then pickOther + exit-module.
+	
 	
 	if bel(self(_, _, Color), flagState(Color2, 'home'), Color\=Color2) then atkEHome + exit-module.
 	

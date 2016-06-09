@@ -14,17 +14,17 @@ module atkDrop {
 	if a-goal(goHealth(Position, H)) then exit-module.
 	if a-goal(goArmor(Position, A)) then exit-module.
 	
-	if bel( self(_, _, Color), flagState(Color, 'dropped'), flag(Color, none, Position) ,navigation(navigating, Location), Location \= Position)
+	if bel( self(_, _, Color), flagState(Color, 'dropped'), flag(Color, 'none', Position) ,navigation(navigating, Location), Location \= Position)
 		then stop + adopt(goLocation(Position)) + exit-module.
 	
-	if bel( self(_, _, Color), flagState(Color, 'dropped'), flag(Color, none, Position) )
+	if bel( self(_, _, Color), flagState(Color, 'dropped'), flag(Color, 'none', Position) )
 		then adopt(goLocation(Position)) + exit-module.
 		
 		
-	if bel( Color2 \= Color, self(_, _, Color2), flagState(Color, 'dropped'), flag(Color, none, Position) ,navigation(navigating, Location), Location \= Position)
+	if bel( Color2 \= Color, self(_, _, Color2), flagState(Color, 'dropped'), flag(Color, 'none', Position) ,navigation(navigating, Location), Location \= Position)
 		then stop + adopt(goLocation(Position)) + exit-module.
 	
-	if bel( Color2 \= Color, self(_, _, Color2), flagState(Color, 'dropped'), flag(Color, none, Position) )
+	if bel( Color2 \= Color, self(_, _, Color2), flagState(Color, 'dropped'), flag(Color, 'none', Position) )
 		then adopt(goLocation(Position)) + exit-module.
 		
 	if true then exit-module.

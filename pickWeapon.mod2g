@@ -35,6 +35,14 @@ module pickWeapon {
 	if percept(item(_, 'weapon', OtherWeapon, UnrealID), pickup(UnrealID)), 
 		bel(currentWeapon('enforcer', _), not(weapon(OtherWeapon,_ ,_)), OtherWeapon \='bio_rifle')
 		then adopt(goItem(UnrealID, OtherWeapon)) + exit-module.
+	
+	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), 
+		bel(currentWeapon('enforcer', _), navigation(navigating, Position),  Position \= UnrealID)
+		then stop + adopt(goRack(UnrealID)) + exit-module.
+		
+	if percept(item(_, _, 'weapon_locker', UnrealID), pickup(UnrealID)), 
+		bel(currentWeapon('enforcer', _))
+		then adopt(goRack(UnrealID)) + exit-module.
 		
 	if true then exit-module.
 }

@@ -6,7 +6,7 @@ order = linearall.
 module pickHealth {
 	
 	if bel(holdingFlag, status(Health, _), Health > 40) then exit-module.
-	if bel(flag(Color, none, _), flagState(Color, 'dropped'), status(Health, _), Health > 40) then exit-module.
+	if bel(flag(Color, 'none', _), flagState(Color, 'dropped'), status(Health, _), Health > 40) then exit-module.
 	if percept(item(_, 'health', Type, UnrealID), pickup(UnrealID)), bel(Type \= 'super_health', status(Health, _), Health > 80)
 		then exit-module.
 		

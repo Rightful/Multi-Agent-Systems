@@ -87,7 +87,7 @@ module defenceEvents {
 		do drop(goLocationFlag(UnrealID)).
 	
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
+	if bel(self(_,_,TeamColor), flag(TeamColor, 'none', Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.
 
 	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped
@@ -116,15 +116,15 @@ module defenceEvents {
 		then adopt(goLocationHelp(Position, HolderID)) + exit-module.
 	
 	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal
-	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
+	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, 'none', Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
 		
 	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
-	if bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
+	if bel(self(_,_,TeamColor), flag(NotTeamColor, 'none', Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
 		then stop + adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
 	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag	
-	if bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
+	if bel(self(_,_,TeamColor), flag(NotTeamColor, 'none', Position), TeamColor \= NotTeamColor)
 		then adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.

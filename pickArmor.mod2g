@@ -6,7 +6,7 @@ order = linearall.
 module pickArmor {
 	
 	if bel(holdingFlag, status(_, Armor), Armor > 0) then exit-module.
-	if bel(flag(Color, none, _), flagState(Color, 'dropped'), status(_, Armor), Armor > 0) then exit-module.
+	if bel(flag(Color, 'none', _), flagState(Color, 'dropped'), status(_, Armor), Armor > 0) then exit-module.
 	
 	if a-goal(goHealth(Position, Health)) then exit-module.
 	
