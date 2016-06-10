@@ -3,11 +3,15 @@ use Action as actionspec.
 use PickupArmor as module.
 use PickupHealth as module.
 use PickupOther as module.
-use selectWeapon as module.
+use PickupWeapon as module.
 
 
 module defenceMain {
 	% TEST: new def PickupSystem
+	% pick up weapons on our way
+	if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID), 
+	currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), 
+	not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
 	
 	if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
 	if bel(status(Health,_), Health =< 60,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.

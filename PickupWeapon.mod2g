@@ -1,0 +1,19 @@
+use UTbot as knowledge.
+use Action as actionspec.
+
+exit = never.
+order = linearall.
+module PickupWeapon {
+	%if bel navigating to a place and no path then exit
+		if bel(navigation('noPath',_)) then exit-module.
+		if bel(navigation('stuck',_)) then exit-module.
+		
+		% pick up weapons
+		if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID),not(weapon(NewWeapon,_,_)), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), navigation(navigating,ID), not(pickup(ID,'weapon',_))) then stop.
+		if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID),not(weapon(NewWeapon,_,_)), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(navigation(reached,UnrealID))) then navigate(UnrealID).
+		
+		% exit module if no (better) weapon left
+		if bel(not(item(_,'weapon',_,_))) then exit-module.
+		if bel(item(_,'weapon',NewWeapon,_), currentWeapon(CurrentWeapon,_), not(betterWeapon(NewWeapon,CurrentWeapon))) then exit-module.
+		if bel(item(_,'weapon',NewWeapon,_), currentWeapon(CurrentWeapon,_), not(weapon(NewWeapon,_,_))) then exit-module.
+}
