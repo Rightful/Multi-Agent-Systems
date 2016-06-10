@@ -9,14 +9,15 @@ module attackEvents {
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
-	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
-		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
+	%ERUIT
+	%if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
+	%	then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
 	% if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
-	 if percept(status(NewHealth,_)), bel(not(holdingFlag),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
+	% ERUIT if percept(status(NewHealth,_)), bel(not(holdingFlag),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
 	
 	% If bot sees enemy bot.
-	if bel(enemyBot(_, LOC)) then look(LOC).	
+	% ERUIT if bel(enemyBot(_, LOC)) then look(LOC).	
 	
 	% keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
@@ -78,8 +79,14 @@ module attackEvents {
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
 	% if we hold the flag then send to other escort
+	%
+	%
+	%
+	% VERANDERD: andere attackers moeten gewoon richting tegenstanders flag base
+	%
+	%
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z)) then path(location(X,Y,Z), Home).
-	if bel(self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(escorting(LocationThird)).
+	if bel(enemyBaseLocation(Location),self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(goToEnemyBase(Location)).
 
 	% if the flag of the enemy is dropped or at home, then the last location of the flag arent valid
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).	
@@ -100,9 +107,10 @@ module attackEvents {
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag))
 		do drop(goHomeWithFlag(UnrealID)).		
 	
+	% ERUIT
 	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base
-	if bel(inRadius(Position), holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home')))
-		then adopt(goHomeWithFlag(Position)) + exit-module.		
+	%if bel(inRadius(Position), holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home')))
+		%then adopt(goHomeWithFlag(Position)) + exit-module.		
 	
 	% If the bot holds the flag the bot will go home.	
 	if bel(ourBaseLocation(Home), holdingFlag)
@@ -158,11 +166,14 @@ module attackEvents {
 	if (_).sent:(escorting(LocationThird))
 		then adopt(goEscort(LocationThird))+ exit-module.
 		
-		
 	forall a-goal(goLocation(Location)), bel(self(_,_,Color), flagState(Color2, 'home'), Color \= Color2)
 		do drop(goLocation(Location)).
 	
 	forall bel(atkRad(Position), self(_,_,Color), flagState(Color2, 'dropped'), Color \= Color2)
 		do adopt(goRandom(Position))+ exit-module.
+		
+			%NIEUWE LiNE; gewoon aanvallen als iemand de flag heeft, dan moet de rest terug gaan
+	if (_).sent:(goToEnemyBase(Location))
+		then adopt(goLocation(Location))+ exit-module.
 	
 }
