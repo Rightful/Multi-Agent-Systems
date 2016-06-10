@@ -15,6 +15,6 @@ module PickupHealth {
 
 		% pickup health.
 		%if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), navigation(navigating,ID), not(pickup(ID,'health',_))) then stop. 
-		if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), not(navigation(reached,UnrealID)), not(holdingFlag)) then navigate(UnrealID).
+		if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then navigate(UnrealID).
 }
 
