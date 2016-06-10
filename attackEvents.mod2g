@@ -10,15 +10,16 @@ module attackEvents {
 	 	
 	% Updating where to look.
 	%ERUIT
-	%if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
-	%	then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
+	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
+		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
-	% if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
-	% ERUIT if percept(status(NewHealth,_)), bel(not(holdingFlag),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
+	%if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
+	if percept(status(NewHealth,_)), bel(not(holdingFlag),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
 	
 	% If bot sees enemy bot.
 
-	% ERUIT if bel(enemyBot(_, LOC)) then look(LOC).	
+	if bel(enemyBot(_, LOC)) then look(LOC).	
+	%if bel(enemyBot(_, LOC), not(holdingFlag)) then navigate(LOC).	
 
 	% keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
@@ -154,9 +155,9 @@ module attackEvents {
 		
 	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
 		do drop(goLocationKill(Position, UnrealID)).
-		
+		%+stop
 	if bel(enemyBot(UnrealID, Position), not(holdingFlag) , navigation(navigating, Position2), Position \= Position2) 
-		then stop +  adopt(goLocationKill(Position, UnrealID)) + exit-module.
+		then adopt(goLocationKill(Position, UnrealID)) + exit-module.
 	
 	if bel(enemyBot(UnrealID, Position), not(holdingFlag)) 
 		then adopt(goLocationKill(Position, UnrealID)) + exit-module.

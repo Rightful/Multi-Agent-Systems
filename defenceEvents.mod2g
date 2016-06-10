@@ -16,7 +16,7 @@ module defenceEvents {
 	
 	% If bot sees enemy bot.
 	if bel(enemyBot(_, LOC)) then look(LOC).
-	if bel(enemyBot(_,Position), not(holdingFlag)) then navigate(Position).
+	%if bel(enemyBot(_,Position), not(holdingFlag)) then navigate(Position).
 	
 	% keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
@@ -141,9 +141,9 @@ module defenceEvents {
 			
 	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
 		do drop(goLocationKill(Position, UnrealID)).
-		
+		%+stop
 	if bel(enemyBot(UnrealID, Position), navigation(navigating, Position2), Position \= Position2) 
-		then stop + all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position, UnrealID)) + exit-module.
+		then all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position, UnrealID)) + exit-module.
 	
 	if bel(enemyBot(UnrealID, Position)) 
 		then all.send(helpDef(Position, UnrealID)) +  adopt(goLocationKill(Position, UnrealID)) + exit-module.
