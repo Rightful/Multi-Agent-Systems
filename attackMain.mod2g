@@ -28,9 +28,9 @@ module attackMain {
 		
 	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
 		
-	if goal(goLocationHelp(Position, UnrealID)) then drop(goLocationHelp(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
+	if goal(goLocationHelp(Position)) then drop(goLocationHelp(Position)) + navigate(Position).
 	
-	if goal(goLocationKill(Position, UnrealID)) then drop(goLocationKill(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
+	if goal(goLocationKill(Position)) then drop(goLocationKill(Position)) + navigate(Position).
 	
 	if goal(goRandom(Position)) then drop(goRandom(Position)) + navigate(Position).
 	

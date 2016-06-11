@@ -131,22 +131,23 @@ module attackEvents {
 		then adopt(goHomeWithFlag(Home)) + exit-module.	
 	
 	% If the bot believes the flag is not held and has a goal of going to a helpLocation the bot will drop the goal
-	forall a-goal(goLocationHelp(Position, UnrealID)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
-		do drop(goLocationHelp(Position, UnrealID)).
+	forall a-goal(goLocationHelp(Position)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
+		do drop(goLocationHelp(Position)).
 	
 	% If the bot gets location of helpDef the bot will insert that location.
-	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'))
-		then adopt(goLocationHelp(Position, HolderID)) + exit-module.
-	
+	if bel(self(_, _, Color), base(Color, FriendlyBase), base(Color2, EnemyBase), enemyBot(UnrealID, Position), flag(Color, UnrealID, _), Color \= Color2) 
+		then path(Position, EnemyBase) + insert(following(UnrealID, FriendlyBase)).
 		
-
-	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
-		do drop(goLocationKill(Position, UnrealID)).
-		%+stop
-
-	if bel(enemyBot(UnrealID, Position), not(holdingFlag)) 
-		then adopt(goLocationKill(Position, UnrealID)) + exit-module.
+	if bel(self(_, _, Color), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
+		then adopt(goLocationHelp(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		
 	
+	if bel(self(_, _, Color), base(Color, FriendlyBase), base(Color2, EnemyBase), enemyBot(UnrealID, Position), not(holdingFlag), Color \= Color2) 
+		then path(Position, FriendlyBase) + insert(following(UnrealID, FriendlyBase)).
+		
+	if bel(self(_, _, Color), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
+		then adopt(goLocationKill(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		
 	
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
 	forall a-goal(goRandom(Position)), bel(self(_,_,TeamColor), flagState(TeamColor2, 'home'), TeamColor2 \= TeamColor)
