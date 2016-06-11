@@ -1,0 +1,12 @@
+use UTbot as knowledge.
+use Action as actionspec.
+exit = always.
+order = linearrandom.
+
+module randomDefRad {		
+	
+	if bel( holdingFlag, inRadius(Position)) then  adopt(goHomeWithFlag(Position)) + exit-module.
+	
+	if bel( inRadius(Position)) then  adopt(goLocation(Position)).
+
+}

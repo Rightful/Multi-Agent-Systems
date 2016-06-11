@@ -1,6 +1,9 @@
 use UTbot as knowledge.
 use Action as actionspec.
 
+use randomAtkRad as module.
+use randomDefRad as module.
+
 order = linearall.
 
 module attackEvents {
@@ -88,7 +91,7 @@ module attackEvents {
 	%
 	%
 	if bel(ourBaseLocation(Home), ownLocation(X,Y,Z)) then path(location(X,Y,Z), Home).
-	if bel(enemyBaseLocation(Location),self(_, _, Color), base(Color, Home), holdingFlag), percept(path(_, Home,_ ,[_,LocationThird|_])) then allother.send:(goToEnemyBase(Location)).
+	if bel(holdingFlag) then allother.send:(escorting).
 
 	% if the flag of the enemy is dropped or at home, then the last location of the flag arent valid
 	forall bel(lastKnownLocFlag(Location),(flagState(Team, 'home')), self(_,_,Team2), Team\=Team2) do delete(lastKnownLocFlag(Location)).	
@@ -105,14 +108,23 @@ module attackEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.
 
+	
+	
+		% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
+	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
+		do stop + drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
+	
+	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag	
+	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
+		do  drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
+	
 	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag))
-		do drop(goHomeWithFlag(UnrealID)).		
-	
+		do drop(goHomeWithFlag(UnrealID)).	
 	% ERUIT
 	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base
-	%if bel(inRadius(Position), holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home')))
-		%then adopt(goHomeWithFlag(Position)) + exit-module.		
+	if bel(inRadius(Position), holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home')))
+		then randomDefRad + exit-module.		
 	
 	% If the bot holds the flag the bot will go home.	
 	if bel(ourBaseLocation(Home), holdingFlag)
@@ -123,59 +135,37 @@ module attackEvents {
 		do drop(goLocationHelp(Position, UnrealID)).
 	
 	% If the bot gets location of helpDef the bot will insert that location.
-	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'), 
-		navigation(navigating, UnrealID), Position \= UnrealID)		
-		then stop + adopt(goLocationHelp(Position, HolderID)) + exit-module.
-	
-	% If the bot gets location of helpDef the bot will insert that location.
 	if bel(self(_,_,TeamColor), flag(TeamColor, HolderID, Position), flagState(TeamColor, 'held'))
 		then adopt(goLocationHelp(Position, HolderID)) + exit-module.
 	
-	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal
-	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
-		do drop(goLocationFlagEnemy(Position)).
 		
-	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
-	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
-		do stop + drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
-	
-	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag	
-	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
-		do  drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
-	
-	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
-	forall a-goal(goRandom(Position)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'held')))
-		do drop(goRandom(Position)).
-		
-	if bel(atkRad(UnrealID), navigation(navigating, UnrealID), not(flagState(TeamColor, 'held')))
-		then stop + exit-module.
-	
-	forall bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
-		do adopt(goRandom(Position)) + exit-module.
-		
+
 	forall a-goal(goLocationKill(Position, UnrealID)), bel(not(enemyBot(UnrealID, Position)))
 		do drop(goLocationKill(Position, UnrealID)).
 		%+stop
-	if bel(enemyBot(UnrealID, Position), not(holdingFlag) , navigation(navigating, Position2), Position \= Position2) 
-		then adopt(goLocationKill(Position, UnrealID)) + exit-module.
-	
+
 	if bel(enemyBot(UnrealID, Position), not(holdingFlag)) 
 		then adopt(goLocationKill(Position, UnrealID)) + exit-module.
 	
-	forall a-goal(goEscort(LocationThird)), bel(self(_, _, Color), flagState(Color2, 'home'), Color \= Color2)
-		do drop(goEscort(LocationThird)) + stop + exit-module.
 	
-	if (_).sent:(escorting(LocationThird))
-		then adopt(goEscort(LocationThird))+ exit-module.
+	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
+	forall a-goal(goRandom(Position)), bel(self(_,_,TeamColor), flagState(TeamColor2, 'home'), TeamColor2 \= TeamColor)
+		do drop(goRandom(Position)).
 		
-	forall a-goal(goLocation(Location)), bel(self(_,_,Color), flagState(Color2, 'home'), Color \= Color2)
-		do drop(goLocation(Location)).
+	if bel(atkRad(UnrealID), navigation(navigating, UnrealID), self(_, _, Color), flagState(Color2, 'home'), Color \= Color2)
+		then stop + exit-module.
 	
-	forall bel(atkRad(Position), self(_,_,Color), flagState(Color2, 'dropped'), Color \= Color2)
-		do adopt(goRandom(Position))+ exit-module.
-		
-			%NIEUWE LiNE; gewoon aanvallen als iemand de flag heeft, dan moet de rest terug gaan
-	if (_).sent:(goToEnemyBase(Location))
-		then adopt(goLocation(Location))+ exit-module.
+	if bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
+		then randomAtkRad + exit-module.
+	if bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'dropped')) 
+		then randomAtkRad + exit-module.	
+	if bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor2, _, _)), flagState(TeamColor2, 'dropped'), TeamColor \= TeamColor2) 
+		then randomAtkRad + exit-module.	
+	if (_).sent:(escorting), bel(atkRad(Position))
+		then  randomAtkRad + exit-module.
+			
+
+
+
 	
 }
