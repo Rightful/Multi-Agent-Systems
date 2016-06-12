@@ -36,12 +36,12 @@ use "ut-environment.jar" as environment with
 			]
 		]
 		.
-
-define defencebot as agent{
-	use defenceMain as main.
-	use defenceInit as init.
-	use defenceEvents as event.
-}
+% New Strategy 4 atkbots
+%define defencebot as agent{
+%	use defenceMain as main.
+%	use defenceInit as init.
+%	use defenceEvents as event.
+%}
 
 define attackbot as agent{
 	use attackMain as main.
