@@ -28,6 +28,17 @@ module abstractInit {
 		base(Team2, BaseUnrealID),
 		Team\=Team2
 	) then insert(enemyBaseLocation(Location)).
+			
+		% save all nav points close to base.
+		forall percept(navPoint(UnrealID, location(X, Y, Z), _)),bel(
+			ourBaseLocation(location(A, B, C)),
+			A<X+400, 
+			A>X-400, 
+			B<Y+400, 
+			B>Y-400,
+			C<Z+100,
+			C>Z-400
+		) do insert (closeToOurBaseNavPoint(UnrealID)).
 		
 	forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
 			enemyBaseLocation(location(A, B, C)),

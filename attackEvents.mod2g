@@ -84,6 +84,7 @@ module attackEvents {
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
 	% ----------------------------Goal Management.---------------------------- %
+	if bel(holdingFlag, ourBaseLocation(HOME)) then stop+ navigate(HOME)+exit-module.
 		% if you have been fragged then delete all (at +  fraggedBot) goals.
 		forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
 		
