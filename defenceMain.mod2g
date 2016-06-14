@@ -4,33 +4,32 @@ use PickupArmor as module.
 use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
+use deliverFlag as module.
+use retrieveFlag as module.
+use hangAroundBase as module.
+use defenderCaptureFlag as module.
 
 
 module defenceMain {
-	% TEST: new def PickupSystem
-	% pick up weapons on our way
-	if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID), 
-	currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), 
-	not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
 	
-	if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
-	if bel(status(Health,_), Health =< 60,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
+		%if the defender takes the flag, it should deliver it.	
+	 	if bel(holdingFlag) then deliverFlag.
 
-	if bel(item(_,'other',O,UnrealID), not(holdingFlag), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
+		% als een defender bot in de buurt van de tegenstander vlag is en onze vlag is veilig, dan pak de flag van de tegenstander.
+		if bel(self(Player,_,Team), flagState(Team,'home'), flagState(Team2,'home'), not(Team=Team2),ownLocation(A,B,_), enemyBaseLocation(location(X,Y,_)), A>X-750, A<X+750, B>Y-750, B<Y+750) then defenderCaptureFlag.
+
+		% if both flags are home then hangAroundBase 
+		if bel(self(Player,_,Team), not(flag(_,Player,_)), flagState(Team,'home'), flagState(Team2,'home'), not(Team=Team2)) then hangAroundBase.
 		
-	if goal(goLocationFlag(Position)) then drop(goLocationFlag(Position)) + navigate(Position).
+		% voor nu: if we have the blue flag and they do not have our flag, then hangAroundBase.
+		if bel(self(Player,_,Team), flagState(Team2,Status), not(Status='home'), not(Team=Team2), not(flag(Team2,Player,_)), flagState(Team,'home')) then hangAroundBase.
 		
-	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
+		% if opponent has our flag then retreiveFlag
+		if bel(self(Player,_,Team), not(flag(_,Player,_)), flagState(Team,'held')) then retrieveFlag.
+
+		%navigate to destination if there is a goal to do so.
+		if a-goal(at(Destination)) then navigate(Destination).
 		
-	if goal(goLocationHelp(Position, UnrealID)) then drop(goLocationHelp(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
-	
-	if goal(goLocationFlagEnemy(Position)) then drop(goLocationFlagEnemy(Position)) + navigate(Position).
-	
-	if goal(goRandom(Position)) then drop(goRandom(Position)) + navigate(Position).
-	
-	if goal(goLocationKill(Position, UnrealID)) then drop(goLocationKill(Position, UnrealID)) + shoot(UnrealID) + navigate(Position).
-	
-	if goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
-	
-	
+		% if no action then navigate somewhere close to base
+		if bel(closeToOurBaseNavPoint(UnrealID)) then navigate(UnrealID).
 }

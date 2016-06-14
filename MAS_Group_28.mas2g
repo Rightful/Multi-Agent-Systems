@@ -28,7 +28,7 @@ use "ut-environment.jar" as environment with
 				["team", "blue"]
 			],
 			[
-			 	["name", "Attacker 4"],
+			 	["name", "Defence 1"],
 				["skill", 5],
 				["skin", "BotA"],
 				["logLevel", "WARNING"],
@@ -39,17 +39,17 @@ use "ut-environment.jar" as environment with
 		nativebots = 
 			[
 				[
-					["name", "Bert"],
+					["name", "Slain"],
 					["skill", 3],
 					["team", "red"]
 				],
 				[
-					["name", "Henk"],
+					["name", "Harlin"],
 					["skill", 3],
 					["team", "red"]
 				],
 				[
-					["name", "Jan"],
+					["name", "Johnson"],
 					["skill", 3],
 					["team", "red"]
 				]
@@ -68,6 +68,6 @@ define attackbot as agent{
 }
 
 launchpolicy{
-		when type=bot launch attackbot with max = 2.
-		when type=bot launch defencebot with max = 2.
+		when type=bot launch attackbot with max = 3.
+		when type=bot launch defencebot with max = 1.
 }

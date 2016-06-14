@@ -1,0 +1,42 @@
+use UTbot as knowledge.
+use Action as actionspec.
+use PickupArmor as module.
+use PickupShieldBelt as module.
+use PickupHealth as module.
+use PickupOther as module.
+use PickupWeapon as module.
+use PickupThighpad as module.
+use PickupVest as module.
+use PickupHelmet as module.
+exit = never.
+order = linear.
+module hangAroundOpponentBase {
+	
+		% if you see a dropped flag, then pick it up.
+		if bel(droppedFlagAt(Location), navigation(navigation,ID), not(ID=Location)) then stop.
+		if bel(droppedFlagAt(Location), not(navigation(navigation,_))) then navigate(Location).
+		
+		% exit moudule if opponent flag is home
+		if bel(self(_,_,Team), flagState(Team2,'home'), not(Team=Team2)) then exit-module.
+		% exit module if you have the flag
+		if bel(self(Player,_,Team), flag(Team2,Player,_), not(Team=Team2)) then exit-module.
+		
+		
+		% pick up health on our way
+		if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',UnrealID)), not(navigation('stuck',_))) then PickupHealth.
+		% pick up weapons on our way
+		if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
+		
+		% pick shieldbelt up on our way
+		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,'armor',_,UnrealID), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupShieldBelt. 
+		% pick thighpad up on our way
+		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,'armor',_,UnrealID), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupThighpad. 
+		% pick vest up on our way
+		if bel(armor(_, Vest, _, _), Vest < 50, pickup(UnrealID,_,'armor_vest'), item(_,_,_,UnrealID), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupVest. 
+		% pick up helmet on our way
+		if bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHelmet. 
+		% pick up other items
+		if bel(item(_,_,_,UnrealID), pickup(UnrealID,'other',O), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupOther.
+		
+		if bel(closeToEnemyBaseNavPoint(UnrealID)) then navigate(UnrealID).
+}

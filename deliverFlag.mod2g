@@ -1,0 +1,23 @@
+use UTbot as knowledge.
+use Action as actionspec.
+use PickupHealth as module.
+exit = never.
+order = linearall.
+module deliverFlag {
+	
+		% pick up health if you're below 50 and not close to own base
+		if bel(status(Health,_), Health < 50, pickup(UnrealID,'health',_), item(_,_,_,UnrealID), ownLocation(A,B,_), ourBaseLocation(location(X,Y,_)),
+		(A>X+400;A<X-400), (B>Y+400;B<Y-400)) then PickupHealth.
+
+		% if you see our dropped flag, then pick it up.
+		if bel(droppedFlagAt(Location), navigation(navigation,ID), not(ID=Location)) then stop.
+		if bel(droppedFlagAt(Location), not(navigation(navigation,_))) then navigate(Location).
+		
+		% exit if you dont have opponent flag.
+		if bel(self(Me,_,Team), not(flag(_,Me,_)), navigation(navigating,_)) then stop + exit-module.
+		if bel(self(Me,_,Team), not(flag(_,Me,_)), not(navigation(navigating,_))) then exit-module.
+	
+		% if you have the flag go to your own base
+		if bel(holdingFlag, ourBaseLocation(ID), navigation(navigating,Nav), not(ID=Nav)) then stop.
+		if bel(holdingFlag, ourBaseLocation(ID), not(navigation(navigating,_))) then navigate(ID). 
+}
