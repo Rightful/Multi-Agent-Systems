@@ -108,9 +108,7 @@ module attackEvents {
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped'))
 		then adopt(goLocationFlag(Position)) + exit-module.
 
-	
-	
-		% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
+	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
 	forall a-goal(goGrabEnemy(Location)), bel(self(_,_,TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
 		do stop + drop(goGrabEnemy(Location))+ adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
@@ -131,22 +129,22 @@ module attackEvents {
 		then adopt(goHomeWithFlag(Home)) + exit-module.	
 	
 	% If the bot believes the flag is not held and has a goal of going to a helpLocation the bot will drop the goal
-	forall a-goal(goLocationHelp(Position)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
-		do drop(goLocationHelp(Position)).
+	forall a-goal(goLocationHelp(Position, UnrealID)), bel(self(_,_,TeamColor), not( flagState(TeamColor, 'held')))
+		do drop(goLocationHelp(Position, UnrealID)).
 	
 	% If the bot gets location of helpDef the bot will insert that location.
 	if bel(self(_, _, Color), base(Color, FriendlyBase), base(Color2, EnemyBase), enemyBot(UnrealID, Position), flag(Color, UnrealID, _), Color \= Color2) 
-		then path(Position, EnemyBase) + insert(following(UnrealID, FriendlyBase)).
+		then insert(following(UnrealID, FriendlyBase)) + path(Position, EnemyBase).
 		
 	if bel(self(_, _, Color), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
-		then adopt(goLocationHelp(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		then adopt(goLocationHelp(Position,H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
 		
 	
 	if bel(self(_, _, Color), base(Color, FriendlyBase), base(Color2, EnemyBase), enemyBot(UnrealID, Position), not(holdingFlag), Color \= Color2) 
-		then path(Position, FriendlyBase) + insert(following(UnrealID, FriendlyBase)).
+		then insert(following(UnrealID, FriendlyBase)) + path(Position, FriendlyBase).
 		
 	if bel(self(_, _, Color), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
-		then adopt(goLocationKill(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		then adopt(goLocationKill(Position,H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
 		
 	
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.

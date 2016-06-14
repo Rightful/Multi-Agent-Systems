@@ -35,13 +35,31 @@ use "ut-environment.jar" as environment with
 				["team", "blue"]
 			]
 		]
-		.
+		,
+		nativebots = 
+			[
+				[
+					["name", "Bert"],
+					["skill", 3],
+					["team", "red"]
+				],
+				[
+					["name", "Henk"],
+					["skill", 3],
+					["team", "red"]
+				],
+				[
+					["name", "Jan"],
+					["skill", 3],
+					["team", "red"]
+				]
+			].
 % New Strategy 4 atkbots
-%define defencebot as agent{
-%	use defenceMain as main.
-%	use defenceInit as init.
-%	use defenceEvents as event.
-%}
+define defencebot as agent{
+	use defenceMain as main.
+	use defenceInit as init.
+	use defenceEvents as event.
+}
 
 define attackbot as agent{
 	use attackMain as main.
@@ -50,5 +68,6 @@ define attackbot as agent{
 }
 
 launchpolicy{
-		when type=bot launch attackbot with max = 4.
+		when type=bot launch attackbot with max = 2.
+		when type=bot launch defencebot with max = 2.
 }
