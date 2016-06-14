@@ -11,6 +11,9 @@ use Action as actionspec.
 module attackMain {
 
 	if bel(bot(UnrealID,Name,Team,location(X,Y,Z),Weapon,Firemode)) then selectWeapon.
+	
+	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
+	
 	% pick up weapons on our way
 	if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID), 
 	currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), 
@@ -30,8 +33,6 @@ module attackMain {
 	if goal(goLocationFlag(Position)) then drop(goLocationFlag(Position)) + navigate(Position).
 	
 	if goal(goLocationFlagEnemy(Position)) then drop(goLocationFlagEnemy(Position)) + navigate(Position).
-		
-	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
 		
 	if goal(goLocationHelp(Position, UnrealID)) then drop(goLocationHelp(Position, UnrealID)) + navigate(Position).
 	
