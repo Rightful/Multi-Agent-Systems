@@ -5,6 +5,6 @@ order = linear.
 module terminateFlagCarrier {
 	 if bel(holdingFlag) then exit-module.
 	 if bel(enemyBot(_,Position)) then navigate(Position).
-	 if bel(fraggedBot(UnrealID),self(UnrealID,_,Team)) then exit-module.
+	 if bel(fraggedBot(UnrealID), self(UnrealID,_,Team)) then exit-module.
 	 if bel(not(enemyBot(_,_))) then exit-module.  
 }

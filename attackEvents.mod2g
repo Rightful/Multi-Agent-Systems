@@ -1,9 +1,6 @@
 use UTbot as knowledge.
 use Action as actionspec.
 
-use randomAtkRad as module.
-use randomDefRad as module.
-
 order = linearall.
 
 module attackEvents {
@@ -12,7 +9,6 @@ module attackEvents {
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
-	%ERUIT
 	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
 		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	

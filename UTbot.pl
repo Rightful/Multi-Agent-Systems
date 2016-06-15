@@ -62,7 +62,7 @@ radius(1000).
 	%droppedFlagAt(Loc):-lastKnownLocFlag(Loc).
 	
 	% A:weapon the bot sees B: current wapen ( We can still discuss the order - Fays )
-	betterWeapon(A,B) :- better(A,B,[flak_cannon,shock_rifle,link_gun,stinger_minigun,enforcer,sniper_rifle,impact_hammer]).
+	betterWeapon(A,B) :- better(A,B,[shock_rifle,flak_cannon,link_gun,stinger_minigun,enforcer,sniper_rifle,impact_hammer]).
 	better(A,B,[X|T]) :- A = X, not(B=X).
 	better(A,B,[X|T]) :- not(A=X), not(B=X), better(A,B,T).
 

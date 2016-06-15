@@ -1,9 +1,0 @@
-use UTbot as knowledge.
-use Action as actionspec.
-
-order = linearrandom.
-
-module randomAtkRad {
-		
-	if bel(atkRad(Position)) then  adopt(goRandom(Position)) + exit-module.
-}

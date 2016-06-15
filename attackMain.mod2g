@@ -1,5 +1,4 @@
 use UTbot as knowledge.
-use killModus as module.
 use PickupArmor as module.
 use PickupHealth as module.
 use PickupOther as module.
