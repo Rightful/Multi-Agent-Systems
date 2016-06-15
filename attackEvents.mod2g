@@ -68,35 +68,36 @@ module attackEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
-	% ----------------------------Goal Management.---------------------------- %
-		% if you have been fragged then delete all (at +  fraggedBot) goals.
-		forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
+
+	% if you have been fragged then delete all (at +  fraggedBot) goals.
+	forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
 		
-		% handle fragged percept (After line above!!).
-		forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
+	% handle fragged percept (After line above!!).
+	forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
 		
-		% if you see an opponent bot then adopt to kill that bot.
-	 	forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
+	% if you see an opponent bot then adopt to kill that bot.
+	forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
 	 	
-		% if the flag you want is home then adopt to go to that base.
-	 	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).
+	% if the flag you want is home then adopt to go to that base.
+	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).
 	 	
-	 	forall a-goal(at(ID)),bel(holdingFlag,ourBaseLocation(ID2), ID\=ID2) do drop(at(ID)) + navigate(ID2).
+	forall a-goal(at(ID)),bel(holdingFlag,ourBaseLocation(ID2), ID\=ID2) do drop(at(ID)) + navigate(ID2).
+		
+	if bel(holdingFlag, ourBaseLocation(LOC)) then navigate(LOC).
 	 	
-	 	if bel(holdingFlag, ourBaseLocation(LOC)) then navigate(LOC).
+	% if flag of opponent is already held then drop the goal to be at the flag base.
+	forall a-goal(at(ID)), bel(ourBaseLocation(ID2), enemyBaseLocation(ID), flagState(Team2,'held'), self(Player,_,Team), Team \= Team2) do drop(at(ID)) + navigate(ID2).
 	 	
-	 	% if flag of opponent is already held then drop the goal to be at the flag base.
-	 	forall a-goal(at(ID)), bel(ourBaseLocation(ID2), enemyBaseLocation(ID), flagState(Team2,'held'), self(Player,_,Team), Team \= Team2) do drop(at(ID)) + navigate(ID2).
+	% if you are not holding the flag anymore than drop to goal to be at our base.
+	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player,_,Team), not(flag(Team2,Player,_)), not(Team=Team2)) then drop(at(ID)).
 	 	
-	 	% if you are not holding the flag anymore than drop to goal to be at our base.
-	 	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player,_,Team), not(flag(Team2,Player,_)), not(Team=Team2)) then drop(at(ID)).
+	% if no path then ...
+	if a-goal(at(ID)), bel(navigation('noPath',ID)) then drop(at(ID)).
+	
+	if bel(navigation('noPath',ID)), not(a-goal(at(ID))) then stop.
 	 	
-		% if no path then ...
-		if a-goal(at(ID)), bel(navigation('noPath',ID)) then drop(at(ID)).
-		if bel(navigation('noPath',ID)), not(a-goal(at(ID))) then stop.
-	 	
-		% secondary for shock rifle if an enemy bot is closeby, else primary
-		if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
-		if bel(enemyBot(_,location(X,Y,_)), ownLocation(A,B,_), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
-		if bel(bot(_,_,_,location(X,Y,_),_,_), ownLocation(A,B,_), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle,secondary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
+	% secondary for shock rifle if an enemy bot is closeby, else primary
+	if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
+	if bel(enemyBot(_,location(X,Y,_)), ownLocation(A,B,_), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
+	if bel(bot(_,_,_,location(X,Y,_),_,_), ownLocation(A,B,_), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle,secondary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 }

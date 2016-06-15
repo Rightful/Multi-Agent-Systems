@@ -13,10 +13,6 @@ define prefer(WeaponList) with
 			pre { true }
 			post { true }
 			
-define path(Location, Location2) with
-	pre { true }
-	post { true }
-
 define stop with
 	pre{true}
 	post{navigation(waiting,none)}

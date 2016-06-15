@@ -54,7 +54,6 @@ use "ut-environment.jar" as environment with
 					["team", "red"]
 				]
 			].
-% New Strategy 4 atkbots
 
 define defencebot as agent{
     use defenceMain as main.

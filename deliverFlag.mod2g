@@ -6,22 +6,18 @@ exit = never.
 order = linearall.
 module deliverFlag {
 	
-		% pick up health if you're below 50 and not close to own base
-		%if bel(status(Health,_), Health < 50, pickup(UnrealID,'health',_), item(_,_,_,UnrealID), ownLocation(A,B,_), ourBaseLocation(location(X,Y,_)),
-		%(A>X+400;A<X-400), (B>Y+400;B<Y-400)) then PickupHealth.
+		if bel(status(Health,_), Health < 30,(pickup(ID,'health',_),item(_,_,_,ID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
 		
-		if bel(status(Health,_), Health < 30,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
-		
-		if bel(item(_,_,_,UnrealID), pickup(UnrealID,'other','invulnerability'), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
+		if bel(item(_,_,_,ID), pickup(ID,'other','invulnerability'), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
 		
 		% if you see our dropped flag, then pick it up.
-		if bel(droppedFlagAt(Location), navigation(navigation,ID), not(ID=Location)) then stop.
-		if bel(droppedFlagAt(Location), not(navigation(navigation,_))) then navigate(Location).
+		if bel(droppedFlagAt(LOC), navigation(navigation,ID), not(ID=LOC)) then stop.
+		if bel(droppedFlagAt(LOC), not(navigation(navigation,_))) then navigate(LOC).
 		
 		% exit if you dont have opponent flag.
-		if bel(self(Me,_,Team), not(flag(_,Me,_)), navigation(navigating,_)) then stop + exit-module.
-		if bel(self(Me,_,Team), not(flag(_,Me,_)), not(navigation(navigating,_))) then exit-module.
+		if bel(self(Player,_,Team), not(flag(_,Player,_)), navigation(navigating,_)) then stop + exit-module.
+		if bel(self(Player,_,Team), not(flag(_,Player,_)), not(navigation(navigating,_))) then exit-module.
 	
 		% if you have the flag go to your own base
-		if bel(holdingFlag, ourBaseLocation(ID), navigation(navigating,Nav), ID\=Nav) then navigate(ID).
+		if bel(holdingFlag, ourBaseLocation(ID), navigation(navigating,NAV), ID\=NAV) then navigate(ID).
 }
