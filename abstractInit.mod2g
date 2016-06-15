@@ -33,6 +33,26 @@ module abstractInit {
 		Team\=Team2
 	) then insert(enemyBaseLocation(Location)).
 		
+			% save all nav points close to base.
+		forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
+			ourBaseLocation(location(A, B, C)),
+			A<X+400, 
+			A>X-400, 
+			B<Y+400, 
+			B>Y-400,
+			C<Z+100,
+			C>Z-400
+		) do insert (closeToOurBaseNavPoint(UnrealID)).
+		forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
+			enemyBaseLocation(location(A, B, C)),
+			A<X+250, 
+			A>X-250, 
+			B<Y+250, 
+			B>Y-250,
+			C<Z+100,
+			C>Z-400
+		) do insert (closeToEnemyBaseNavPoint(UnrealID)).
+		
 	% Initially, we have no armor.
 	if true then insert(armor(none,none,none,none)).
 	

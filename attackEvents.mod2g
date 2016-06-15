@@ -81,7 +81,7 @@ module attackEvents {
 		
 		% if you see an opponent bot then adopt to kill that bot.
 	 	forall bel(enemyBot(UnrealID,_)) do adopt(fraggedBot(UnrealID)).
-				
+	 	
 		% if the flag you want is home then adopt to go to that base.
 	 	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).
 	 	

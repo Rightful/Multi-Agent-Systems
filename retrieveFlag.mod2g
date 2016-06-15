@@ -6,10 +6,7 @@ use PickupHealth as module.
 exit = never.
 order = linear.
 module retrieveFlag {
-			% if you see our dropped flag, then pick it up.
-		if bel(droppedFlagAt(Location), navigation(navigation,ID), not(ID=Location)) then stop.
-		if bel(droppedFlagAt(Location), not(navigation(navigation,_))) then navigate(Location).
-		
+	
 		%stop if you have the enemy flag
 		if bel(flag(_,Player,_), self(Player,_,_)) then exit-module.
 		

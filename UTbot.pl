@@ -34,7 +34,7 @@ radius(1000).
 	at(UnrealID) :- navigation(reached,UnrealID).
 	
 	%if opponentflag is not home.
-	 enemyFlagNotHome :-self(_,_,Team), flagState(Team,Status), not(flag(Team,_,_)), not(Status='home').
+	 enemyFlagNotHome :- self(_,_,Team), not(flagState(Team2,'home')), Team\=Team2.
 	 	
 	% ... if the coordinates are approximately equal.
 	at(location(X,Y,Z)) :- navigation(reached,location(X1,Y1,Z1)), 
