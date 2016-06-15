@@ -2,7 +2,7 @@ use UTbot as knowledge.
 use Action as actionspec.
 use PickupHealth as module.
 exit = never.
-order = linearall.
+order = linear.
 module deliverFlag {
 	
 		% pick up health if you're below 50 and not close to own base
@@ -18,6 +18,5 @@ module deliverFlag {
 		if bel(self(Me,_,Team), not(flag(_,Me,_)), not(navigation(navigating,_))) then exit-module.
 	
 		% if you have the flag go to your own base
-		if bel(holdingFlag, ourBaseLocation(ID), navigation(navigating,Nav), not(ID=Nav)) then stop.
-		if bel(holdingFlag, ourBaseLocation(ID), not(navigation(navigating,_))) then navigate(ID). 
+		if bel(holdingFlag, ourBaseLocation(ID), navigation(navigating,Nav), not(ID=Nav)) then stop + navigate(ID).
 }

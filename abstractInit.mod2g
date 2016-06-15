@@ -4,6 +4,9 @@ order = linearall.
 
 module abstractInit {
 	
+	% initialize flag status percept.
+	forall percept(flagState(Team,FlagTeam)) do insert(flagState(Team,FlagTeam)).
+	
 	% Store all flag bases on the map.
 	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).
 	

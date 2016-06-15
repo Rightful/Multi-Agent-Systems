@@ -8,23 +8,23 @@ module defenceEvents {
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
+	%ERUIT
 	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
 		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
-	% if we're shot at but dont see anyone, look at where you came from
-	if percept(status(NewHealth,_)), bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
-	
 	% If bot sees enemy bot.
 	if bel(enemyBot(_, LOC)) then look(LOC).
-	%if bel(enemyBot(_,Position), not(holdingFlag)) then navigate(Position).
 	
+	%if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
+	if percept(status(NewHealth,_),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
+
 	% keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
-	
-	% Update the orientation of the bot
-	forall bel(orientation(location(X,Y,Z),OldRot,OldVel), prevLocation(X1,Y1,Z1)), percept(orientation(Loc,Rot,Vel)) do
-		delete(prevLocation(X1,Y1,Z1)) + insert(prevLocation(X,Y,Z)) + delete(orientation(location(X,Y,Z),OldRot,OldVel)) + insert(orientation(Loc,Rot,Vel)).
 		
+	% Update the navigation state of the bot ('send on change' percept).
+	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
+		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
+	
 	% Update the bot's status
 	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
 		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
@@ -47,36 +47,25 @@ module defenceEvents {
 		
 	% Store all kills made in the match
 	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
+
+	% Updates the state of the flag.
+	forall percept(not(flagState(Team,FlagState))), bel(flagState(Team,FlagState)) do delete(flagState(Team,FlagState)).
+	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
-	% Update the navigation state of the bot ('send on change' percept).
-	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
-		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
-		
-	%Update Flag stuff.
-	forall bel(flag(Team , HolderID , Position)),  percept(not(flag(Team , HolderID , Position)))
-		do delete(flag(Team , HolderID , Position)).
-		
-	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).
-
-
-	forall bel(flagState(Team, Status)),  percept(not(flagState(Team, Status)))
-		do delete(flagState(Team, Status)).
-		
-	forall percept(flagState(Team, Status)) do insert(flagState(Team, Status)).
-
-	% Handle the path percept from the path action
-	forall percept(path(StartID,EndID,Len,Loc)) do insert(path(StartID,EndID,Len,Loc)).
-		
+	% Update Flag stuff.
+	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
+	forall percept(flag(Team , HolderID , Position)), bel(flag(Team,HolderUnrealID,Position)) do insert(flag(Team , HolderID , Position)).	
+	
 	% Update the items the bot sees and drop any getItem goals associated with them.
-	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)) + drop(goLocation(UnrealID)).
+	forall percept(not(item(UnrealID,Label,ItemType,Position))), bel(item(UnrealID,Label,ItemType,Position)) do delete(item(UnrealID,Label,ItemType,Position)).
 	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
 	
 	% Update the other bots the bot sees.
-	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))), bel(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
 	forall percept(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do insert(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
 	
 	% Update the pickups the bot sees.
-	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
+	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
 		% ------------ Goal Management -------------

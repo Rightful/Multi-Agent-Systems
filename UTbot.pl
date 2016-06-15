@@ -59,7 +59,7 @@ radius(1000).
 	
 	%Gives the dropped flag location.
 	droppedFlagAt(Location) :- flagState(Team,'dropped'), flag(Team,_,Location).
-	droppedFlagAt(Loc):-lastKnownLocFlag(Loc).
+	%droppedFlagAt(Loc):-lastKnownLocFlag(Loc).
 	
 	% A:weapon the bot sees B: current wapen ( We can still discuss the order - Fays )
 	betterWeapon(A,B) :- better(A,B,[flak_cannon,shock_rifle,link_gun,stinger_minigun,enforcer,sniper_rifle,impact_hammer]).
