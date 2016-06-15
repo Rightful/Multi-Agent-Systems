@@ -21,7 +21,7 @@ module attackMain {
 		if a-goal(fraggedBot(UnrealID)), bel(flag(_,UnrealID,_)) then stop + terminateFlagCarrier.
 		
 	 	%if fellow attacker has the flag then hang around opponent base.
-	 	if bel(self(Player,_,Team), flagState(Team2,'held'), not(Team=Team2), not(flag(Team2,Player,_))) then hangAroundOpponentBase.
+	 	if bel(self(Player,_,Team), flagState(Team2,'held'), Team\=Team2, not(flag(Team2,Player,_))) then hangAroundOpponentBase.
 		
 		% pick up health on our way
 		if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.

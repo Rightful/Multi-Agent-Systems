@@ -4,9 +4,6 @@ order = linearall.
 
 module abstractInit {
 	
-	% initialize flag status percept.
-	forall percept(flagState(Team,FlagTeam)) do insert(flagState(Team,FlagTeam)).
-	
 	% Store all flag bases on the map.
 	forall percept(base(Team,UnrealID)) do insert(base(Team,UnrealID)).
 	
@@ -18,6 +15,10 @@ module abstractInit {
 	
 	% Store information about the bot.
 	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
+	
+	forall percept(flagState(Team, Status)) do insert(flagState(Team, Status)).
+	
+	forall percept(flag(Team,HolderUnrealID,Position)) do insert(flag(Team,HolderUnrealID,Position)).
 	
 	% save our coördinates for our base.
 	if percept(navPoint(BaseUnrealID, Location, _)), bel(
@@ -31,28 +32,7 @@ module abstractInit {
 		base(Team2, BaseUnrealID),
 		Team\=Team2
 	) then insert(enemyBaseLocation(Location)).
-			
-		% save all nav points close to base.
-		forall percept(navPoint(UnrealID, location(X, Y, Z), _)),bel(
-			ourBaseLocation(location(A, B, C)),
-			A<X+400, 
-			A>X-400, 
-			B<Y+400, 
-			B>Y-400,
-			C<Z+100,
-			C>Z-400
-		) do insert (closeToOurBaseNavPoint(UnrealID)).
 		
-	forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
-			enemyBaseLocation(location(A, B, C)),
-			A<X+250, 
-			A>X-250, 
-			B<Y+250, 
-			B>Y-250,
-			C<Z+100,
-			C>Z-400
-	) do insert (closeToEnemyBaseNavPoint(UnrealID)).
-	
 	% Initially, we have no armor.
 	if true then insert(armor(none,none,none,none)).
 	
@@ -68,11 +48,6 @@ module abstractInit {
 	% set general shoot priority.
 	if true then shoot([enemyFlagCarrier,nearestEnemy]).
 		
-	%set default weapon preference.
-
-	if true then prefer([weapon(shock_rifle,primary), weapon(rocket_launcher,primary), weapon(sniper_rifle,primary), 
-	weapon(link_gun,primary), weapon(stinger_minigun,primary), weapon(flak_cannon, primary), weapon(enforcer,primary)]).
-
 	% Initially, we are going nowhere.
 	if true then insert(navigation(none, none)).
 

@@ -57,8 +57,8 @@ module attackEvents {
 	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
 	% Update Flag stuff.
-	forall percept(not(flag(Team , HolderID , Position))),bel(flag(Team , HolderID , Position))do delete(flag(Team , HolderID , Position)).
-	forall percept(flag(Team , HolderID , Position)), bel(flag(Team,HolderUnrealID,Position)) do insert(flag(Team , HolderID , Position)).	
+	forall percept(not(flag(Team , HolderID , Position))) do delete(flag(Team , HolderID , Position)).
+	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
 	forall percept(not(item(UnrealID,Label,ItemType,Position))), bel(item(UnrealID,Label,ItemType,Position)) do delete(item(UnrealID,Label,ItemType,Position)).
@@ -86,6 +86,9 @@ module attackEvents {
 	 	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).
 	 	
 	 	forall a-goal(at(ID)),bel(holdingFlag,ourBaseLocation(ID2), ID\=ID2) do drop(at(ID)) + navigate(ID2).
+	 	
+	 	if bel(holdingFlag, ourBaseLocation(LOC)) then navigate(LOC).
+	 	
 	 	% if flag of opponent is already held then drop the goal to be at the flag base.
 	 	forall a-goal(at(ID)), bel(ourBaseLocation(ID2), enemyBaseLocation(ID), flagState(Team2,'held'), self(Player,_,Team), Team \= Team2) do drop(at(ID)) + navigate(ID2).
 	 	

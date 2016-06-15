@@ -17,10 +17,10 @@ module hangAroundOpponentBase {
 		if bel(droppedFlagAt(Location), not(navigation(navigation,_))) then navigate(Location).
 		
 		% exit moudule if opponent flag is home
-		if bel(self(_,_,Team), flagState(Team2,'home'), not(Team=Team2)) then exit-module.
-		% exit module if you have the flag
-		if bel(self(Player,_,Team), flag(Team2,Player,_), not(Team=Team2)) then exit-module.
+		if bel(self(_,_,Team), flagState(Team2,'home'), Team\=Team2) then exit-module.
 		
+		% exit module if you have the flag
+		if bel(holdingFlag) then exit-module.
 		
 		% pick up health on our way
 		if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',UnrealID)), not(navigation('stuck',_))) then PickupHealth.
