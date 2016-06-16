@@ -75,16 +75,16 @@ module defenceEvents {
 	forall bel(inRadius(ID)), not(a-goal(goLocation(ID))) do adopt(goLocation(ID)).
 	
 	% If the flag is back at the base the goLocationFlag goal is dropped.
-	forall a-goal(goLocationFlag(ID)), bel(self(_, _, TeamColor), not(flagState(TeamColor, 'dropped'))) do drop(goLocationFlag(ID)).
+	forall a-goal(goLocationFlag(ID)), bel(self(_, _, TeamColor), not(flagState(TeamColor, dropped))) do drop(goLocationFlag(ID)).
 	
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
-	if bel(self(_, _, TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped')) then adopt(goLocationFlag(Position)) + exit-module.
+	if bel(self(_, _, TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, dropped)) then adopt(goLocationFlag(Position)) + exit-module.
 
 	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped.
 	forall a-goal(goHomeWithFlag(ID)), bel(not(holdingFlag)) do drop(goHomeWithFlag(ID)).		
 	
 	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base.
-	if bel(holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home'))) then exit-module.
+	if bel(holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, home))) then exit-module.
 	
 	% If the bot holds the flag the bot will go home.	
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)) + exit-module.
@@ -108,15 +108,15 @@ module defenceEvents {
 		then adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
-	forall a-goal(goRandom(Position)), bel(self(_, _, TeamColor), not(flagState(TeamColor, 'held')))
+	forall a-goal(goRandom(Position)), bel(self(_, _, TeamColor), not(flagState(TeamColor, held)))
 		do drop(goRandom(Position)).
 	
 	% If the bot is walking to a place close to the enemyflag and the friendlyflag is not held the bot will stop.
-	if bel(atkRad(ID), navigation(navigating, ID), not(flagState(TeamColor, 'held')))
+	if bel(atkRad(ID), navigation(navigating, ID), not(flagState(TeamColor, held)))
 		then stop + exit-module.
 		
 	% If the friendly  flag is taken the defensive bot will go to the enemy base.
-	forall a-goal(goLocation(ID)), bel(atkRad(Position), self(_, _, TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
+	forall a-goal(goLocation(ID)), bel(atkRad(Position), self(_, _, TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, held)) 
 		do drop(goLocation(ID)) + adopt(goRandom(Position)) + exit-module.
 	
 	% Secondary for shock rifle if an enemy bot is closeby, else primary.

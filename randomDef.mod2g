@@ -7,6 +7,6 @@ module randomDef {
 	if a-goal(at(Location)), bel(atkRad(Location)) then exit-module.
 	
 	% The bot will adopt random Defensive locations.
-	if bel(flagState(Team, 'home'), inRadius(Location), self(_, _, Team)) then adopt(at(Location)). 
+	if bel(flagState(Team, home), inRadius(Location), self(_, _, Team)) then adopt(at(Location)). 
 }
 

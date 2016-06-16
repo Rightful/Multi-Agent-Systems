@@ -5,14 +5,14 @@ exit = never.
 order = linearall.
 module PickupShieldBelt {
 		% If bel navigating to a place and no path then exit.
-		if bel(navigation('noPath', _)) then exit-module.
-		if bel(navigation('stuck', _)) then exit-module.
+		if bel(navigation(noPath, _)) then exit-module.
+		if bel(navigation(stuck, _)) then exit-module.
 		
 		% Pickup shieldbelt.
-		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, 'armor_shield_belt'), item(_, 'armor', _, UnrealID), navigation(navigating, ID), not(pickup(ID, 'armor', 'armor_shield_belt''armor_shield_belt'))) then stop. 
-		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, 'armor_shield_belt'), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
+		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), navigation(navigating, ID), not(pickup(ID, armor, armor_shield_beltarmor_shield_belt))) then stop. 
+		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
 		% Exit module if no shieldbelt left of full score.
-		if bel(not(item(_, _, 'armor_shield_belt', _))) then exit-module.
+		if bel(not(item(_, _, armor_shield_belt, _))) then exit-module.
 		if bel(armor(_, _, _, ShieldBelt), ShieldBelt = 100) then exit-module.
 }
