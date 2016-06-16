@@ -3,7 +3,10 @@ use Action as actionspec.
 
 order = linearrandom.
 module randomDef {
+	% If the goal of the bot is already being at a random Def location then the bot will exit the module.
 	if a-goal(at(Location)), bel(atkRad(Location)) then exit-module.
+	
+	% The bot will adopt random Defensive locations.
 	if bel(flagState(Team,'home'), inRadius(Location), self(_,_,Team)) then adopt(at(Location)). 
 }
 
