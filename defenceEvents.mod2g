@@ -68,15 +68,18 @@ module defenceEvents {
 	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
+		%forall a-goal(at(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(at(A)). 
+		%forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
 
-	forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
-		
-	% handle fragged percept (After line above!!).
-	forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
-	
-	% if you see an opponent bot then adopt to kill that bot.
-	forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
+		% if you do not see a bot anymore stop hunting him
+	 	%forall a-goal(fraggedBot(ID)), bel(not(bot(ID,_,_,_,_,_))) do drop(fraggedBot(ID)).
 	 	
+		% if you see an opponent bot then adopt to kill that bot.
+		%forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).	 	
+		
+		% handle fragged percept (After line above!!).
+		%forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
+	
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(ID)),not(a-goal(goLocation(ID))) do adopt(goLocation(ID)).
 	

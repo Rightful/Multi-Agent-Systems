@@ -70,13 +70,13 @@ module attackEvents {
 
 
 	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
+	%forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
 		
 	% handle fragged percept (After line above!!).
-	forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
+	%forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
 		
 	% if you see an opponent bot then adopt to kill that bot.
-	forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
+	%forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
 	 	
 	% if the flag you want is home then adopt to go to that base.
 	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).

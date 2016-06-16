@@ -17,7 +17,7 @@ module attackMain {
 	 	if bel(holdingFlag) then deliverFlag.
 	 	
 		%if the bot sees an enemy he should terminate him.
-		if a-goal(fraggedBot(ID)) then drop(fraggedBot(ID)) + KillMode.
+		%if a-goal(fraggedBot(ID)) then drop(fraggedBot(ID)) + KillMode.
 		
 	 	%if fellow attacker has the flag then hang around opponent base.
 	 	if bel(self(Player,_,Team), flagState(Team2,'held'), Team\=Team2, not(flag(Team2,Player,_))) then AroundEnemyBase.

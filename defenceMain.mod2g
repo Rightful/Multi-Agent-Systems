@@ -12,7 +12,7 @@ use KillMode as module.
 module defenceMain {
 	
 	%if the bot sees an enemy he should terminate him.
-	if a-goal(fraggedBot(UnrealID)) then KillMode.
+	%if a-goal(fraggedBot(UnrealID)) then KillMode.
 	
 	% pick up health on our way
 	if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
