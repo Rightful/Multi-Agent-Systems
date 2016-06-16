@@ -4,17 +4,16 @@ use Action as actionspec.
 exit = never.
 order = linearall.
 module PickupHealth {
-		%if bel navigating to a place and no path then exit
+		% If bel navigating to a place and no path then exit.
 		if bel(navigation('noPath',_)) then exit-module.
 		if bel(navigation('stuck',_)) then exit-module.
 		
-		% see if were done
+		% See if were done.
 		if bel(status(Health,_),Health>=60) then exit-module.
 		% if you dont see any health at all, exit
 		if bel(not(item(_,'health',_,_))) then exit-module.
 
-		% pickup health.
-		%if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), navigation(navigating,ID), not(pickup(ID,'health',_))) then stop. 
+		% Pickup health.
 		if bel(pickup(UnrealID,'health',_), item(_,_,_,UnrealID), not(navigation(reached,UnrealID))) then navigate(UnrealID).
 }
 

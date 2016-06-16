@@ -12,16 +12,16 @@ test PickupArmor with
 	pre{ true }
 	in{
 		
-		% pick shieldbelt up on our way
+		% Pick shieldbelt up on our way.
 		bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID,_,'armor_shield_belt'),item(_,'armor',_,UnrealID), not(navigation('noPath',UnrealID)), not(navigation('stuck',UnrealID))) leadsto done(PickupShieldBelt).
 		
-		% pick thighpad up on our way
+		% Pick thighpad up on our way.
 		bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID,_,'armor_thighpads'), item(_,'armor',_,UnrealID), not(navigation('noPath',UnrealID)), not(navigation('stuck',UnrealID))) leadsto done(PickupThighpad).
 		
-		% pick vest up on our way
+		% Pick vest up on our way.
 		bel(armor(_, Vest, _, _), Vest < 50, pickup(UnrealID,_,'armor_vest'), item(_,_,_,UnrealID), not(navigation('noPath',UnrealID)), not(navigation('stuck',UnrealID))) leadsto done(PickupVest).
 		
-		% pick up helmet on our way
+		% Pick up helmet on our way.
 		bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID,_,'armor_helmet'),item(_,_,_,UnrealID), not(navigation('noPath',UnrealID)), not(navigation('stuck',UnrealID))) leadsto done(PickupHelmet).
 	}
 	post{ true }
