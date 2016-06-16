@@ -12,19 +12,19 @@ use KillMode as module.
 module defenceMain {
 	
 	%if the bot sees an enemy he should terminate him.
-	%if a-goal(fraggedBot(ID)) then drop(fraggedBot(ID)) + KillMode.
+	if a-goal(fraggedBot(ID)) then drop(fraggedBot(ID)) + KillMode.
 	
 	% pick up health on our way
-	if bel(status(Health,_), Health < 90,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
+	%if bel(status(Health,_), Health < 90,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
 		
 	% pick up weapons on our way
-	if bel(pickup(ID,'weapon',_), item(_,'weapon',NewWeapon,ID), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
+	%if bel(pickup(ID,'weapon',_), item(_,'weapon',NewWeapon,ID), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
 		
 	% Let the bot go to a module to pick up armor if needed.
-	if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
+	%if bel(status(_,Armor), Armor < 80, item(_,'armor',_,_)) then PickupArmor.
 		
 	% pick up other items
-	if bel(item(_,_,_,ID), pickup(ID,'other',O), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupOther.
+	%if bel(item(_,_,_,ID), pickup(ID,'other',O), not(O=invisibility), not(O=jump_boots), not(O=berserk), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupOther.
 	
 	if goal(goLocationFlag(Position)) then drop(goLocationFlag(Position)) + navigate(Position).
 		
