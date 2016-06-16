@@ -10,13 +10,6 @@ use "ut-environment.jar" as environment with
                 ["skin", "BotA"],
                 ["logLevel", "WARNING"],
                 ["team", "blue"]
-            ],
-            [
-                 ["name", "Defender 2"],
-                ["skill", 5],
-                ["skin", "BotA"],
-                ["logLevel", "WARNING"],
-                ["team", "blue"]
             ]
            ].
 
@@ -28,6 +21,6 @@ define defencebot as agent{
 
 launchpolicy{
 
-            when type=bot launch defencebot with max = 2.
+            when type=bot launch defencebot with max = 1.
 }
 

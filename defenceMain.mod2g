@@ -12,10 +12,11 @@ use KillMode as module.
 module defenceMain {
 	
 	%if the bot sees an enemy he should terminate him.
+
 	%if a-goal(fraggedBot(UnrealID)) then KillMode.
-	
+
 	% pick up health on our way
-	if bel(status(Health,_), Health < 100,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
+	if bel(status(Health,_), Health < 90,(pickup(UnrealID,'health',_),item(_,_,_,UnrealID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupHealth.
 		
 	% pick up weapons on our way
 	if bel(pickup(ID,'weapon',_), item(_,'weapon',NewWeapon,ID), currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
@@ -30,13 +31,13 @@ module defenceMain {
 		
 	if goal(goHomeWithFlag(Position)) then drop(goHomeWithFlag(Position)) + navigate(Position).
 		
-	if goal(goLocationHelp(Position, ID)) then drop(goLocationHelp(Position, ID)) + navigate(Position).
+	if goal(goLocationHelp(Position)) then drop(goLocationHelp(Position)) + navigate(Position).
 	
 	if goal(goLocationFlagEnemy(Position)) then drop(goLocationFlagEnemy(Position)) + navigate(Position).
 	
 	if goal(goRandom(Position)) then drop(goRandom(Position)) + navigate(Position).
 	
-	if goal(goLocationKill(Position, ID)) then drop(goLocationKill(Position, ID)) + navigate(Position).
+	if goal(goLocationKill(Position)) then drop(goLocationKill(Position)) + navigate(Position).
 	
 	if goal(goLocation(Position)) then drop(goLocation(Position)) + navigate(Position).
 }

@@ -6,7 +6,7 @@ exit = never.
 order = linearall.
 module deliverFlag {
 	
-		if bel(status(Health,_), Health < 30,(pickup(ID,'health',_),item(_,_,_,ID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
+		if bel(status(Health,_), enemyFlagNotHome, Health < 30,(pickup(ID,'health',_),item(_,_,_,ID)), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupHealth.
 		
 		if bel(item(_,_,_,ID), pickup(ID,'other','invulnerability'), not(navigation('noPath',_)), not(navigation('stuck',_))) then stop + PickupOther.
 		
