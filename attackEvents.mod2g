@@ -8,7 +8,7 @@ module attackEvents {
 	% If bot sees enemy bot.
 	if bel(enemyBot(_, LOC)) then look(LOC).
 	
-	%if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
+	% If we're shot at but dont see anyone and you're not holding a flag, look at where you came from.
 	if percept(status(NewHealth,_),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
 	
 	% Belief base cleaning.
@@ -18,34 +18,34 @@ module attackEvents {
 	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
 		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
-	% keep track of own location.
+	% Keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
 		
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
 	
-	% Update the bot's status
+	% Update the bot's status.
 	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
 		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
 		
-	% Update the bot's current weapon
+	% Update the bot's current weapon.
 	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
 		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
 		
-	% Update the bot's inventory
+	% Update the bot's inventory.
 	if percept(not(weapon(WeapType,Ammo,AltAmmo))), bel(weapon(WeapType,Ammo,AltAmmo)) then delete(weapon(WeapType,Ammo,AltAmmo)).
 	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
 		
-	% Update the bot's current powerup
+	% Update the bot's current powerup.
 	forall bel(powerup(OldType,OldDur)), percept(powerup(Type,Dur)) do
 		delete(powerup(OldType,OldDur)) + insert(powerup(Type,Dur)).
 		
-	% Update the bot's current armor
+	% Update the bot's current armor.
 	forall bel(armor(OldHelm,OldVest,OldPads,OldBelt)), percept(armor(Helm,Vest,Pads,Belt)) do
 		delete(armor(OldHelm,OldVest,OldPads,OldBelt)) + insert(armor(Helm,Vest,Pads,Belt)).
 		
-	% Store all kills made in the match
+	% Store all kills made in the match.
 	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
 
 	% Updates the state of the flag.
@@ -67,36 +67,27 @@ module attackEvents {
 	% Update the pickups the bot sees.
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
-
-
-	% if you have been fragged then delete all (at +  fraggedBot) goals.
-	%forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
-		
-	% handle fragged percept (After line above!!).
-	%forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
-		
-	% if you see an opponent bot then adopt to kill that bot.
-	%forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
 	 	
-	% if the flag you want is home then adopt to go to that base.
+	% If the flag you want is home then adopt to go to that base.
 	if bel(flagState(Team,'home'), enemyBaseLocation(ID), self(_,_,Team2), Team \= Team2) then adopt(at(ID)).
-	 	
+	 
+	% If the bot holds the flag then all 'at' goals except at(EnemyBaseLocation) are dropped.	
 	forall a-goal(at(ID)),bel(holdingFlag,ourBaseLocation(ID2), ID\=ID2) do drop(at(ID)) + navigate(ID2).
 		
+	% If the bot holds the flag then the bot should navigate to the friendly base.
 	if bel(holdingFlag, ourBaseLocation(LOC)) then navigate(LOC).
 	 	
-	% if flag of opponent is already held then drop the goal to be at the flag base.
+	% If flag of opponent is already held then drop the goal to be at the flag base.
 	forall a-goal(at(ID)), bel(ourBaseLocation(ID2), enemyBaseLocation(ID), flagState(Team2,'held'), self(Player,_,Team), Team \= Team2) do drop(at(ID)) + navigate(ID2).
 	 	
-	% if you are not holding the flag anymore than drop to goal to be at our base.
+	% If you are not holding the flag anymore than drop to goal to be at our base.
 	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player,_,Team), not(flag(Team2,Player,_)), not(Team=Team2)) then drop(at(ID)).
 	 	
-	% if no path then ...
-	if a-goal(at(ID)), bel(navigation('noPath',ID)) then drop(at(ID)).
-	
+	% If there is no path to the location the bot is going to the goal is dropped an the bot is stopped.
+	if a-goal(at(ID)), bel(navigation('noPath',ID)) then drop(at(ID)).	
 	if bel(navigation('noPath',ID)), not(a-goal(at(ID))) then stop.
 	 	
-	% secondary for shock rifle if an enemy bot is closeby, else primary
+	% Secondary for shock rifle if an enemy bot is closeby, else primary.
 	if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 	if bel(enemyBot(_,location(X,Y,_)), ownLocation(A,B,_), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 	if bel(bot(_,_,_,location(X,Y,_),_,_), ownLocation(A,B,_), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle,secondary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
