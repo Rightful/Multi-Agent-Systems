@@ -9,7 +9,7 @@ module PickupVest {
 		if bel(navigation(stuck, _)) then exit-module.
 		
 		% Pickup vest.
-		if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, navigation(navigating, ID), not(pickup(ID, armor, armor_vest))) then stop. 
+		if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, navigation(navigating, Location), not(pickup(Location, armor, armor_vest))) then stop. 
 		if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
 		% Exit module if no vest left or full score.

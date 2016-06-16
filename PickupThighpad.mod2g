@@ -9,7 +9,7 @@ module PickupThighpad {
 		if bel(navigation(stuck, _)) then exit-module.
 		
 		% Pickup thighpad.
-		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), navigation(navigating, ID), not(pickup(ID, armor, armor_thighpads))) then stop. 
+		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), navigation(navigating, Location), not(pickup(Location, armor, armor_thighpads))) then stop. 
 		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
 		% Exit module if no thighpad left or full score.

@@ -9,7 +9,7 @@ module PickupShieldBelt {
 		if bel(navigation(stuck, _)) then exit-module.
 		
 		% Pickup shieldbelt.
-		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), navigation(navigating, ID), not(pickup(ID, armor, armor_shield_beltarmor_shield_belt))) then stop. 
+		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), navigation(navigating, Location), not(pickup(Location, armor, armor_shield_beltarmor_shield_belt))) then stop. 
 		if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
 		% Exit module if no shieldbelt left of full score.

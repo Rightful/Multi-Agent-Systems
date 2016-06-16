@@ -6,17 +6,17 @@ order = linearall.
 module attackEvents {
 	
 	% If bot sees enemy bot.
-	if bel(enemyBot(_, LOC)) then look(LOC).
+	if bel(enemyBot(_, Location)) then look(Location).
 	
 	% If we're shot at but dont see anyone and you're not holding a flag, look at where you came from.
-	if percept(status(NewHealth, _), status(OldHealth, _), NewHealth < OldHealth, not(enemyBot(_, _)), ownLocation(A, B, C))  then look(location(A, B, C)).
+	if percept(status(NewHealth, _), status(OldHealth, _), NewHealth < OldHealth, not(enemyBot(_, _)), ownLocation(X, Y, Z))  then look(location(X, Y, Z)).
 	
 	% Belief base cleaning.
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
-	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
-		then look([nearestEnemy, LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
+	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(Location, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
+		then look([nearestEnemy, Location]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
 	% Keep track of own location.
 	if bel(ownLocation(OldX, OldY, OldZ)), percept(orientation(location(X, Y, Z), _, _)) then delete(ownLocation(OldX, OldY, OldZ))+insert(ownLocation(X, Y, Z)).
@@ -69,23 +69,23 @@ module attackEvents {
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	 	
 	% If the flag you want is home then adopt to go to that base.
-	if bel(flagState(Team, home), enemyBaseLocation(ID), self(_, _, Team2), Team \= Team2) then adopt(at(ID)).
+	if bel(flagState(Team, home), enemyBaseLocation(UnrealID), self(_, _, Team2), Team \= Team2) then adopt(at(UnrealID)).
 	 
 	% If the bot holds the flag then all 'at' goals except at(EnemyBaseLocation) are dropped.	
-	forall a-goal(at(ID)), bel(holdingFlag, ourBaseLocation(ID2), ID\=ID2) do drop(at(ID)) + navigate(ID2).
+	forall a-goal(at(UnrealID)), bel(holdingFlag, ourBaseLocation(UnrealID2), UnrealID\=UnrealID2) do drop(at(UnrealID)) + navigate(UnrealID2).
 		
 	% If the bot holds the flag then the bot should navigate to the friendly base.
-	if bel(holdingFlag, ourBaseLocation(LOC)) then navigate(LOC).
+	if bel(holdingFlag, ourBaseLocation(Location)) then navigate(Location).
 	 	
 	% If flag of opponent is already held then drop the goal to be at the flag base.
-	forall a-goal(at(ID)), bel(ourBaseLocation(ID2), enemyBaseLocation(ID), flagState(Team2, held), self(Player, _, Team), Team \= Team2) do drop(at(ID)) + navigate(ID2).
+	forall a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID2), enemyBaseLocation(UnrealID), flagState(Team2, held), self(Player, _, Team), Team \= Team2) do drop(at(UnrealID)) + navigate(UnrealID2).
 	 	
 	% If you are not holding the flag anymore than drop to goal to be at our base.
-	if a-goal(at(ID)), bel(ourBaseLocation(ID), self(Player, _, Team), not(flag(Team2, Player, _)), not(Team=Team2)) then drop(at(ID)).
+	if a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID), self(Player, _, Team), not(flag(Team2, Player, _)), not(Team=Team2)) then drop(at(UnrealID)).
 	 	
 	% If there is no path to the location the bot is going to the goal is dropped an the bot is stopped.
-	if a-goal(at(ID)), bel(navigation(noPath, ID)) then drop(at(ID)).	
-	if bel(navigation(noPath, ID)), not(a-goal(at(ID))) then stop.
+	if a-goal(at(UnrealID)), bel(navigation(noPath, UnrealID)) then drop(at(UnrealID)).	
+	if bel(navigation(noPath, UnrealID)), not(a-goal(at(UnrealID))) then stop.
 	 	
 	% Secondary for shock rifle if an enemy bot is closeby, else primary.
 	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).

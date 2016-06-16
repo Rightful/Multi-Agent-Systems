@@ -9,7 +9,7 @@ module PickupWeapon {
 		if bel(navigation(stuck, _)) then exit-module.
 		
 		% Pick up weapons.
-		if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), navigation(navigating, ID), not(pickup(ID, weapon, _))) then stop.
+		if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), navigation(navigating, Location), not(pickup(Location, weapon, _))) then stop.
 		if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
 		% Exit module if no (better) weapon left.
