@@ -9,13 +9,14 @@ define navigate(Destination) with
 define look(Target) with
 			pre { true }
 			post { lookingAt(Target) }	
+
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
 			
 define stop with
 	pre{true}
-	post{navigation(waiting,none)}
+	post{true}
 	
 	% Define the conditions needed for the shoot action
 	define shoot(TargetLabel) with
