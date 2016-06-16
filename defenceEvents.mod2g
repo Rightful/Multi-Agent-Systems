@@ -68,15 +68,16 @@ module defenceEvents {
 	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 
-
 	forall a-goal(fraggedBot(ID)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(ID)).
-		
-	% handle fragged percept (After line above!!).
-	forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
-	
+	% if you do not see a bot anymore stop hunting him
+	forall a-goal(fraggedBot(ID)), bel(not(enemyBot(ID,_))) do drop(fraggedBot(ID)).
+	 
 	% if you see an opponent bot then adopt to kill that bot.
 	forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).
 	 	
+	% handle fragged percept (After line above!!).
+	forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
+	
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(ID)),not(a-goal(goLocation(ID))) do adopt(goLocation(ID)).
 	
@@ -122,10 +123,6 @@ module defenceEvents {
 		
 	forall a-goal(goLocation(ID)), bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
 		do drop(goLocation(ID)) + adopt(goRandom(Position)) + exit-module.
-
-				
-
-	
 	
 	% secondary for shock rifle if an enemy bot is closeby, else primary
 	if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
