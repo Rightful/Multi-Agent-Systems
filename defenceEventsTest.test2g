@@ -9,40 +9,40 @@ test defenceEvents with
 		% Send on change 
 		
 		% Update the bot's status, send on change.
-		percept(status(Hp,Arm,_,_)) leadsto bel(status(Hp,Arm)).
-		percept(status(NewHp,NewArm,_,_)), bel(status(Hp,Arm),not(NewHp = Hp), not(NewArm =Arm)) leadsto not(bel(status(Hp,Arm))).
+		percept(status(Hp, Arm, _, _)) leadsto bel(status(Hp, Arm)).
+		percept(status(NewHp, NewArm, _, _)), bel(status(Hp, Arm), not(NewHp = Hp), not(NewArm =Arm)) leadsto not(bel(status(Hp, Arm))).
 		
 		% Update the bot's score, send on change.
-		percept(score(K,D,S)) leadsto bel(score(K,D,S)).
-		percept(score(NewK,NewD,NewS)), bel(score(K,D,S),not(NewK = K), not(NewD = D), not(NewS = S)) leadsto not(bel(score(K,D,S))).
+		percept(score(K, D, S)) leadsto bel(score(K, D, S)).
+		percept(score(NewK, NewD, NewS)), bel(score(K, D, S), not(NewK = K), not(NewD = D), not(NewS = S)) leadsto not(bel(score(K, D, S))).
 
 		% Update the bot's current weapon, send on change.
-		percept(currentWeapon(Weap,FMode)) leadsto bel(currentWeapon(Weap,FMode)).
-		percept(currentWeapon(NewWeap,NewFMode)), bel(currentWeapon(Weap,FMode),not(NewWeap = Weap), not(NewFMode = FMode)) leadsto not(bel(currentWeapon(Weap,FMode))).		
+		percept(currentWeapon(Weap, FMode)) leadsto bel(currentWeapon(Weap, FMode)).
+		percept(currentWeapon(NewWeap, NewFMode)), bel(currentWeapon(Weap, FMode), not(NewWeap = Weap), not(NewFMode = FMode)) leadsto not(bel(currentWeapon(Weap, FMode))).		
 		
 		% Update the bot's current powerup, send on change. 
-		percept(powerup(Type,Dur)) leadsto bel(powerup(Type,Dur)).
-		percept(powerup(NewType,NewDur)), bel(powerup(Type,Dur),not(NewType = Type), not(NewDur = Dur)) leadsto not(bel(powerup(Type,Dur))).
+		percept(powerup(Type, Dur)) leadsto bel(powerup(Type, Dur)).
+		percept(powerup(NewType, NewDur)), bel(powerup(Type, Dur), not(NewType = Type), not(NewDur = Dur)) leadsto not(bel(powerup(Type, Dur))).
 		
 		% Update the bot's current armor, send on change.
-		percept(armor(Helm,Vest,Pads,Belt)) leadsto bel(armor(Helm,Vest,Pads,Belt)).
-		percept(armor(NewHelm,NewVest,NewPads,NewBelt)), bel(armor(Helm,Vest,Pads,Belt),not(NewHelm = Helm), not(NewVest = Vest), not(NewPads = Pads), not(NewBelt = Belt)) leadsto not(bel(armor(Helm,Vest,Pads,Belt))).	
+		percept(armor(Helm, Vest, Pads, Belt)) leadsto bel(armor(Helm, Vest, Pads, Belt)).
+		percept(armor(NewHelm, NewVest, NewPads, NewBelt)), bel(armor(Helm, Vest, Pads, Belt), not(NewHelm = Helm), not(NewVest = Vest), not(NewPads = Pads), not(NewBelt = Belt)) leadsto not(bel(armor(Helm, Vest, Pads, Belt))).	
 		
 		% Update the navigation state of the bot, send on change.
-		percept(navigation(Status,Dest)) leadsto bel(navigation(Status,Dest)).
-		percept(navigation(NewStatus,NewDest)), bel(navigation(Status,Dest),not(NewStatus = Status), not(NewDest = Dest)) leadsto not(bel(navigation(Status,Dest))).	
+		percept(navigation(Status, Dest)) leadsto bel(navigation(Status, Dest)).
+		percept(navigation(NewStatus, NewDest)), bel(navigation(Status, Dest), not(NewStatus = Status), not(NewDest = Dest)) leadsto not(bel(navigation(Status, Dest))).	
 		
 		% Update the logic iteration, send on change. 
 		percept(logic(It)) leadsto bel(logic(It)).
-		percept(logic(NewIt)), bel(logic(It),not(NewIt = It)) leadsto not(bel(logic(It))).		
+		percept(logic(NewIt)), bel(logic(It), not(NewIt = It)) leadsto not(bel(logic(It))).		
 		
 		% Update the information on the current game, send on change.
-		percept(game(GType,Map,GScore,TLimit)) leadsto bel(game(GType,Map,GScore,TLimit)).
-		percept(game(NewGType,NewMap,NewGScore,NewTLimit)), bel(game(GType,Map,GScore,TLimit),not(NewGType = GType), not(NewMap = Map), not(NewGScore = GScore), not(NewTLimit = TLimit)) leadsto not(bel(game(GType,Map,GScore,TLimit))).	
+		percept(game(GType, Map, GScore, TLimit)) leadsto bel(game(GType, Map, GScore, TLimit)).
+		percept(game(NewGType, NewMap, NewGScore, NewTLimit)), bel(game(GType, Map, GScore, TLimit), not(NewGType = GType), not(NewMap = Map), not(NewGScore = GScore), not(NewTLimit = TLimit)) leadsto not(bel(game(GType, Map, GScore, TLimit))).	
 		
 		% Update the scores of both teams.
-		percept(teamScore(Team,Opp)) leadsto bel(teamScore(Team,Opp)).
-		percept(teamScore(NewTeam,NewOpp)), bel(teamScore(Team,Opp),not(NewTeam = Team), not(NewOpp = Opp)) leadsto not(bel(teamScore(Team,Opp))).				
+		percept(teamScore(Team, Opp)) leadsto bel(teamScore(Team, Opp)).
+		percept(teamScore(NewTeam, NewOpp)), bel(teamScore(Team, Opp), not(NewTeam = Team), not(NewOpp = Opp)) leadsto not(bel(teamScore(Team, Opp))).				
 	}
 	post{ true }
 	

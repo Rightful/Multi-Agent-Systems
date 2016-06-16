@@ -12,12 +12,12 @@ module attackInit {
 	
 	% Forall navpoints that are in radius(R) of the flagbase, the bot will insert those navpoints into the
 	%  beliefs of the bot. In the thirs rule the arithmetic is performed.	
-	forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
-		bel(self(_,_,Color), base(Color2, UnrealID), Color \= Color2, navPoint(UnrealID, location(X,Y,Z),_), 
-			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(atkRad(UnrealIDi)).
+	forall percept(navPoint(UnrealIDi, location(Xi, Yi, Zi), _)), 
+		bel(self(_, _, Color), base(Color2, UnrealID), Color \= Color2, navPoint(UnrealID, location(X, Y, Z), _), 
+			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D), radius(R), Di < R ) do insert(atkRad(UnrealIDi)).
 			
-	forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
-		bel(self(_,_,Color), base(Color, UnrealID), navPoint(UnrealID, location(X,Y,Z),_), 
-			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(inRadius(UnrealIDi)).
+	forall percept(navPoint(UnrealIDi, location(Xi, Yi, Zi), _)), 
+		bel(self(_, _, Color), base(Color, UnrealID), navPoint(UnrealID, location(X, Y, Z), _), 
+			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D), radius(R), Di < R ) do insert(inRadius(UnrealIDi)).
 }
 
