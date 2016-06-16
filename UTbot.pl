@@ -33,10 +33,10 @@ radius(1000).
 	% We are at a certain location if the IDs match, or ...
 	at(UnrealID) :- navigation(reached,UnrealID).
 	
-	%if opponentflag is not home.
+	% If opponentflag is not home.
 	 enemyFlagNotHome :- self(_,_,Team), not(flagState(Team2,'home')), Team\=Team2.
 	 	
-	% ... if the coordinates are approximately equal.
+	% If the coordinates are approximately equal.
 	at(location(X,Y,Z)) :- navigation(reached,location(X1,Y1,Z1)), 
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1). 
 	
@@ -48,16 +48,16 @@ radius(1000).
 	distance(X,Y,Z,X1,Y1,Z1,D) :- DX is (X-X1), DY is (Y-Y1), DZ is (Z-Z1), Xsq is (DX*DX), Ysq is (DY*DY), Zsq is (DZ*DZ),
 		XYsum is Xsq+Ysq, XYZsum is XYsum+Zsq, D is sqrt(XYZsum).
 
-	% enemy bot
+	% Enemy bot
 	enemyBot(UnrealID, Location) :-
 		bot(UnrealID,_,Team,Location,_,_),
 		self(_,_,Team2),
 		Team \= Team2.
 		
-	%checks if a player is holding a flag.
+	% Checks if a player is holding a flag.
 	holdingFlag :- flag(Team2,Player,_), self(Player,_,Team), Team \= Team2.
 	
-	%Gives the dropped flag location.
+	% Gives the dropped flag location.
 	droppedFlagAt(Location) :- flagState(Team,'dropped'), flag(Team,_,Location).
 	%droppedFlagAt(Loc):-lastKnownLocFlag(Loc).
 	
