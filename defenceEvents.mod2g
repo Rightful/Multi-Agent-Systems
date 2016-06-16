@@ -4,99 +4,86 @@ order = linearall.
 
 module defenceEvents {
 	
+% If bot sees enemy bot.
+	if bel(enemyBot(_, LOC)) then look(LOC).
+	
+	% If we're shot at but dont see anyone and you're not holding a flag, look at where you came from.
+	if percept(status(NewHealth,_),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
+	
 	% Belief base cleaning.
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
-	%ERUIT
 	if bel(not(enemyBot(_, _)), timeForUpdate, lookAt(LOC, X), viewAngle(Y), lastAngleUpdater(LastAngle), get_time(Current)) 
 		then look([nearestEnemy,LOC]) + delete(lastAngleUpdater(LastAngle)) + insert(lastAngleUpdater(Current)) + delete(viewAngle(Y)) + insert(viewAngle(X)).
 	
-	% If bot sees enemy bot.
-	if bel(enemyBot(_, LOC)) then look(LOC).
-	
-	%if we're shot at but dont see anyone and you're not holding a flag, look at where you came from
-	if percept(status(NewHealth,_),status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
-
-	% keep track of own location.
+	% Keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).
 		
 	% Update the navigation state of the bot ('send on change' percept).
 	forall bel(navigation(OldStatus,OldDest)), percept(navigation(Status,Destination))do 
 		delete(navigation(OldStatus,OldDest)) + insert(navigation(Status,Destination)).
 	
-	% Update the bot's status
+	% Update the bot's status.
 	forall bel(status(OldHp,OldArm)), percept(status(Hp,Arm,_,_)) do
 		delete(status(OldHp,OldArm)) + insert(status(Hp,Arm)).
 		
-	% Update the bot's current weapon
+	% Update the bot's current weapon.
 	forall bel(currentWeapon(OldWeap,OldFMode)), percept(currentWeapon(Weap,FMode)) do
 		delete(currentWeapon(OldWeap,OldFMode)) + insert(currentWeapon(Weap,FMode)).
 		
-	% Update the bot's inventory
+	% Update the bot's inventory.
 	if percept(not(weapon(WeapType,Ammo,AltAmmo))), bel(weapon(WeapType,Ammo,AltAmmo)) then delete(weapon(WeapType,Ammo,AltAmmo)).
 	if percept(weapon(WeapType,Ammo,AltAmmo)) then insert(weapon(WeapType,Ammo,AltAmmo)).
 		
-	% Update the bot's current powerup
+	% Update the bot's current powerup.
 	forall bel(powerup(OldType,OldDur)), percept(powerup(Type,Dur)) do
 		delete(powerup(OldType,OldDur)) + insert(powerup(Type,Dur)).
 		
-	% Update the bot's current armor
+	% Update the bot's current armor.
 	forall bel(armor(OldHelm,OldVest,OldPads,OldBelt)), percept(armor(Helm,Vest,Pads,Belt)) do
 		delete(armor(OldHelm,OldVest,OldPads,OldBelt)) + insert(armor(Helm,Vest,Pads,Belt)).
 		
-	% Store all kills made in the match
+	% Store all kills made in the match.
 	forall percept(fragged(Time,KillerID,VictimID,WeapType)) do insert(fragged(Time,KillerID,VictimID,WeapType)).
 
 	% Updates the state of the flag.
-	forall percept(not(flagState(Team,FlagState))) do delete(flagState(Team,FlagState)).
+	forall percept(not(flagState(Team,FlagState))), bel(flagState(Team,FlagState)) do delete(flagState(Team,FlagState)).
 	forall percept(flagState(Team,FlagState)) do insert(flagState(Team,FlagState)).
 	
 	% Update Flag stuff.
 	forall percept(not(flag(Team , HolderID , Position))) do delete(flag(Team , HolderID , Position)).
-	forall percept(flag(Team , HolderID , Position)), bel(flag(Team,HolderUnrealID,Position)) do insert(flag(Team , HolderID , Position)).	
+	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
 	
 	% Update the items the bot sees and drop any getItem goals associated with them.
-	forall percept(not(item(UnrealID,Label,ItemType,Position))) do delete(item(UnrealID,Label,ItemType,Position)).
+	forall percept(not(item(UnrealID,Label,ItemType,Position))), bel(item(UnrealID,Label,ItemType,Position)) do delete(item(UnrealID,Label,ItemType,Position)).
 	forall percept(item(UnrealID,Label,ItemType,Position)) do insert(item(UnrealID,Label,ItemType,Position)).
 	
 	% Update the other bots the bot sees.
-	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
+	forall percept(not(bot(UnrealID,Name,Team,Position,Weapon,Firemode))), bel(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do delete(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
 	forall percept(bot(UnrealID,Name,Team,Position,Weapon,Firemode)) do insert(bot(UnrealID,Name,Team,Position,Weapon,Firemode)).
 	
 	% Update the pickups the bot sees.
-	forall percept(not(pickup(UnrealID))) do delete(pickup(UnrealID)).
+	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
-
-		%forall a-goal(at(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(at(A)). 
-		%forall a-goal(fraggedBot(A)), bel(self(Victim,_,_), fragged(_,_,Victim,_)) do drop(fraggedBot(A)).
-
-		% if you do not see a bot anymore stop hunting him
-	 	%forall a-goal(fraggedBot(ID)), bel(not(bot(ID,_,_,_,_,_))) do drop(fraggedBot(ID)).
-	 	
-		% if you see an opponent bot then adopt to kill that bot.
-		%forall bel(enemyBot(ID,_)) do adopt(fraggedBot(ID)).	 	
-		
-		% handle fragged percept (After line above!!).
-		%forall bel(fragged(Time, KillerID, VictimID, WeaponType)) do delete(fragged(Time, KillerID, VictimID, WeaponType)).
 	
-	% if you see our dropped flag, then pick it up.
+	% If you see our dropped flag, then pick it up.
 	if bel(droppedFlagAt(LOC), navigation(navigation,ID), not(ID=LOC)) then stop.
 	if bel(droppedFlagAt(LOC), not(navigation(navigation,_))) then navigate(LOC).
 		
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(ID)),not(a-goal(goLocation(ID))) do adopt(goLocation(ID)).
 	
-	% If the flag is back at the base the goLocationFlag goal is dropped
+	% If the flag is back at the base the goLocationFlag goal is dropped.
 	forall a-goal(goLocationFlag(ID)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'dropped'))) do drop(goLocationFlag(ID)).
 	
 	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	if bel(self(_,_,TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, 'dropped')) then adopt(goLocationFlag(Position)) + exit-module.
 
-	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped
+	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped.
 	forall a-goal(goHomeWithFlag(ID)), bel(not(holdingFlag)) do drop(goHomeWithFlag(ID)).		
 	
-	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base
+	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base.
 	if bel(holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, 'home'))) then exit-module.
 	
 	% If the bot holds the flag the bot will go home.	
@@ -108,7 +95,7 @@ module defenceEvents {
 	if bel(self(_, _, Color),enemyBot(UnrealID, P))
 		then adopt(fraggedBot(UnrealID))+ exit-module.		
 		
-	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal
+	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal.
 	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_,_,TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
 		 
@@ -123,14 +110,16 @@ module defenceEvents {
 	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
 	forall a-goal(goRandom(Position)), bel(self(_,_,TeamColor), not(flagState(TeamColor, 'held')))
 		do drop(goRandom(Position)).
-		
+	
+	% If the bot is walking to a place close to the enemyflag and the friendlyflag is not held the bot will stop.
 	if bel(atkRad(ID), navigation(navigating, ID), not(flagState(TeamColor, 'held')))
 		then stop + exit-module.
 		
+	% If the friendly  flag is taken the defensive bot will go to the enemy base.
 	forall a-goal(goLocation(ID)), bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
 		do drop(goLocation(ID)) + adopt(goRandom(Position)) + exit-module.
 	
-	% secondary for shock rifle if an enemy bot is closeby, else primary
+	% Secondary for shock rifle if an enemy bot is closeby, else primary.
 	if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 	if bel(enemyBot(_,location(X,Y,_)), ownLocation(A,B,_), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 	if bel(bot(_,_,_,location(X,Y,_),_,_), ownLocation(A,B,_), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle,secondary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
