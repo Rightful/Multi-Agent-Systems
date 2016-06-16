@@ -1,0 +1,9 @@
+use UTbot as knowledge.
+use Action as actionspec.
+
+order = linearrandom.
+module randomDef {
+	if a-goal(at(Location)), bel(atkRad(Location)) then exit-module.
+	if bel(flagState(Team,'home'), inRadius(Location), self(_,_,Team)) then adopt(at(Location)). 
+}
+

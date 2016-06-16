@@ -127,15 +127,20 @@ module defenceEvents {
 	forall a-goal(goLocation(ID)), bel(atkRad(Position), self(_,_,TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, 'held')) 
 		do drop(goLocation(ID)) + adopt(goRandom(Position)) + exit-module.
 			
-	forall a-goal(goLocationKill(Position, ID)), bel(not(enemyBot(ID, Position)))
-		do drop(goLocationKill(Position, ID)).
+	forall a-goal(goLocationKill(Position)), bel(self(_,_,TeamColor), not( enemyBot(UnrealID, P)))
+		do drop(goLocationKill(Position)).
 		
-	if bel(enemyBot(ID, Position), navigation(navigating, Position2), Position \= Position2) 
-		then stop + all.send(helpDef(Position, ID)) +  adopt(goLocationKill(Position, ID)) + exit-module.
+	if bel(self(_, _, Color), base(Color, FriendlyBase), base(Color2, EnemyBase), enemyBot(UnrealID, Position), not(holdingFlag), Color \= Color2) 
+		then path(Position, FriendlyBase) + insert(following(UnrealID, FriendlyBase)).
+		
+	if (_).sent:(escorting), bel(self(_, _, Color), navigation(navigating, Location), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P), atkRad(Location)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
+		then stop +  adopt(goLocationKill(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		
+	if bel(self(_, _, Color), following(UnrealID,  FriendlyBase),enemyBot(UnrealID, P)), percept(path(Position, FriendlyBase, _, [H1|[H2|[H | T]]])) 
+		then adopt(goLocationKill(H)) + delete(following(UnrealID,  FriendlyBase))+ exit-module.
+		
+		
 	
-	if bel(enemyBot(ID, Position)) 
-		then all.send(helpDef(Position, ID)) +  adopt(goLocationKill(Position, ID)) + exit-module.
-
 	% secondary for shock rifle if an enemy bot is closeby, else primary
 	if bel(not(enemyBot(_,_))) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
 	if bel(enemyBot(_,location(X,Y,_)), ownLocation(A,B,_), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle,primary),weapon(flak_cannon,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(impact_hammer,primary)]).
