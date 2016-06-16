@@ -1,56 +1,56 @@
 use "ut-environment.jar" as environment with
-	visualizer = "rmi://127.0.0.1:1099",
-	botServer = "ut://127.0.0.1:3000",
-	controlServer = "ut://127.0.0.1:3001",
+	visualizer = "rmi://127.0.0.1:1099", 
+	botServer = "ut://127.0.0.1:3000", 
+	controlServer = "ut://127.0.0.1:3001", 
 	logLevel = "WARNING", 
 	bots = [
 			[
-			 	["name", "Attacker 1"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
+			 	["name", "Attacker 1"], 
+				["skill", 5], 
+				["skin", "BotA"], 
+				["logLevel", "WARNING"], 
 				["team", "blue"]
 			]
-			,
+			, 
 			[
-			 	["name", "Attacker 2"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
+			 	["name", "Attacker 2"], 
+				["skill", 5], 
+				["skin", "BotA"], 
+				["logLevel", "WARNING"], 
 				["team", "blue"]
-			],
+			], 
 			
 			[
-			 	["name", "Attacker 3"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
+			 	["name", "Attacker 3"], 
+				["skill", 5], 
+				["skin", "BotA"], 
+				["logLevel", "WARNING"], 
 				["team", "blue"]
-			],
+			], 
 			[
-			 	["name", "Defender 1"],
-				["skill", 5],
-				["skin", "BotA"],
-				["logLevel", "WARNING"],
+			 	["name", "Defender 1"], 
+				["skill", 5], 
+				["skin", "BotA"], 
+				["logLevel", "WARNING"], 
 				["team", "blue"]
 			]
 		]
-		,
+		, 
 		nativebots = 
 			[
 				[
-					["name", "Slain"],
-					["skill", 3],
+					["name", "Slain"], 
+					["skill", 3], 
 					["team", "red"]
-				],
+				], 
 				[
-					["name", "Harlin"],
-					["skill", 3],
+					["name", "Harlin"], 
+					["skill", 3], 
 					["team", "red"]
-				],
+				], 
 				[
-					["name", "Johnson"],
-					["skill", 3],
+					["name", "Johnson"], 
+					["skill", 3], 
 					["team", "red"]
 				]
 			].
