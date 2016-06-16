@@ -2,28 +2,26 @@ use UTbot as knowledge.
 
 % Make a best effort attempt to go to the Destination.
 define navigate(Destination) with
-	pre{ not(navigation(navigating,_)) }
-	post{ true }	
+			pre { not(navigation(navigating,_)) }
+			post { true }	
 	
-% Define pre and post conditions of look
+% Look at at given target.
 define look(Target) with
 			pre { true }
 			post { lookingAt(Target) }	
 
+% The bot will equip the weapons in the WeaponList.
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
 			
-define path(Location, Location2) with
+% The stopped.	
+define stop with
 			pre { true }
 			post { true }
-			
-define stop with
-	pre{true}
-	post{true}
 	
-	% Define the conditions needed for the shoot action
-	define shoot(TargetLabel) with
-		pre { weaponSelected }
-		post { true }
+% Define the conditions needed for the shoot action.
+define shoot(TargetLabel) with
+			pre { weaponSelected }
+			post { true }
 	
