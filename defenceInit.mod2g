@@ -14,7 +14,7 @@ module defenceInit {
 		bel(self(_,_,Color), base(Color2, UnrealID), Color \= Color2, navPoint(UnrealID, location(X,Y,Z),_), 
 			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(atkRad(UnrealIDi)).
 	
-	% set basic weapon priorities.
+	% Set basic weapon priorities.
 	if true then prefer([weapon(shock_rifle,primary),
 		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
 		weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary), weapon(bio_rifle,primary)]).

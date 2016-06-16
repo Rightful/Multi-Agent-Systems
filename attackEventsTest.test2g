@@ -6,7 +6,7 @@ timeout = 30.
 test attackEvents with
 	pre{ true }
 	in{ 
-		%Send on change 
+		% Send on change 
 		
 		% Update the bot's status, send on change.
 		percept(status(Hp,Arm,_,_)) leadsto bel(status(Hp,Arm)).
