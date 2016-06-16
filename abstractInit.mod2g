@@ -45,9 +45,11 @@ module abstractInit {
 	if true then shoot([enemyFlagCarrier,nearestEnemy]).
 		
 	%if true then prefer([shock_rifle,flak_cannon,link_gun,stinger_minigun,sniper_rifle,enforcer,impact_hammer]).
-    if true then prefer([weapon(flak_cannon,primary), weapon(shock_rifle,primary)
-        ,weapon(rocket_launcher,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), 
-        weapon(enforcer,primary), weapon(sniper_rifle,primary)]).
+
+	if true then prefer([weapon(flak_cannon, primary),weapon(shock_rifle,primary), 
+	weapon(rocket_launcher,primary), weapon(link_gun,primary), 
+	weapon(stinger_minigun,primary), weapon(enforcer,primary), weapon(sniper_rifle,primary)]).
+
 
 	% Initially, we are going nowhere.
 	if true then insert(navigation(none, none)).

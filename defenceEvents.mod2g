@@ -21,7 +21,8 @@ module defenceEvents {
 	if percept(status(NewHealth,_)), bel(status(OldHealth,_), NewHealth < OldHealth, not(enemyBot(_,_)), ownLocation(A,B,C))  then look(location(A,B,C)).
 	
 	% If bot sees enemy bot.
-	if bel(enemyBot(_, LOC)) then look(LOC).	
+	if bel(enemyBot(_, LOC)) then look(LOC).
+	if bel(enemyBot(_,Position), not(holdingFlag)) then navigate(Position).
 	
 	% keep track of own location.
 	if bel(ownLocation(OldX,OldY,OldZ)),percept(orientation(location(X,Y,Z),_,_)) then delete(ownLocation(OldX,OldY,OldZ))+insert(ownLocation(X,Y,Z)).

@@ -1,9 +1,24 @@
 use UTbot as knowledge.
 use Action as actionspec.
+<<<<<<< HEAD
 
 
 
 module defenceMain {
+=======
+use PickupArmor as module.
+use PickupHealth as module.
+use PickupOther as module.
+use PickupWeapon as module.
+
+
+module defenceMain {
+	% TEST: new def PickupSystem
+	% pick up weapons on our way
+	if bel(pickup(UnrealID,'weapon',_), item(_,'weapon',NewWeapon,UnrealID), 
+	currentWeapon(CurrentWeapon,_), betterWeapon(NewWeapon,CurrentWeapon), not(weapon(NewWeapon,_,_)), 
+	not(navigation('noPath',_)), not(navigation('stuck',_))) then PickupWeapon.
+>>>>>>> origin/Ultimate
 	
 	if bel(navigation('noPath', _); navigation('stuck', _)) then respawn.
 	
