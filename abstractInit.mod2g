@@ -16,24 +16,26 @@ module abstractInit {
 	% Store information about the bot.
 	forall percept(self(UnrealID,Name,Team)) do insert(self(UnrealID,Name,Team)).
 	
+	% Store information about the flag state.
 	forall percept(flagState(Team, Status)) do insert(flagState(Team, Status)).
 	
+	% Store information about the flag.
 	forall percept(flag(Team,HolderUnrealID,Position)) do insert(flag(Team,HolderUnrealID,Position)).
 	
-	% save our coördinates for our base.
+	% Save our coördinates for our base.
 	if percept(navPoint(BaseUnrealID, Location, _)), bel(
 		self(_, _, Team),
 		base(Team, BaseUnrealID)
 	) then insert(ourBaseLocation(Location)).
 	
-	% save our coördinates for enemy base.
+	% Save our coördinates for enemy base.
 	if percept(navPoint(BaseUnrealID, Location, _)),bel(
 		self(_, _, Team),
 		base(Team2, BaseUnrealID),
 		Team\=Team2
 	) then insert(enemyBaseLocation(Location)).
 		
-			% save all nav points close to base.
+	% Save all nav points close to base.
 		forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
 			ourBaseLocation(location(A, B, C)),
 			A<X+400, 
@@ -62,10 +64,10 @@ module abstractInit {
 	% Initially, we have no weapon equipped so no deployable.
 	if true then insert(deployable([])).
 
-	% set that we ought to look at the nearest enemy.
+	% Set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier,nearestEnemy]).
 		
-	% set general shoot priority.
+	% Set general shoot priority.
 	if true then shoot([enemyFlagCarrier,nearestEnemy]).
 		
 	% Initially, we are going nowhere.
