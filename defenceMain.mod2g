@@ -5,8 +5,6 @@ use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
 use deliverFlag as module.
-use retrieveFlag as module.
-use KillMode as module.
 
 
 module defenceMain {

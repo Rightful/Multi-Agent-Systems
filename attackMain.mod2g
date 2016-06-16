@@ -4,10 +4,7 @@ use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
 use deliverFlag as module.
-use KillMode as module.
 use AroundEnemyBase as module.
-
-use selectWeapon as module.
 
 use Action as actionspec.
 	
