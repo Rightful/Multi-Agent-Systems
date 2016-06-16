@@ -1,19 +1,21 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 exit = never.
 order = linearall.
+
 module PickupVest {
-		% If bel navigating to a place and no path then exit.
-		if bel(navigation(noPath, _)) then exit-module.
-		if bel(navigation(stuck, _)) then exit-module.
 		
-		% Pickup vest.
-		if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, navigation(navigating, Location), not(pickup(Location, armor, armor_vest))) then stop. 
-		if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, not(navigation(reached, UnrealID))) then navigate(UnrealID).
+	% If bel navigating to a place and no path then exit.
+	if bel(navigation(noPath, _)) then exit-module.
+	if bel(navigation(stuck, _)) then exit-module.
 		
-		% Exit module if no vest left or full score.
-		if bel(not(item(_, _, armor_vest, _))) then exit-module.
-		if bel(armor(_, Vest, _, _), Vest = 50) then exit-module.
+	% Pickup vest on the way.
+	if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, navigation(navigating, Location), not(pickup(Location, armor, armor_vest))) then stop. 
+	if bel(armor(_, Vest, _, _), pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), Vest < 50, not(navigation(reached, UnrealID))) then navigate(UnrealID).
+		
+	% Exit module if no vest left or full score.
+	if bel(not(item(_, _, armor_vest, _))) then exit-module.
+	if bel(armor(_, Vest, _, _), Vest = 50) then exit-module.
 }
 

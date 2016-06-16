@@ -1,19 +1,22 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 exit = never.
 order = linearall.
-module PickupHealth {
-		% If bel navigating to a place and no path then exit.
-		if bel(navigation(noPath, _)) then exit-module.
-		if bel(navigation(stuck, _)) then exit-module.
-		
-		% See if were done.
-		if bel(status(Health, _), Health>=60) then exit-module.
-		% if you dont see any health at all, exit
-		if bel(not(item(_, health, _, _))) then exit-module.
 
-		% Pickup health.
-		if bel(pickup(UnrealID, health, _), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
+module PickupHealth {
+	
+	% If bel navigating to a place and no path then exit.
+	if bel(navigation(noPath, _)) then exit-module.
+	if bel(navigation(stuck, _)) then exit-module.
+		
+	% See if were done.
+	if bel(status(Health, _), Health>=60) then exit-module.
+	
+	% If we don't see any health at all, exit.
+	if bel(not(item(_, health, _, _))) then exit-module.
+
+	% Pickup health on the way.
+	if bel(pickup(UnrealID, health, _), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 }
 

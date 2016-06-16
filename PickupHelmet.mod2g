@@ -1,20 +1,22 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 exit = never.
 order = linearall.
+
 module PickupHelmet {
-		% If bel navigating to a place and no path then exit.
-		if bel(navigation(noPath, _)) then exit-module.
-		if bel(navigation(stuck, _)) then exit-module.
 		
-		% Pickup helmet.
-		if bel(armor(Helmet, _, _, _), pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), Helmet < 20, navigation(navigating, Location), not(pickup(Location, armor, armor_helmet))) then stop. 
-		if bel(armor(Helmet, _, _, _), pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), Helmet < 20, not(navigation(reached, UnrealID))) then navigate(UnrealID).
+	% If bel navigating to a place and no path then exit.
+	if bel(navigation(noPath, _)) then exit-module.
+	if bel(navigation(stuck, _)) then exit-module.
 		
-		% Exit module if no helmet left or full score.
-		if bel(not(item(_, _, armor_helmet, _))) then exit-module.
-		if bel(armor(Helmet, _, _, _), Helmet = 20) then exit-module.
+	% Pickup helmet on the way.
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), Helmet < 20, navigation(navigating, Location), not(pickup(Location, armor, armor_helmet))) then stop. 
+	if bel(armor(Helmet, _, _, _), pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), Helmet < 20, not(navigation(reached, UnrealID))) then navigate(UnrealID).
+		
+	% Exit module if no helmet left or full score.
+	if bel(not(item(_, _, armor_helmet, _))) then exit-module.
+	if bel(armor(Helmet, _, _, _), Helmet = 20) then exit-module.
 }
 
 

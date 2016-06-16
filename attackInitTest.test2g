@@ -1,13 +1,11 @@
 use MAS_Group_28.
-use UTbot as knowledge.
+use Knowledge as knowledge.
 use attackInit as module.
 timeout = 5.
 
 test attackInit with
 	pre{ true }
 	in{
-		
-	% Percepts
 		
 	% Records enemy flag location, send once.
 	percept(flag(Team, OldHolderID, OldPosition)) leadsto bel(flag(Team, OldHolderID, OldPosition)).	 		 

@@ -1,7 +1,10 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 use abstractInit as module.
+
 module defenceInit {
+	
+	% The bot will perform the abstractInit.
 	if true then abstractInit.
 	
 	% Forall navpoints that are in radius(R) of the flagbase, the bot will insert those navpoints into the

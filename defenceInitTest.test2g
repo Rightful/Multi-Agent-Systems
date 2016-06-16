@@ -1,14 +1,12 @@
 use MAS_Group_28.
-use UTbot as knowledge.
+use Knowledge as knowledge.
 use defenceInit as module.
 timeout = 5.
 
 test defenceInit with
 	pre{ true }
 	in{
-	
-	% Percepts
-		
+			
 	% Store information about the bot, send once.
 	percept(self(UnrealID, Name, Team)) leadsto bel(self(UnrealID, Name, Team)).
 	

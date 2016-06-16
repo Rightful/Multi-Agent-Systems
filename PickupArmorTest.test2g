@@ -1,6 +1,6 @@
 use MAS_Group_28.
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 use PickupShieldBelt as module.
 use PickupThighpad as module.
 use PickupVest as module.
@@ -12,17 +12,17 @@ test PickupArmor with
 	pre{ true }
 	in{
 		
-		% Pick shieldbelt up on our way.
-		bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupShieldBelt).
+	% Pick shieldbelt up on the way.
+	bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupShieldBelt).
 		
-		% Pick thighpad up on our way.
-		bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupThighpad).
+	% Pick thighpad up on the way.
+	bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupThighpad).
 		
-		% Pick vest up on our way.
-		bel(armor(_, Vest, _, _), Vest < 50, pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupVest).
+	% Pick vest up on the way.
+	bel(armor(_, Vest, _, _), Vest < 50, pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupVest).
 		
-		% Pick up helmet on our way.
-		bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupHelmet).
+	% Pick up helmet on the way.
+	bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupHelmet).
 	}
 	post{ true }
 	

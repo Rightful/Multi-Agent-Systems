@@ -1,5 +1,6 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
+
 order = linearall.
 
 module abstractInit {
@@ -22,21 +23,21 @@ module abstractInit {
 	% Store information about the flag.
 	forall percept(flag(Team, HolderUnrealID, Position)) do insert(flag(Team, HolderUnrealID, Position)).
 	
-	% Save our coördinates for our base.
+	% Save coördinates for our base.
 	if percept(navPoint(BaseUnrealID, Location, _)), bel(
 		self(_, _, Team),
 		base(Team, BaseUnrealID)
 	) then insert(ourBaseLocation(Location)).
 	
-	% Save our coördinates for enemy base.
+	% Save coördinates for enemy base.
 	if percept(navPoint(BaseUnrealID, Location, _)), bel(
 		self(_, _, Team),
 		base(Team2, BaseUnrealID),
 		Team\=Team2
 	) then insert(enemyBaseLocation(Location)).
 		
-	% Save all nav points close to base.
-		forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
+	% Save all nav points close to our base.
+	forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
 			ourBaseLocation(location(A, B, C)),
 			A<X+400, 
 			A>X-400, 
@@ -45,7 +46,9 @@ module abstractInit {
 			C<Z+100,
 			C>Z-400
 		) do insert (closeToOurBaseNavPoint(UnrealID)).
-		forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
+	
+	% Save all nav points close to enemy base.
+	forall percept(navPoint(UnrealID, location(X, Y, Z), _)), bel(
 			enemyBaseLocation(location(A, B, C)),
 			A<X+250, 
 			A>X-250, 
@@ -110,5 +113,4 @@ module abstractInit {
 	if true then insert(angle(270, 	-1, 		0)).
 	if true then insert(angle(300, 	-0.866, 	0.5)).
 	if true then insert(angle(330, 	-0.5, 		0.866)).
-	
 }

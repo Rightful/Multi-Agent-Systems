@@ -1,19 +1,21 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 exit = never.
 order = linearall.
+
 module PickupWeapon {
-		% If bel navigating to a place and no path then exit.
-		if bel(navigation(noPath, _)) then exit-module.
-		if bel(navigation(stuck, _)) then exit-module.
 		
-		% Pick up weapons.
-		if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), navigation(navigating, Location), not(pickup(Location, weapon, _))) then stop.
-		if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), not(navigation(reached, UnrealID))) then navigate(UnrealID).
+	% If bel navigating to a place and no path then exit.
+	if bel(navigation(noPath, _)) then exit-module.
+	if bel(navigation(stuck, _)) then exit-module.
 		
-		% Exit module if no (better) weapon left.
-		if bel(not(item(_, weapon, _, _))) then exit-module.
-		if bel(item(_, weapon, NewWeapon, _), currentWeapon(CurrentWeapon, _), not(betterWeapon(NewWeapon, CurrentWeapon))) then exit-module.
-		if bel(item(_, weapon, NewWeapon, _), currentWeapon(CurrentWeapon, _), not(weapon(NewWeapon, _, _))) then exit-module.
+	% Pick up weapons on the way.
+	if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), navigation(navigating, Location), not(pickup(Location, weapon, _))) then stop.
+	if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), not(weapon(NewWeapon, _, _)), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), not(navigation(reached, UnrealID))) then navigate(UnrealID).
+		
+	% Exit module if no (better) weapon left.
+	if bel(not(item(_, weapon, _, _))) then exit-module.
+	if bel(item(_, weapon, NewWeapon, _), currentWeapon(CurrentWeapon, _), not(betterWeapon(NewWeapon, CurrentWeapon))) then exit-module.
+	if bel(item(_, weapon, NewWeapon, _), currentWeapon(CurrentWeapon, _), not(weapon(NewWeapon, _, _))) then exit-module.
 }

@@ -1,8 +1,10 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 order = linearrandom.
-module randomDef {
+
+module RandomDef {
+	
 	% If the goal of the bot is already being at a random Def location then the bot will exit the module.
 	if a-goal(at(Location)), bel(atkRad(Location)) then exit-module.
 	

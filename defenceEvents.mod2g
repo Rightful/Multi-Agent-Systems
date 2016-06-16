@@ -1,13 +1,14 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
+
 order = linearall.
 
 module defenceEvents {
 	
-% If bot sees enemy bot.
+	% If bot sees enemy bot then look at that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
 	
-	% If we're shot at but dont see anyone and you're not holding a flag, look at where you came from.
+	% If we are shot at, turn around and look at where you came from.
 	if percept(status(NewHealth, _), status(OldHealth, _), NewHealth < OldHealth, not(enemyBot(_, _)), ownLocation(X, Y, Z))  then look(location(X, Y, Z)).
 	
 	% Belief base cleaning.
@@ -67,7 +68,7 @@ module defenceEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	
-	% If you see our dropped flag, then pick it up.
+	% If we see our dropped flag, then pick it up.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.
 	if bel(droppedFlagAt(Location), not(navigation(navigation, _))) then navigate(Location).
 		
@@ -117,5 +118,4 @@ module defenceEvents {
 	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-
 }

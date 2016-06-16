@@ -1,18 +1,20 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 
 exit = never.
 order = linearall.
+
 module PickupThighpad {
-		% If bel navigating to a place and no path then exit.
-		if bel(navigation(noPath, _)) then exit-module.
-		if bel(navigation(stuck, _)) then exit-module.
 		
-		% Pickup thighpad.
-		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), navigation(navigating, Location), not(pickup(Location, armor, armor_thighpads))) then stop. 
-		if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
+	% If bel navigating to a place and no path then exit.
+	if bel(navigation(noPath, _)) then exit-module.
+	if bel(navigation(stuck, _)) then exit-module.
+	
+	% Pickup thighpad on the way.
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), navigation(navigating, Location), not(pickup(Location, armor, armor_thighpads))) then stop. 
+	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, _, _, UnrealID), not(navigation(reached, UnrealID))) then navigate(UnrealID).
 		
-		% Exit module if no thighpad left or full score.
-		if bel(not(item(_, _, armor_thighpads, _))) then exit-module.
-		if bel(armor(_, _, Thighpad, _), Thighpad = 30) then exit-module.
+	% Exit module if no thighpad left or full score.
+	if bel(not(item(_, _, armor_thighpads, _))) then exit-module.
+	if bel(armor(_, _, Thighpad, _), Thighpad = 30) then exit-module.
 }

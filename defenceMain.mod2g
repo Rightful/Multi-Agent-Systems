@@ -1,18 +1,17 @@
-use UTbot as knowledge.
-use Action as actionspec.
+use Knowledge as knowledge.
+use Actions as actionspec.
 use PickupArmor as module.
 use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
-use deliverFlag as module.
-
+use DeliverFlag as module.
 
 module defenceMain {
 
-	% Pick up health on our way.
+	% Pick up health on the way.
 	if bel(status(Health, _), Health < 90, (pickup(UnrealID, health, _), item(_, _, _, UnrealID)), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupHealth.
 		
-	% Pick up weapons on our way.
+	% Pick up weapons on the way.
 	if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), not(weapon(NewWeapon, _, _)), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupWeapon.
 		
 	% Let the bot go to a module to pick up armor if needed.

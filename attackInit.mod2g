@@ -1,6 +1,5 @@
-use UTbot as knowledge.
-use Action as actionspec.
-
+use Knowledge as knowledge.
+use Actions as actionspec.
 use abstractInit as module.
 
 order = linearall.
