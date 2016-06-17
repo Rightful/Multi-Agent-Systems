@@ -63,9 +63,6 @@ module abstractInit {
 	
 	% Initially, we have no weapon equipped.
 	if true then insert(currentWeapon(none, none)).
-	
-	% Initially, we have no weapon equipped so no deployable.
-	if true then insert(deployable([])).
 
 	% Set that we ought to look at the nearest enemy.
 	if true then look([enemyFlagCarrier, nearestEnemy]).
@@ -82,9 +79,6 @@ module abstractInit {
 	% Initially, we have no powerup.
 	if true then insert(powerup(none, none)).
 	
-	% Initially, we have no previous location
-	if true then insert(prevLocation(none, none, none)).
-
 	% Initially, we have neither hp nor armor.
 	if true then insert(status(none, none)).
 	

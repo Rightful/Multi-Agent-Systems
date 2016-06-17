@@ -1,6 +1,6 @@
 :-dynamic 
-	navigation/2, navPoint/3, self/3, orientation/3, 
-	status/2, score/3, currentWeapon/2, weapon/3,
+	navigation/2, navPoint/3, self/3, orientation/3, lookingAt/1,
+	status/2, score/3, currentWeapon/2, weapon/3, atkRad/1, 
 	powerup/2, armor/4, fragged/4, pickup/3, base/2, flagState/2, 
 	item/4, bot/6, pickup/1, flag/3, enemyBaseLocation/1, 
 	ourBaseLocation/1, base/2, bot/6, goLocation/1, inRadius/1,
