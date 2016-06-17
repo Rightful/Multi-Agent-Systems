@@ -5,22 +5,22 @@ order = linearall.
 
 module abstractInit {
 	
-	% Store all flag bases on the map.
+	% Store all flag bases on the map in beliefbase.
 	forall percept(base(Team, UnrealID)) do insert(base(Team, UnrealID)).
 	
-	% Store all navpoints on the map.
+	% Store all navpoints on the map in beliefbase.
 	forall percept(navPoint(UnrealID, Position, NeighsUnrealID)) do insert(navPoint(UnrealID, Position, NeighsUnrealID)).
 	
-	% Store all pickups on the map.
+	% Store all pickups on the map in beliefbase.
 	forall percept(pickup(UnrealID, Label, ItemType)) do insert(pickup(UnrealID, Label, ItemType)).
 	
-	% Store information about the bot.
+	% Store information about the bot in beliefbase.
 	forall percept(self(UnrealID, Name, Team)) do insert(self(UnrealID, Name, Team)).
 	
-	% Store information about the flag state.
+	% Store information about the flag state in beliefbase.
 	forall percept(flagState(Team, Status)) do insert(flagState(Team, Status)).
 	
-	% Store information about the flag.
+	% Store information about the flag in beliefbase.
 	forall percept(flag(Team, HolderUnrealID, Position)) do insert(flag(Team, HolderUnrealID, Position)).
 	
 	% Save coördinates for our base.
@@ -88,13 +88,13 @@ module abstractInit {
 	% Angle horizontal and vertical.
 	if true then insert(viewAngle(0)).
 		
-	% Needs to be set so we can interleave between updates.
+	% This line needs to be set so we can interleave between updates.
 	if true then insert(lastAngleUpdater(0)).
 	
 	% Own location.
 	if true then insert(ownLocation(0, 0, 0)).
 	
-	% Insert some Angels we will need for a 360 degree rotation.
+	% Insert some angles we will need for a 360 degree rotation.
 	if true then insert(angle(0, 	0, 			1)).
 	if true then insert(angle(30, 	0.5, 		0.866)).
 	if true then insert(angle(60, 	0.866, 		0.5)).

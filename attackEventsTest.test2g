@@ -7,17 +7,13 @@ test attackEvents with
 	pre{ true }
 	in{
 		 
-	%----------------------------------------------Checking if percepts are handeled correclty
+	% ----Checking if percepts are handeled correclty----
 	
 	
 	% Update the bot's status, send on change.
 	percept(status(Hp, Arm, _, _)) leadsto bel(status(Hp, Arm)).
 	percept(status(NewHp, NewArm, _, _)), bel(status(Hp, Arm), not(NewHp = Hp), not(NewArm =Arm)) leadsto not(bel(status(Hp, Arm))).
-		
-	% Update the bot's score, send on change.
-	percept(score(K, D, S)) leadsto bel(score(K, D, S)).
-	percept(score(NewK, NewD, NewS)), bel(score(K, D, S), not(NewK = K), not(NewD = D), not(NewS = S)) leadsto not(bel(score(K, D, S))).
-
+	
 	% Update the bot's current weapon, send on change.
 	percept(currentWeapon(Weap, FMode)) leadsto bel(currentWeapon(Weap, FMode)).
 	percept(currentWeapon(NewWeap, NewFMode)), bel(currentWeapon(Weap, FMode), not(NewWeap = Weap), not(NewFMode = FMode)) leadsto not(bel(currentWeapon(Weap, FMode))).		
@@ -33,7 +29,6 @@ test attackEvents with
 	% Update the navigation state of the bot, send on change.
 	percept(navigation(Status, Dest)) leadsto bel(navigation(Status, Dest)).
 	percept(navigation(NewStatus, NewDest)), bel(navigation(Status, Dest), not(NewStatus = Status), not(NewDest = Dest)) leadsto not(bel(navigation(Status, Dest))).	
-		
 		
 	}
 	post{ true }

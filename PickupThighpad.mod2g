@@ -4,8 +4,7 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This module handles the specific Thighpad pickup.
+	% This module handles the specific Thighpad pickup.
 
 module PickupThighpad {
 		

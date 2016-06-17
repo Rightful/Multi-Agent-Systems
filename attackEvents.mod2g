@@ -6,15 +6,15 @@ order = linearall.
 module attackEvents {
 	
 	
-	%----------------------------------------Percept handeling
+	% ----Percept handeling----
 	
-	% If bot sees enemy bot then look at that direction.
+	% If bot sees an enemy bot then look in that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
 	
 	% If we are shot at, turn around and look at where you came from.
 	if percept(status(NewHealth, _), status(OldHealth, _), NewHealth < OldHealth, not(enemyBot(_, _)), ownLocation(X, Y, Z))  then look(location(X, Y, Z)).
 	
-	% Belief base cleaning.
+	% Cleans beliefbase.
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
@@ -55,7 +55,7 @@ module attackEvents {
 	forall percept(not(flagState(Team, FlagState))), bel(flagState(Team, FlagState)) do delete(flagState(Team, FlagState)).
 	forall percept(flagState(Team, FlagState)) do insert(flagState(Team, FlagState)).
 	
-	% Update Flag stuff.
+	% Update Flag information (owner, holder and location).
 	forall percept(not(flag(Team , HolderID , Position))) do delete(flag(Team , HolderID , Position)).
 	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
 	
@@ -71,33 +71,28 @@ module attackEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	
-	
-	
-	
-	%----------------------------------Goal Handeling---------------------------------------------
-	
-	
+	% ----Goal Handeling----
 	 	
-	% If the flag we want is home then adopt to go to that base.
+	% If the enemy flag is at the enemy base, go to enemy base.
 	if bel(flagState(Team, home), enemyBaseLocation(UnrealID), self(_, _, Team2), Team \= Team2) then adopt(at(UnrealID)).
 	 
-	% If the bot holds the flag then all 'at' goals are dropped.	
+	% If the bot holds the enemy flag then all 'at' goals are dropped.	
 	forall a-goal(at(UnrealID)), bel(holdingFlag, ourBaseLocation(UnrealID2), UnrealID\=UnrealID2) do drop(at(UnrealID)) + navigate(UnrealID2).
 		
-	% If the bot holds the flag then the bot should navigate to the our base.
+	% If the bot holds the flag then the bot should navigate to our base.
 	if bel(holdingFlag, ourBaseLocation(Location)) then navigate(Location).
 	 	
-	% If flag of opponent is already held then drop the goal to be at the enemy base.
+	% If the enemy flag is already held then drop the goal to be at the enemy base.
 	forall a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID2), enemyBaseLocation(UnrealID), flagState(Team2, held), self(Player, _, Team), Team \= Team2) do drop(at(UnrealID)) + navigate(UnrealID2).
 	 	
-	% If we are not holding the flag anymore than drop to goal to be at our base.
+	% If we are not holding the enemy flag anymore than drop to goal to be at our base.
 	if a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID), self(Player, _, Team), not(flag(Team2, Player, _)), not(Team=Team2)) then drop(at(UnrealID)).
 	 	
 	% If there is no path to the location the bot is going to, the goal is dropped an the bot is stopped.
 	if a-goal(at(UnrealID)), bel(navigation('noPath', UnrealID)) then drop(at(UnrealID)).	
 	if bel(navigation('noPath', UnrealID)), not(a-goal(at(UnrealID))) then stop.
 	 	
-	% Secondary for shock rifle if an enemy bot is closeby, else primary.
+	% Secondary priority for shock rifle if an enemy bot is closeby, else primary priority.
 	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).

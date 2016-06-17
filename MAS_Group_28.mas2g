@@ -10,8 +10,8 @@ use "ut-environment.jar" as environment with
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
 				["team", "blue"]
-			]
-			, 
+			], 
+			
 			[
 			 	["name", "Vladimir Putin"], 
 				["skill", 5], 
@@ -27,6 +27,7 @@ use "ut-environment.jar" as environment with
 				["logLevel", "WARNING"], 
 				["team", "blue"]
 			], 
+			
 			[
 			 	["name", "Donald Trump"], 
 				["skill", 5], 
@@ -34,8 +35,8 @@ use "ut-environment.jar" as environment with
 				["logLevel", "WARNING"], 
 				["team", "blue"]
 			]
-		]
-		, 
+		],
+		 
 		nativebots = 
 			[
 				[
@@ -43,11 +44,13 @@ use "ut-environment.jar" as environment with
 					["skill", 3], 
 					["team", "red"]
 				], 
+				
 				[
 					["name", "Harlin"], 
 					["skill", 3], 
 					["team", "red"]
 				], 
+				
 				[
 					["name", "Johnson"], 
 					["skill", 3], 

@@ -5,9 +5,10 @@ use PickupOther as module.
 
 exit = never.
 order = linearall.
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This is the Deliver flagModule which is used to deliver the enemy flag to home.
-	%it will only pick up health and flags.
+	
+	% This is the Deliver flagModule which is used to deliver the enemy flag to home.
+	% it will only pick up health and flags.
+
 module DeliverFlag {
 	
 	% Pick up health on the way.

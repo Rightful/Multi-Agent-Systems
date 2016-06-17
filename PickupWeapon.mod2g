@@ -4,8 +4,8 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This module handles picing up waepons. It only pick them up if they are better waepons as defined by betterwaepon/2 in the knowledge.pl file.
+	% This module handles picing up waepons. 
+	% It only pick them up if they are better waepons as defined by betterwaepon/2 in the knowledge.pl file.
 
 module PickupWeapon {
 		

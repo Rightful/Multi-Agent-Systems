@@ -4,8 +4,7 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This module handles picking up health if we are below 60 HitPoints.
+	% This module handles picking up health if we are below 60 HitPoints.
 
 module PickupHealth {
 	

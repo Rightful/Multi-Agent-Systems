@@ -12,26 +12,25 @@ use PickupHelmet as module.
 exit = never.
 order = linear.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This is the around enemy base module which is called if a the enemy flag is already taken.
-	%The main priority is getting the enemy's flag if it's dropped by a friendly bot.
-	%After that it will get items and go to random locations near the enemy's base.
+	% This is the 'around enemy base' module which is called if the enemy flag has already been taken.
+	% The main priority is getting the enemy flag, if it's dropped by a friendly bot.
+	% After that it will get items and go to random locations near the enemy base.
 	 
 module AroundEnemyBase {
 	
-	% If you know where the flag is , and you are not going there then Stop.
+	% If you know where the flag is, and you are not going there then Stop.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.
 	
-	%If you know where the flag is and you are standing still then go to the flag.
+	% If you know where the flag is and you are standing still then go to the flag.
 	if bel(droppedFlagAt(Location), not(navigation(navigation, _))) then navigate(Location).
 		
-	% Exit module if opponent flag is home.
+	% Exit module if enemy flag is home.
 	if bel(self(_, _, Team), flagState(Team2, home), Team\=Team2) then exit-module.
 		
-	% Exit module if you have the flag.
+	% Exit module if you have the enemy flag.
 	if bel(holdingFlag) then exit-module.
 		
-	% Pick up health on the way.
+	% Pick up health item on the way.
 	if bel(status(Health, _), Health < 100, (pickup(UnrealID, health, _), item(_, _, _, UnrealID)), not(navigation(noPath, UnrealID)), not(navigation(stuck, _))) then PickupHealth.
 		
 	% Pick up weapons on the way.

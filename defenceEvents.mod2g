@@ -4,16 +4,16 @@ use Actions as actionspec.
 order = linearall.
 
 module defenceEvents {
-	%------------------------Update Percepts-------------------------------
+
+	% ----Update Percepts----
 	
-	
-	% If bot sees enemy bot then look at that direction.
+	% If bot sees an enemy bot then look at that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
 	
 	% If we are shot at, turn around and look at where you came from.
 	if percept(status(NewHealth, _), status(OldHealth, _), NewHealth < OldHealth, not(enemyBot(_, _)), ownLocation(X, Y, Z))  then look(location(X, Y, Z)).
 	
-	% Belief base cleaning.
+	% Cleans beliefbase.
 	forall bel(lookingAt(Target)) do delete(lookingAt(Target)).
 	 	
 	% Updating where to look.
@@ -54,7 +54,7 @@ module defenceEvents {
 	forall percept(not(flagState(Team, FlagState))), bel(flagState(Team, FlagState)) do delete(flagState(Team, FlagState)).
 	forall percept(flagState(Team, FlagState)) do insert(flagState(Team, FlagState)).
 	
-	% Update Flag stuff.
+	% Update Flag information (owner, holder and location).
 	forall percept(not(flag(Team , HolderID , Position))) do delete(flag(Team , HolderID , Position)).
 	forall percept(flag(Team , HolderID , Position)) do insert(flag(Team , HolderID , Position)).	
 	
@@ -70,9 +70,7 @@ module defenceEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	
-	
-	%----------GOAL handeling
-	
+	% ----GOAL handeling----
 	
 	% If we see our dropped flag, then pick it up.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.
@@ -81,46 +79,46 @@ module defenceEvents {
 	% The bot will adopt being at all places that are in radius of the flagbase.
 	forall bel(inRadius(UnrealID)), not(a-goal(goLocation(UnrealID))) do adopt(goLocation(UnrealID)).
 	
-	% If the flag is back at the base the goLocationFlag goal is dropped.
+	% If our flag is back at the base the goLocationFlag goal is dropped.
 	forall a-goal(goLocationFlag(UnrealID)), bel(self(_, _, TeamColor), not(flagState(TeamColor, dropped))) do drop(goLocationFlag(UnrealID)).
 	
-	% If the bot sees the flag, the bot will delete all his next locations and adopt going to the location of the flag.
+	% If the bot sees our flag, the bot will delete all his next locations and adopt going to the location of the flag.
 	if bel(self(_, _, TeamColor), flag(TeamColor, none, Position), flagState(TeamColor, dropped)) then adopt(goLocationFlag(Position)) + exit-module.
 
-	% If the doesn't hold the enemy flag anymore but still has a goal to bring it home the goals would be dropped.
+	% If the bot doesn't hold the enemy flag anymore but still has a goal to bring it home, the goals are dropped.
 	forall a-goal(goHomeWithFlag(UnrealID)), bel(not(holdingFlag)) do drop(goHomeWithFlag(UnrealID)).		
 	
-	% If the bot holds the flag and the friendly flag is not at home then the bot will rotate around the base.
+	% If the bot holds the enemy flag and our flag is not at home then the bot will rotate around our base.
 	if bel(holdingFlag, self(_, _,TeamColor), not(flagState(TeamColor, home))) then exit-module.
 	
-	% If the bot holds the flag the bot will go home.	
+	% If the bot holds the enemy flag the bot will go home.	
 	if bel(ourBaseLocation(Home), holdingFlag) then adopt(goHomeWithFlag(Home)) + exit-module.
 		
-	% If has a goal of grabbing the enemy flag at that location and the flag is not at that location the bot will drop the goal.
+	% If the bot has a goal of grabbing the enemy flag at a location and the flag is not at that location the bot will drop the goal.
 	forall a-goal(goLocationFlagEnemy(Position)), bel(self(_, _, TeamColor), not(flag(NotTeamColor, none, Position)), TeamColor \= NotTeamColor)
 		do drop(goLocationFlagEnemy(Position)).
 		 
-	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag
+	% If the bot sees the enemy flag the bot will adopt the goal of grabbing that flag
 	if bel(self(_, _, TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor, navigation(navigating, UnrealID), UnrealID \= Position)
 		then stop + adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
-	% If the bot sees the enemyflag the bot will adopt the goal of grabbing that flag	
+	% If the bot sees the enemy flag the bot will adopt the goal of grabbing that flag	
 	if bel(self(_, _, TeamColor), flag(NotTeamColor, none, Position), TeamColor \= NotTeamColor)
 		then adopt(goLocationFlagEnemy(Position)) + exit-module.
 	
-	% If the flag of the bot is not taken anymore the bot will drop all goRandom places.
+	% If our flag is not taken anymore the bot will drop all goRandom places.
 	forall a-goal(goRandom(Position)), bel(self(_, _, TeamColor), not(flagState(TeamColor, held)))
 		do drop(goRandom(Position)).
 	
-	% If the bot is walking to a place close to the enemyflag and the friendlyflag is not held the bot will stop.
+	% If the bot is walking to a place close to the enemyflag and our flag is not held the bot will stop.
 	if bel(atkRad(UnrealID), navigation(navigating, UnrealID), not(flagState(TeamColor, held)))
 		then stop + exit-module.
 		
-	% If the friendly  flag is taken the defensive bot will go to the enemy base.
+	% If our flag is taken the defensive bot will go to the enemy base.
 	forall a-goal(goLocation(UnrealID)), bel(atkRad(Position), self(_, _, TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, held)) 
 		do drop(goLocation(UnrealID)) + adopt(goRandom(Position)) + exit-module.
 	
-	% Secondary for shock rifle if an enemy bot is closeby, else primary.
+	% Secondary priority for shock rifle if an enemy bot is closeby, else primary priotiy.
 	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).

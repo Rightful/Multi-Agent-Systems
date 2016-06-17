@@ -4,8 +4,8 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This module handles picking up the powerUp. 
+	% This module handles picking up the powerUp.
+	 
 module PickupOther {
 		
 	% If bel navigating to a place and no path then exit.

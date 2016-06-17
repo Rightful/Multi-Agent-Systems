@@ -23,6 +23,7 @@ test PickupArmor with
 		
 	% Pick up helmet on the way.
 	bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) leadsto done(PickupHelmet).
+	
 	}
 	post{ true }
 	

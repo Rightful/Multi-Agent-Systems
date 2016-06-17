@@ -7,9 +7,10 @@ use PickupHelmet as module.
 
 exit = never.
 order = linearall.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This is the module which handles picking up armor.
-% Depending on your current armor it will call different sub modules to pick up the armor.
+
+	% This is the module which handles picking up armor.
+	% Depending on your current armor it will call different sub modules to pick up the armor.
+
 module PickupArmor {
 	
 	% If bel navigating to a place and no path then exit.

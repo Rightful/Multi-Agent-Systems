@@ -5,7 +5,7 @@ use Knowledge as knowledge.
 			pre { not(navigation(navigating,_)) }
 			post { true }	
 	
-	% Look at at given target.
+	% Look at a given target.
 	define look(Target) with
 			pre { true }
 			post { lookingAt(Target) }	

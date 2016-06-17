@@ -5,7 +5,6 @@
 	orientation/3,
 	lookingAt/1,
 	status/2,
-	%score/3,
 	currentWeapon/2,
 	weapon/3,
 	atkRad/1, 
@@ -31,13 +30,11 @@
 	ownLocation/3, 
 	lookingAt/1,
 	goLocationFlag/1,
-%	goLocationHelp/2, 
 	goLocationFlagEnemy/1,
 	goHomeWithFlag/1,
 	goRandom/1,
 	goLocationHelp/1,
 	goLocationKill/1,
-	%goToEnemyBase/1, 
 	closeToEnemyBaseNavPoint/1,
 	closeToOurBaseNavPoint/1.
 
@@ -67,16 +64,13 @@
 	% We are at a certain location if the IDs match, or ...
 	at(UnrealID) :- navigation(reached,UnrealID).
 	
-	% If opponentflag is not home.
+	% If enemy flag is not home.
 	 enemyFlagNotHome :- self(_,_,Team), not(flagState(Team2,'home')), Team\=Team2.
 	 	
 	% If the coordinates are approximately equal.
 	at(location(X,Y,Z)) :- navigation(reached,location(X1,Y1,Z1)), 
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1). 
 	
-	% Fragged predicate to adopt suitable goals.
-    	%fraggedBot(ID, location(X,Y,Z)):- fragged(_, _, ID, _).
-
 	% Enemy bot
 	enemyBot(UnrealID, Location) :-
 		bot(UnrealID,_,Team,Location,_,_),

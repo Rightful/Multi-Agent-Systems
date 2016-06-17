@@ -7,16 +7,15 @@ use PickupWeapon as module.
 use DeliverFlag as module.
 use AroundEnemyBase as module.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This is the Attack Main module. The most important thing is returning the flag. 
-	%After that it's picking up item or hanging around the base.
+	% This is the Attack Main module. The most important thing is returning the flag. 
+	% After that it's picking up items or hanging around the base.
 	
 module attackMain {
 	
-	% If we have the flag, then deliver it.	
+	% If we have the enemy flag, then deliver it to our base.	
 	if bel(holdingFlag) then DeliverFlag.
 	 	
-	% If fellow attacker has the flag then hang around enemy base.
+	% If fellow attacker has the enemy flag then hang around enemy base.
 	if bel(self(Player, _, Team), flagState(Team2, held), Team\=Team2, not(flag(Team2, Player, _))) then AroundEnemyBase.
 		
 	% Pick up health on the way.
@@ -34,6 +33,6 @@ module attackMain {
 	% Navigate to destination if there is a goal to do so.
 	if a-goal(at(Destination)) then navigate(Destination).
 		
-	% If no action then navigate around enemy base.
+	% If no action then navigate to enemy base.
 	if bel(enemyBaseLocation(UnrealID)) then navigate(UnrealID).
 }

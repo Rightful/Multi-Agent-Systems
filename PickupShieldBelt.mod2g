@@ -4,8 +4,7 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%This module handles the specific ShieldBelt pickup.
+	% This module handles the specific ShieldBelt pickup.
 
 module PickupShieldBelt {
 		
