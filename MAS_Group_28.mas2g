@@ -5,7 +5,7 @@ use "ut-environment.jar" as environment with
 	logLevel = "WARNING", 
 	bots = [
 			[
-			 	["name", "Attacker 1"], 
+			 	["name", "Mark Rutte"], 
 				["skill", 5], 
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
@@ -13,7 +13,7 @@ use "ut-environment.jar" as environment with
 			]
 			, 
 			[
-			 	["name", "Attacker 2"], 
+			 	["name", "Vladimir Putin"], 
 				["skill", 5], 
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
@@ -21,14 +21,14 @@ use "ut-environment.jar" as environment with
 			], 
 			
 			[
-			 	["name", "Attacker 3"], 
+			 	["name", "Angela Merkel"], 
 				["skill", 5], 
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
 				["team", "blue"]
 			], 
 			[
-			 	["name", "Defender 1"], 
+			 	["name", "Donald Trump"], 
 				["skill", 5], 
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
