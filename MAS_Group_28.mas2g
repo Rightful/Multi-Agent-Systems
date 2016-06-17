@@ -28,7 +28,7 @@ use "ut-environment.jar" as environment with
 				["team", "blue"]
 			], 
 			[
-			 	["name", "Defender 1"], 
+			 	["name", "Dynamic 1"], 
 				["skill", 5], 
 				["skin", "BotA"], 
 				["logLevel", "WARNING"], 
@@ -55,11 +55,6 @@ use "ut-environment.jar" as environment with
 				]
 			].
 
-define defencebot as agent{
-    use defenceMain as main.
-    use defenceInit as init.
-    use defenceEvents as event.
-}
 
 define attackbot as agent{
 	use attackMain as main.
@@ -67,8 +62,14 @@ define attackbot as agent{
 	use attackEvents as event.
 }
 
+define dynamicbot as agent{
+	use dynamicMain as main.
+	use dynamicInit as init.
+	use dynamicEvents as event.
+}
+
 launchpolicy{
 		when type=bot launch attackbot with max = 3.
-		when type=bot launch defencebot with max = 1.
+		when type=bot launch dynamicbot with max = 1.
 		
 }

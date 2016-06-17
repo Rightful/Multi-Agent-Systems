@@ -1,0 +1,17 @@
+use UTbot as knowledge.
+
+use abstractInit as module.
+use attackInit as module.
+use defenceInit as module.
+
+order = linearall.
+
+module dynamicInit {
+	
+	if true then abstractInit.
+	
+	if bel(enemyBaseLocation(location(X,Y,Z)), ourBaseLocation(location(Xi,Yi,Zi)), DX is abs(X - Xi), DY is abs(Y - Yi), D is sqrt(DX * DX + DY * DY), D < 8577) then attackInit + exit-module.
+	if bel(enemyBaseLocation(location(X,Y,Z)), ourBaseLocation(location(Xi,Yi,Zi)), DX is abs(X - Xi), DY is abs(Y - Yi), D is sqrt(DX * DX + DY * DY), D > 8577) then defenceInit + exit-module.
+
+	
+}

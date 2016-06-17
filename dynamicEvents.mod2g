@@ -1,0 +1,14 @@
+use UTbot as knowledge.
+
+use attackEvents as module.
+use defenceEvents as module.
+
+
+order = linearall.
+module dynamicEvents {
+	
+	if bel(enemyBaseLocation(location(X,Y,Z)), ourBaseLocation(location(Xi,Yi,Zi)), DX is abs(X - Xi), DY is abs(Y - Yi), D is sqrt(DX * DX + DY * DY), D < 8577) then attackEvents + exit-module.
+	if bel(enemyBaseLocation(location(X,Y,Z)), ourBaseLocation(location(Xi,Yi,Zi)), DX is abs(X - Xi), DY is abs(Y - Yi), D is sqrt(DX * DX + DY * DY), D > 8577) then defenceEvents + exit-module.
+	
+	
+}
