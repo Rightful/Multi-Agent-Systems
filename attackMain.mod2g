@@ -5,7 +5,6 @@ use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
 use DeliverFlag as module.
-use SelectWeapon as module.
 use AroundEnemyBase as module.
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
