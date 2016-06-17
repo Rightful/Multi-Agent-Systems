@@ -1,0 +1,40 @@
+use Actions as actionspec.
+use Knowledge as knowledge.
+
+order = linear.
+exit = always.
+
+module SelectWeapon {
+    % Sets a weapon preference dependent on the distance between the bot and the target it wants to shoot.
+    % Note: distance is in Unreal Units, which convert as 52,5 UU to 1 meter.
+    
+    % If the targets are less than 5m apart, prefer the flak cannon and the link gun and avoid splash damage weapons.
+    if self.goal(enemyBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D=<263) then 
+        prefer([weapon(flak_cannon,primary),weapon(link_gun,secondary), weapon(stinger_minigun,primary), weapon(enforcer,secondary),
+        weapon(sniper_rifle,primary), weapon(shock_rifle,primary), weapon(bio_rifle, primary)]).
+        
+    % If the target is between 5 and 10m, the flak cannon is inefficient, so use the link gun, minigun or minor splash damage weapons.
+    if self.goal(enemyBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D>263, 
+        distance(X,Y,Z,X1,Y1,Z1,D), D=<525) then prefer([weapon(link_gun,secondary), weapon(stinger_minigun,primary),
+        weapon(flak_cannon,secondary),weapon(shock_rifle,secondary),weapon(enforcer,secondary), weapon(sniper_rifle,primary),
+        weapon(bio_rifle, primary)]).
+    
+    % If the target is between 10 and 15m, consider it close-medium range and use the rocket launcher, shock rifle or minigun.
+    if self.goal(enemyBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1, D), D>525, 
+        distance(X,Y,Z,X1,Y1,Z1,D), D=<788) then prefer([weapon(rocket_launcher,primary), weapon(stinger_minigun,primary),
+        weapon(shock_rifle,primary),weapon(link_gun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),
+        weapon(flak_cannon,secondary), weapon(bio_rifle, primary)]).
+        
+    % If the target is between 15 and 25m, consider it medium range and use the shock rifle,sniper rifle or link gun, as slow-projectile weapons
+    % are inefficient at this range.
+    if self.goal(enemyBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1, D), D>788, 
+        distance(X,Y,Z,X1,Y1,Z1,D), D=<1313) then prefer([weapon(shock_rifle,primary), weapon(sniper_rifle,primary),
+        weapon(link_gun,primary),weapon(stinger_minigun,primary), weapon(enforcer,primary),weapon(rocket_launcher,primary),
+        weapon(flak_cannon,secondary), weapon(bio_rifle, primary)]).
+        
+    % If the target is over 25m away, use the sniper rifle, any other weapon is inferior at long range.
+    if self.goal(enemyBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D>1313) then 
+        prefer([weapon(sniper_rifle,primary),weapon(shock_rifle,primary),weapon(link_gun,primary), weapon(stinger_minigun,primary), 
+        weapon(enforcer,primary),weapon(rocket_launcher,primary),weapon(flak_cannon,secondary), weapon(bio_rifle, primary)]).
+}
+

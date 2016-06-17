@@ -4,6 +4,7 @@ use PickupArmor as module.
 use PickupHealth as module.
 use PickupOther as module.
 use PickupWeapon as module.
+use SelectWeapon as module.
 use DeliverFlag as module.
 	
 	
@@ -12,6 +13,8 @@ use DeliverFlag as module.
 	%It firstly procesesses pickup before going to locations.
 
 module defenceMain {
+	
+	if bel(enemyBot(ID,_)) then SelectWeapon.
 
 	% Pick up health on the way.
 	if bel(status(Health, _), Health < 90, (pickup(UnrealID, health, _), item(_, _, _, UnrealID)), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupHealth.

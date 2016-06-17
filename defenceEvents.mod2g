@@ -121,7 +121,7 @@ module defenceEvents {
 		do drop(goLocation(UnrealID)) + adopt(goRandom(Position)) + exit-module.
 	
 	% Secondary for shock rifle if an enemy bot is closeby, else primary.
-	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	%if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	%if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	%if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 }
