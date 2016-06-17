@@ -6,7 +6,7 @@ order = linearall.
 module attackEvents {
 	
 	
-	% ----Percept handeling----
+	% ----Percept handling----
 	
 	% If bot sees an enemy bot then look in that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
@@ -71,7 +71,7 @@ module attackEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	
-	% ----Goal Handeling----
+	% ----Goal Handling----
 	 	
 	% If the enemy flag is at the enemy base, go to enemy base.
 	if bel(flagState(Team, home), enemyBaseLocation(UnrealID), self(_, _, Team2), Team \= Team2) then adopt(at(UnrealID)).
@@ -79,21 +79,20 @@ module attackEvents {
 	% If the bot holds the enemy flag then all 'at' goals are dropped.	
 	forall a-goal(at(UnrealID)), bel(holdingFlag, ourBaseLocation(UnrealID2), UnrealID\=UnrealID2) do drop(at(UnrealID)) + navigate(UnrealID2).
 		
-	% If the bot holds the flag then the bot should navigate to our base.
+	% If the bot holds the flag, then the bot should navigate to our base.
 	if bel(holdingFlag, ourBaseLocation(Location)) then navigate(Location).
 	 	
-	% If the enemy flag is already held then drop the goal to be at the enemy base.
+	% If the enemy flag is already held, then drop the goal to be at the enemy base.
 	forall a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID2), enemyBaseLocation(UnrealID), flagState(Team2, held), self(Player, _, Team), Team \= Team2) do drop(at(UnrealID)) + navigate(UnrealID2).
 	 	
-	% If we are not holding the enemy flag anymore than drop to goal to be at our base.
+	% If we are not holding the enemy flag anymore, then drop the goal to be at our base.
 	if a-goal(at(UnrealID)), bel(ourBaseLocation(UnrealID), self(Player, _, Team), not(flag(Team2, Player, _)), not(Team=Team2)) then drop(at(UnrealID)).
 	 	
-	% If there is no path to the location the bot is going to, the goal is dropped an the bot is stopped.
+	% If there is no path to the location the bot is going to, the goal is dropped and the bot is stopped.
 	if a-goal(at(UnrealID)), bel(navigation('noPath', UnrealID)) then drop(at(UnrealID)).	
 	if bel(navigation('noPath', UnrealID)), not(a-goal(at(UnrealID))) then stop.
 	 	
-	% Secondary priority for shock rifle if an enemy bot is closeby, else primary priority.
-	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	% If there are no enemies nearby, use the standard weapon priority. If an enemy is close, use close range, less accurate weapons.
+	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(rocket_launcher, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(rocket_launcher, primary), weapon(link_gun, secondary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 }

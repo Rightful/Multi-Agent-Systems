@@ -1,5 +1,5 @@
 :-dynamic 
-	navigation/2, 		%
+	navigation/2, 		
 	navPoint/3,
 	self/3,
 	orientation/3,
@@ -23,8 +23,8 @@
 	base/2,
 	bot/6,
 	goLocation/1,
-	inRadius/1,		%inRadius(
-	angle/3,		%angle(Angle, Sinus, CoSinus)
+	inRadius/1,		
+	angle/3,		
 	viewAngle/1,
 	lastAngleUpdater/1,
 	ownLocation/3, 
@@ -38,7 +38,7 @@
 	closeToEnemyBaseNavPoint/1,
 	closeToOurBaseNavPoint/1.
 
-	% Radius of defender which to navigate.
+	% Radius around the friendly flag base in which the defender stays as long as the flag is there.
 	radius(1000).
 
 	% Getting the next time for updating look action.
@@ -67,11 +67,11 @@
 	% If enemy flag is not home.
 	 enemyFlagNotHome :- self(_,_,Team), not(flagState(Team2,'home')), Team\=Team2.
 	 	
-	% If the coordinates are approximately equal.
+	% If the coordinates are approximately equal, we are at a location.
 	at(location(X,Y,Z)) :- navigation(reached,location(X1,Y1,Z1)), 
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1). 
 	
-	% Enemy bot
+	% A bot is an enemy bot if its team is different from ours.
 	enemyBot(UnrealID, Location) :-
 		bot(UnrealID,_,Team,Location,_,_),
 		self(_,_,Team2),

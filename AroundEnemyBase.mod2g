@@ -10,7 +10,7 @@ use PickupVest as module.
 use PickupHelmet as module.
 
 exit = never.
-order = linear.
+order = linearrandom.
 
 	% This is the 'around enemy base' module which is called if the enemy flag has already been taken.
 	% The main priority is getting the enemy flag, if it's dropped by a friendly bot.

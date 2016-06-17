@@ -11,10 +11,6 @@ test defenceEvents with
 	percept(status(Hp, Arm, _, _)) leadsto bel(status(Hp, Arm)).
 	percept(status(NewHp, NewArm, _, _)), bel(status(Hp, Arm), not(NewHp = Hp), not(NewArm =Arm)) leadsto not(bel(status(Hp, Arm))).
 		
-	% Update the bot's score, send on change.
-	percept(score(K, D, S)) leadsto bel(score(K, D, S)).
-	percept(score(NewK, NewD, NewS)), bel(score(K, D, S), not(NewK = K), not(NewD = D), not(NewS = S)) leadsto not(bel(score(K, D, S))).
-
 	% Update the bot's current weapon, send on change.
 	percept(currentWeapon(Weap, FMode)) leadsto bel(currentWeapon(Weap, FMode)).
 	percept(currentWeapon(NewWeap, NewFMode)), bel(currentWeapon(Weap, FMode), not(NewWeap = Weap), not(NewFMode = FMode)) leadsto not(bel(currentWeapon(Weap, FMode))).		

@@ -3,11 +3,11 @@ use Actions as actionspec.
 
 order = linearrandom.
 
-	% This mocule makes sure that a bot goes to a random location inside the defines radius.
+	% This module makes sure that a bot goes to a random location inside the defined radius.
 	
 module RandomDef {
 	
-	% If the goal of the bot is already being at a random Def location then the bot will exit the module.
+	% If the bot already has a goal to be at a location within the radius then the bot will exit the module.
 	if a-goal(at(Location)), bel(atkRad(Location)) then exit-module.
 	
 	% The bot will adopt random Defensive locations.

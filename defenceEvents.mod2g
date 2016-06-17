@@ -70,7 +70,7 @@ module defenceEvents {
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
 	
-	% ----GOAL handeling----
+	% ----GOAL handling----
 	
 	% If we see our dropped flag, then pick it up.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.
@@ -118,8 +118,7 @@ module defenceEvents {
 	forall a-goal(goLocation(UnrealID)), bel(atkRad(Position), self(_, _, TeamColor), not(flag(TeamColor, _, _)), flagState(TeamColor, held)) 
 		do drop(goLocation(UnrealID)) + adopt(goRandom(Position)) + exit-module.
 	
-	% Secondary priority for shock rifle if an enemy bot is closeby, else primary priotiy.
-	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(enemyBot(_, location(X, Y, _)), ownLocation(A, B, _), A>X+500, A<X-500, B>Y+500, B<Y-500) then prefer([weapon(shock_rifle, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
-	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	% If there are no enemies nearby, use the standard weapon priority. If an enemy is close, use close range, less accurate weapons.
+	if bel(not(enemyBot(_, _))) then prefer([weapon(shock_rifle, primary), weapon(rocket_launcher, primary), weapon(flak_cannon, primary), weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
+	if bel(bot(_, _, _, location(X, Y, _), _, _), ownLocation(A, B, _), A<X+500, A>X-500, B<Y+500, B>Y-500) then prefer([weapon(shock_rifle, secondary), weapon(flak_cannon, primary), weapon(rocket_launcher, primary), weapon(link_gun, secondary), weapon(stinger_minigun, primary), weapon(sniper_rifle, primary), weapon(enforcer, primary), weapon(impact_hammer, primary)]).
 }
