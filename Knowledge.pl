@@ -76,7 +76,11 @@
 	
 	% Fragged predicate to adopt suitable goals.
     	%fraggedBot(ID, location(X,Y,Z)):- fragged(_, _, ID, _).
-
+		
+	% Distance predicate that calculates the 3D distance between 2 bots in Unreal Units
+	distance(X,Y,Z,X1,Y1,Z1,D) :- DX is (X-X1), DY is (Y-Y1), DZ is (Z-Z1), Xsq is (DX*DX), Ysq is (DY*DY), Zsq is (DZ*DZ),
+		XYsum is Xsq+Ysq, XYZsum is XYsum+Zsq, D is sqrt(XYZsum).		
+		
 	% Enemy bot
 	enemyBot(UnrealID, Location) :-
 		bot(UnrealID,_,Team,Location,_,_),
