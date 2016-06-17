@@ -7,7 +7,7 @@ test attackEvents with
 	pre{ true }
 	in{
 		 
-	%----------------------------------------------Checking if percepts are handeled correclty
+	%----------------------------------------------Checking if percepts are handled correctly
 	
 	
 	% Update the bot's status, send on change.
