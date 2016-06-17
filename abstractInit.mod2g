@@ -94,7 +94,7 @@ module abstractInit {
 	% Own location.
 	if true then insert(ownLocation(0, 0, 0)).
 	
-	% angle(Angle, Sinus, CoSinus).
+	% Insert some Angels we will need for a 360 degree rotation.
 	if true then insert(angle(0, 	0, 			1)).
 	if true then insert(angle(30, 	0.5, 		0.866)).
 	if true then insert(angle(60, 	0.866, 		0.5)).

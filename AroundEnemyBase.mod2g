@@ -12,10 +12,17 @@ use PickupHelmet as module.
 exit = never.
 order = linear.
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%This is the around enemy base module which is called if a the enemy flag is already taken.
+	%The main priority is getting the enemy's flag if it's dropped by a friendly bot.
+	%After that it will get items and go to random locations near the enemy's base.
+	 
 module AroundEnemyBase {
 	
-	% If you see a dropped flag, then pick it up.
+	% If you know where the flag is , and you are not going there then Stop.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.
+	
+	%If you know where the flag is and you are standing still then go to the flag.
 	if bel(droppedFlagAt(Location), not(navigation(navigation, _))) then navigate(Location).
 		
 	% Exit module if opponent flag is home.
@@ -29,7 +36,7 @@ module AroundEnemyBase {
 		
 	% Pick up weapons on the way.
 	if bel(pickup(UnrealID, weapon, _), item(_, weapon, NewWeapon, UnrealID), currentWeapon(CurrentWeapon, _), betterWeapon(NewWeapon, CurrentWeapon), not(weapon(NewWeapon, _, _)), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupWeapon.
-		
+	
 	% Pick any type of armour up on the way.
 	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupShieldBelt. 
 	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, armor, _, UnrealID), not(navigation(noPath, _)), not(navigation(stuck, _))) then PickupThighpad. 

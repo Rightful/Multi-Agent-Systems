@@ -3,6 +3,8 @@ use Actions as actionspec.
 
 order = linearrandom.
 
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%This mocule makes sure that a bot goes to a random location inside the defines radius.
 module RandomDef {
 	
 	% If the goal of the bot is already being at a random Def location then the bot will exit the module.

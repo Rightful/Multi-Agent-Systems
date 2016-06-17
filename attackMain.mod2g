@@ -6,9 +6,13 @@ use PickupOther as module.
 use PickupWeapon as module.
 use DeliverFlag as module.
 use AroundEnemyBase as module.
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%This is the Attack Main module. The most important thing is returning the flag. 
+	%After that it's picking up item or hanging around the base.
 	
 module attackMain {
-
+	
 	% If we have the flag, then deliver it.	
 	if bel(holdingFlag) then DeliverFlag.
 	 	

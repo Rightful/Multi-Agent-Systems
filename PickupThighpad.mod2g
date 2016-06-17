@@ -4,6 +4,9 @@ use Actions as actionspec.
 exit = never.
 order = linearall.
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%This module handles the specific Thighpad pickup.
+
 module PickupThighpad {
 		
 	% If bel navigating to a place and no path then exit.

@@ -5,6 +5,9 @@ order = linearall.
 
 module attackEvents {
 	
+	
+	%----------------------------------------Percept handeling
+	
 	% If bot sees enemy bot then look at that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
 	
@@ -67,6 +70,13 @@ module attackEvents {
 	% Update the pickups the bot sees.
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
+	
+	
+	
+	
+	%----------------------------------Goal Handeling---------------------------------------------
+	
+	
 	 	
 	% If the flag we want is home then adopt to go to that base.
 	if bel(flagState(Team, home), enemyBaseLocation(UnrealID), self(_, _, Team2), Team \= Team2) then adopt(at(UnrealID)).

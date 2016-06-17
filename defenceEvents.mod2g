@@ -4,6 +4,8 @@ use Actions as actionspec.
 order = linearall.
 
 module defenceEvents {
+	%------------------------Update Percepts-------------------------------
+	
 	
 	% If bot sees enemy bot then look at that direction.
 	if bel(enemyBot(_, Location)) then look(Location).
@@ -67,6 +69,10 @@ module defenceEvents {
 	% Update the pickups the bot sees.
 	forall percept(not(pickup(UnrealID))), bel(pickup(UnrealID)) do delete(pickup(UnrealID)).
 	forall percept(pickup(UnrealID)) do insert(pickup(UnrealID)).
+	
+	
+	%----------GOAL handeling
+	
 	
 	% If we see our dropped flag, then pick it up.
 	if bel(droppedFlagAt(Location), navigation(navigation, UnrealID), not(UnrealID=Location)) then stop.

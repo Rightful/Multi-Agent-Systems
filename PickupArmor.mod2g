@@ -7,17 +7,27 @@ use PickupHelmet as module.
 
 exit = never.
 order = linearall.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the module which handles picking up armor.
+% Depending on your current armor it will call different sub modules to pick up the armor.
 module PickupArmor {
-		
+	
 	% If bel navigating to a place and no path then exit.
 	if bel(navigation(noPath, _)) then exit-module.
+	
+	% If bel navigating to a place and you are stuck then exit.
 	if bel(navigation(stuck, _)) then exit-module.
 		
-	% Pick all types of armour up on the way.
+	% Pick up a shieldbelt if you don't have it or it's not complete.
 	if bel(armor(_, _, _, ShieldBelt), ShieldBelt < 100, pickup(UnrealID, _, armor_shield_belt), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) then PickupShieldBelt. 
+
+	% Pick up a Thighpad if you don't have it or it's not complete.
 	if bel(armor(_, _, Thighpad, _), Thighpad < 30, pickup(UnrealID, _, armor_thighpads), item(_, armor, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) then PickupThighpad. 
+	
+	% Pick up a vest if you don't have it or it's not complete.
 	if bel(armor(_, Vest, _, _), Vest < 50, pickup(UnrealID, _, armor_vest), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) then PickupVest. 
+	
+	% Pick up a Helmet if you don't have it or it's not complete.
 	if bel(armor(Helmet, _, _, _), Helmet < 20, pickup(UnrealID, _, armor_helmet), item(_, _, _, UnrealID), not(navigation(noPath, UnrealID)), not(navigation(stuck, UnrealID))) then PickupHelmet. 
 		
 	% Exit module if no armour left or full score.

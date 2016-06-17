@@ -5,8 +5,11 @@ timeout = 30.
 
 test attackEvents with
 	pre{ true }
-	in{ 
-
+	in{
+		 
+	%----------------------------------------------Checking if percepts are handeled correclty
+	
+	
 	% Update the bot's status, send on change.
 	percept(status(Hp, Arm, _, _)) leadsto bel(status(Hp, Arm)).
 	percept(status(NewHp, NewArm, _, _)), bel(status(Hp, Arm), not(NewHp = Hp), not(NewArm =Arm)) leadsto not(bel(status(Hp, Arm))).
@@ -31,17 +34,6 @@ test attackEvents with
 	percept(navigation(Status, Dest)) leadsto bel(navigation(Status, Dest)).
 	percept(navigation(NewStatus, NewDest)), bel(navigation(Status, Dest), not(NewStatus = Status), not(NewDest = Dest)) leadsto not(bel(navigation(Status, Dest))).	
 		
-	% Update the logic iteration, send on change. 
-	percept(logic(It)) leadsto bel(logic(It)).
-	percept(logic(NewIt)), bel(logic(It), not(NewIt = It)) leadsto not(bel(logic(It))).		
-		
-	% Update the information on the current game, send on change.
-	percept(game(GType, Map, GScore, TLimit)) leadsto bel(game(GType, Map, GScore, TLimit)).
-	percept(game(NewGType, NewMap, NewGScore, NewTLimit)), bel(game(GType, Map, GScore, TLimit), not(NewGType = GType), not(NewMap = Map), not(NewGScore = GScore), not(NewTLimit = TLimit)) leadsto not(bel(game(GType, Map, GScore, TLimit))).	
-		
-	% Update the scores of both teams.
-	percept(teamScore(Team, Opp)) leadsto bel(teamScore(Team, Opp)).
-	percept(teamScore(NewTeam, NewOpp)), bel(teamScore(Team, Opp), not(NewTeam = Team), not(NewOpp = Opp)) leadsto not(bel(teamScore(Team, Opp))).		
 		
 	}
 	post{ true }
