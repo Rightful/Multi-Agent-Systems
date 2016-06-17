@@ -12,18 +12,17 @@ define look(Target) with
 define prefer(WeaponList) with
 			pre { true }
 			post { true }
+			
+define path(Location, Location2) with
+	pre { true }
+	post { true }
 
-define respawn with
-	pre{true}
-	post{true}
-
-	
 define stop with
 	pre{true}
 	post{navigation(waiting,none)}
 	
 	% Define the conditions needed for the shoot action
 	define shoot(TargetLabel) with
-		pre { true }
+		pre { weaponSelected }
 		post { true }
 	

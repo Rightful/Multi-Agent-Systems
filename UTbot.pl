@@ -1,10 +1,13 @@
 :-dynamic navigation/2, navPoint/3, prevLocation/3, self/3, orientation/3, status/2, score/3, currentWeapon/2, weapon/3,
 	powerup/2, armor/4, fragged/4, path/4, logic/1, pickup/3, base/2, game/4, teamScore/2, flagState/2, item/4,
 	bot/6, pickup/1, slowVolume/1, getItem/1 ,captureFlag/0,flagState/2, flag/3, look/1, shoot/1, enemyBaseLocation/1, 
-	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup/0, escort/0, killModus/0, 
+	ourBaseLocation/1, lastKnownLocFlag/1, base/2, bot/6, deployable/1, goLocation/1, inRadius/1, pickup/0, escorting/2, escorting/1, killModus/0, 
 	angle/3, viewAngle/1, lastAngleUpdater/1, ownLocation/3, lookingAt/1, lastFlag/3, goLocationFlag/1, inRadius/1, 
-	helpDef/2, goLocationHelp/1, goLocationHome/1, goLocationFlagEnemy/1, weaponSelected/0, fraggedBot/2, fraggedBot/1,attack/0 ,defense/0,
-	role/1,haveNavPoints/0 , peasant/2, botLoc/2, flagCarrier/1 , numberOfAttackBot/1 , numberOfDefenseBot/1.
+	helpDef/2,goLocationHelp/1,goLocationHome/1, goLocationFlagEnemy/1, weaponSelected/0, fraggedBot/2, fraggedBot/1,attack/0 ,defense/0,
+	role/1,haveNavPoints/0 , peasant/2, botLoc/2, flagCarrier/1 , numberOfAttackBot/1 , numberOfDefenseBot/1,
+	helpDef/2, goLocationHelp/2, goLocationHome/1, goLocationFlagEnemy/1, weaponSelected/0, fraggedBot/2, fraggedBot/1, goEscort/1, 
+	goHomeWithFlag/1, t/0, pu/1, goLastKnown/1, locationOfFlag/3, goGrabEnemy/1, atkRad/1, goRandom/1, goHelp/1, goLocationKill/2, path/4, path/2.
+
 
 	
 radius(1000).

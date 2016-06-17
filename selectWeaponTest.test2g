@@ -1,0 +1,33 @@
+use MAS_Group_28.
+use UTbot as knowledge.
+use selectWeapon as module.
+timeout = 2.
+
+test selectWeapon with
+	pre{ true }
+	in{
+
+	goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D=<263) leadsto bel(weaponSelected, prefer([weapon(flak_cannon,primary),weapon(link_gun,secondary),
+		weapon(stinger_minigun,primary),weapon(enforcer,secondary),weapon(sniper_rifle,primary),weapon(shock_rifle,primary)])).
+		
+	goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D>263, 
+		distance(X,Y,Z,X1,Y1,Z1,D), D=<525) leadsto bel(weaponSelected, prefer([weapon(link_gun,secondary),
+		weapon(stinger_minigun,primary),weapon(flak_cannon,secondary),weapon(shock_rifle,secondary),weapon(enforcer,secondary),
+		weapon(sniper_rifle,primary)])).
+	
+	goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1, D), D>525, 
+		distance(X,Y,Z,X1,Y1,Z1,D), D=<788) leadsto bel(weaponSelected, prefer([weapon(rocket_launcher,primary),
+		weapon(stinger_minigun,primary),weapon(shock_rifle,primary),weapon(link_gun,primary),weapon(sniper_rifle,primary),weapon(enforcer,primary),weapon(flak_cannon,secondary)])).
+		
+	goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1, D), D>788, 
+		distance(X,Y,Z,X1,Y1,Z1,D), D=<1313) leadsto bel(weaponSelected, prefer([weapon(shock_rifle,primary),
+		weapon(sniper_rifle,primary),weapon(link_gun,primary),weapon(stinger_minigun,primary), weapon(enforcer,primary),weapon(rocket_launcher,primary), weapon(flak_cannon,secondary)])).
+		
+	goal(fraggedBot(UnrealID,location(X,Y,Z))), bel(orientation(location(X1,Y1,Z1),_,_), distance(X,Y,Z,X1,Y1,Z1,D), D>1313) leadsto bel(weaponSelected, prefer([weapon(sniper_rifle,primary),weapon(shock_rifle,primary),weapon(link_gun,primary),
+		weapon(stinger_minigun,primary), weapon(enforcer,primary),weapon(rocket_launcher,primary),weapon(flak_cannon,secondary)])).
+	}
+	post{ true }
+	
+	utBot {
+	do selectWeapon. 
+}

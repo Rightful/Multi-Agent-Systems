@@ -1,5 +1,4 @@
 use UTbot as knowledge.
-use abstractInit as module.
 use Action as actionspec.
 
 order = linearall.
@@ -91,6 +90,19 @@ module UTBotInit {
 	if true then insert(angle(300, 	-0.866, 	0.5)).
 	if true then insert(angle(330, 	-0.5, 		0.866)).
 	
+	 
+	 forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
+		bel(self(_,_,Color), base(Color, UnrealID), navPoint(UnrealID, location(X,Y,Z),_), 
+			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(inRadius(UnrealIDi)).
+	
+	
+			
+			
+			
+	forall percept(navPoint(UnrealIDi, location(Xi,Yi,Zi), _)), 
+		bel(self(_,_,Color), base(Color2, UnrealID), Color \= Color2, navPoint(UnrealID, location(X,Y,Z),_), 
+			D is ((X - Xi) * (X - Xi))+ ((Y -Yi) * (Y -Yi)), Di is sqrt(D),radius(R), Di < R ) do insert(atkRad(UnrealIDi)).
+			
 	 
 	% set basic weapon priorities.
 	if true then prefer([weapon(shock_rifle,primary),

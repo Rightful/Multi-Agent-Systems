@@ -1,7 +1,7 @@
 use UTbot as knowledge.
 use Action as actionspec.
-exit = always.
-order = linearrandom.
+exit = never.
+order = linearall.
 module killModus {
 	 if bel(holdingFlag) then exit-module.
 	 if bel(enemyBot(_,Position)) then navigate(Position).

@@ -108,7 +108,8 @@ module UTBotEvent {
 	
 	%If we already have a goal to be attack or defense. and we get a goal to change then delete old goal and insert new one.
 	if a-goal(attack), (god).sent!(changeToDefense) then adopt(defense) + delete(attack).
-	if a-goal(attack), (god).sent!(changeToDefense) then adopt(defense)+delete (attack).
+	if a-goal(defense), (god).sent!(changeToAttack) then adopt(attack) + delete(defense).
+	
 	%If god sent a message to be at a specific location then go there.
 	if (god).sent!(at(X)) then adopt(at(X)).
 	
